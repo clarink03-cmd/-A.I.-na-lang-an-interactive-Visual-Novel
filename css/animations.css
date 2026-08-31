@@ -1,0 +1,27 @@
+/* One orchestrated moment on load: the hero settles in.
+   Nothing else in the page animates on scroll — motion here is
+   reserved for things the user actually does (FAQ open, modal open). */
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-eyebrow, .hero h1, .hero-lede, .hero-actions, .hero-meta {
+  animation: hero-rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.hero h1        { animation-delay: 0.05s; }
+.hero-lede      { animation-delay: 0.11s; }
+.hero-actions   { animation-delay: 0.17s; }
+.hero-meta      { animation-delay: 0.22s; }
+
+.hero-art {
+  animation: hero-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: 0.15s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-eyebrow, .hero h1, .hero-lede, .hero-actions, .hero-meta, .hero-art {
+    animation: none;
+  }
+}

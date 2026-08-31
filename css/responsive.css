@@ -1,0 +1,39 @@
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; padding-bottom: 56px; }
+  .hero-art { order: -1; }
+  .hero-frame { transform: none; }
+  .hero-frame-caption { display: none; }
+
+  .premise-grid { grid-template-columns: 1fr; gap: 32px; }
+  .mechanics-grid { grid-template-columns: 1fr; gap: 30px; }
+
+  .hud-legend { grid-template-columns: repeat(2, 1fr); }
+  .figure-row { grid-template-columns: 1fr 1fr; }
+  .settings-strip { grid-template-columns: repeat(3, 1fr); }
+
+  .candor-block { padding: 32px 24px; }
+
+  .nav-links { display: none; }
+}
+
+@media (max-width: 640px) {
+  .wrap { padding: 0 20px; }
+  .site-header .wrap { height: 60px; }
+  .hero { padding-top: 60px; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .btn { justify-content: center; }
+  .hero-meta { gap: 16px; }
+  .hero-band .wrap { justify-content: flex-start; gap: 16px; }
+
+  .section { padding: 64px 0; }
+
+  .figure-row { grid-template-columns: 1fr; }
+  .settings-strip { grid-template-columns: repeat(2, 1fr); }
+  .hud-mock { flex-direction: column; align-items: stretch; }
+  .hud-grades { align-self: flex-start; }
+  .hud-legend { grid-template-columns: 1fr; }
+
+  .footer-grid { flex-direction: column; align-items: flex-start; }
+
+  .play-modal-close { top: -40px; }
+}

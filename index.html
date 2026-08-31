@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A.I. na lang!, A Visual Novel About the Cost of the Shortcut</title>
+<meta name="description" content="A Filipino-English language visual novel capstone project from Mabalacat City College. Play as a BSIT student across 8 weeks, deciding again and again how much to lean on AI, and living with what that decision compounds into.">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="#top" class="brand"><span class="brand-mark"></span>A.I. na lang!</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#premise">The Premise</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#cast">The Cast</a></li>
+        <li><a href="#endings">Endings</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <div class="header-right">
+      <!-- GITHUB REPO LINK, replace # once repo is live -->
+      <a href="https://github.com/clarink03-cmd/-A.I.-na-lang-an-interactive-Visual-Novel" class="nav-icon-link" aria-label="View source on GitHub" target="_blank" rel="noopener">
+        <img src="assets/icons/github.svg" alt="" width="19" height="19">
+      </a>
+      <button class="nav-cta" data-open-play>Play in Browser</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="hero-eyebrow"><span class="dot"></span>BSIT Capstone Project, Mabalacat City College, 2026</div>
+        <h1>Every shortcut<br>works. That's<br>the <em>problem.</em></h1>
+        <p class="hero-lede">A Filipino-English language visual novel about eight weeks in the life of a college student, and the AI that's always one tab away, ready to answer for you.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-open-play>▶ Play in Browser</button>
+          <a href="#premise" class="btn btn-secondary">Read the Premise</a>
+        </div>
+        <div class="hero-meta">
+          <span><strong>8</strong> weeks, one semester</span>
+          <span><strong>6</strong> possible endings</span>
+          <span><strong>Free</strong>, plays in any browser</span>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="hero-frame">
+          <img src="assets/images/main_menu.webp" alt="Mabalacat City College campus, the setting for A.I. na lang!" loading="eager">
+        </div>
+        <div class="hero-frame-caption"><b>Fig. 0.</b> The campus this story is set on, Mabalacat City College, ICS Building.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="hero-band">
+    <div class="wrap">
+      <div class="hero-band-item"><b>Built with</b>&nbsp;Ren'Py, deployed via RenPyWeb / WebAssembly</div>
+      <div class="hero-band-item"><b>Coursework-accurate</b>&nbsp;minigames, networking, Python, cybersecurity law</div>
+      <div class="hero-band-item"><b>Language</b>&nbsp;Taglish dialogue throughout</div>
+    </div>
+  </div>
+
+  <!-- ============ PREMISE ============ -->
+  <section class="section" id="premise">
+    <div class="wrap premise-grid">
+      <div>
+        <p class="section-kicker">The Premise</p>
+        <h2>You play Alex. Or Alexa.<br>Either way, you decide.</h2>
+        <p class="wide">A third-year BSIT student, across eight weeks of the semester, choosing, again and again, how much to lean on AI versus how much to actually think a problem through. Networking configs, Python bugs, subnetting, cybersecurity law. Every week, a shortcut is sitting right there, and it always works. Your grade goes up either way.</p>
+        <p class="wide">What changes is what you're left with.</p>
+        <blockquote class="pull-quote">"Lean on AI enough times and you pass the semester with a Critical Thinking score you can't get back by finals week, no matter how many correct answers you rack up afterward."</blockquote>
+      </div>
+      <figure class="premise-figure">
+        <img src="assets/images/screenshot0002.jpg" alt="In-game screenshot: Alex, alone at 3am the night before a Networking midterm" loading="lazy">
+        <figcaption class="figure-caption"><b>Fig. 1.</b> Week 4, the night before the Networking midterm. Notes open on the laptop. Phone dead, charging.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="section alt" id="how-it-works">
+    <div class="wrap">
+      <div class="section-head" style="max-width:640px;">
+        <p class="section-kicker">How It Works</p>
+        <h2>Everything you do is tracked. All the way to finals.</h2>
+      </div>
+
+      <div class="figure-block" style="margin-bottom:56px;">
+        <div class="hud-mock" id="scrollCtMeter">
+          <div class="hud-day"><span class="sw"></span>Day 12, Umaga</div>
+          <div class="hud-meter">
+            <div class="hud-meter-label">CRITICAL THINKING</div>
+            <div class="hud-meter-track">
+              <div class="hud-meter-seg on"></div><div class="hud-meter-seg on"></div><div class="hud-meter-seg on"></div>
+              <div class="hud-meter-seg on"></div><div class="hud-meter-seg on"></div><div class="hud-meter-seg"></div>
+              <div class="hud-meter-seg"></div><div class="hud-meter-seg"></div><div class="hud-meter-seg"></div><div class="hud-meter-seg"></div>
+            </div>
+          </div>
+          <div class="hud-meter">
+            <div class="hud-meter-label" style="color:var(--maroon-light)">♥ MOTIVATION</div>
+            <div class="hud-mot-track"><div class="hud-mot-fill"></div></div>
+          </div>
+          <div class="hud-grades">Tingnan ang Grades</div>
+        </div>
+        <dl class="hud-legend">
+          <div>
+            <dt>Day / time indicator</dt>
+            <dd>Amber for daytime, navy for night, maroon for exam and submission days.</dd>
+          </div>
+          <div>
+            <dt>Critical Thinking</dt>
+            <dd>0–100, ten segments. Drops when you lean on AI, rises when you put the effort in yourself.</dd>
+          </div>
+          <div>
+            <dt>Motivation</dt>
+            <dd>0–100. Drops with failure or shame, rises with wins, however small.</dd>
+          </div>
+          <div>
+            <dt>Grades</dt>
+            <dd>Your standing in all three subjects, open to check at any time.</dd>
+          </div>
+        </dl>
+      </div>
+      <p class="table-caption" style="margin-top:-40px;margin-bottom:56px;"><b>Fig. 2.</b> The HUD, this quietly scrolls with the page, the same way it tracks you through the game.</p>
+
+      <div class="mechanics-grid">
+        <div>
+          <h3>Every graded moment is a fork.</h3>
+          <p class="wide">Some weeks play out as timed multiple-choice minigames, VLAN configs, Python debugging, subnetting, RA 10175 scenarios, pulled from real coursework, not invented trivia. At each one, you get a choice.</p>
+        </div>
+        <div class="choice-compare">
+          <div class="choice-row">
+            <div class="choice-tag">DO IT YOURSELF</div>
+            <p>Slower. Riskier, you can get it wrong. But it's the only path that <strong>grows</strong> Critical Thinking instead of spending it.</p>
+          </div>
+          <div class="choice-row ai">
+            <div class="choice-tag">ASK AI</div>
+            <p>Instant. Boosts the subject grade, drops Critical Thinking, and adds to a running AI-use count the game remembers <strong>until the very end.</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CAST / SUBJECTS ============ -->
+  <section class="section" id="cast">
+    <div class="wrap">
+      <div class="section-head" style="max-width:640px;">
+        <p class="section-kicker">The Cast</p>
+        <h2>Three subjects. Three professors. One you.</h2>
+        <p>Fall under 60 in any subject by finals, and it's marked <strong>INC</strong>, incomplete.</p>
+      </div>
+
+      <table class="subject-table">
+        <thead>
+          <tr><th>Professor</th><th>Subject</th><th>What's on the line</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="subj-name">Mr. Earns</td>
+            <td>Networking</td>
+            <td>Routing protocols, VLAN configuration, subnetting under a clock.</td>
+          </tr>
+          <tr>
+            <td class="subj-name">Mr. Kai</td>
+            <td>Programming</td>
+            <td>Python functions and debugging, code you have to be able to explain, not just submit.</td>
+          </tr>
+          <tr>
+            <td class="subj-name">Ms. Iva</td>
+            <td>Cybersecurity</td>
+            <td>RA 10173 / RA 10175, and citations that have to trace back to something real.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="cast-strip">
+        <div class="cast-chip"><b>Carl</b> or <b>Carly</b>, your best friend since day one</div>
+        <div class="cast-chip"><b>Kent</b>, the one who's already three chapters ahead</div>
+        <div class="cast-chip"><b>Gabby</b>, loud, warm, keeps the group together</div>
+        <div class="cast-chip"><b>Rey</b>, says the least. Means the most when he does.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREENS (real figures) ============ -->
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head" style="max-width:640px;">
+        <p class="section-kicker">From the Build</p>
+        <h2>What it actually looks like</h2>
+      </div>
+      <div class="figure-row">
+        <figure class="figure-item">
+          <img src="assets/images/screenshot0003.jpg" alt="Networking midterm minigame, subnetting question, Critical Thinking at 8/100" loading="lazy">
+          <figcaption class="figure-caption"><b>Fig. 3.</b> A subnetting question, phone locked away for the exam.</figcaption>
+        </figure>
+        <figure class="figure-item">
+          <img src="assets/images/screenshot0004.jpg" alt="VLAN configuration minigame with the Ask AI option visible" loading="lazy">
+          <figcaption class="figure-caption"><b>Fig. 4.</b> The "Ask AI" option is always right there, that's the point.</figcaption>
+        </figure>
+        <figure class="figure-item">
+          <img src="assets/images/bg_canteen.webp" alt="The canteen, a recurring setting for the game's group scenes" loading="lazy">
+          <figcaption class="figure-caption"><b>Fig. 5.</b> The canteen, where the group actually talks to each other.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ENDINGS ============ -->
+  <section class="section" id="endings">
+    <div class="wrap">
+      <div class="section-head" style="max-width:640px;">
+        <p class="section-kicker">Endings</p>
+        <h2>Your final Critical Thinking, Motivation, and AI-use count decide where you land.</h2>
+      </div>
+      <table class="endings-table">
+        <thead><tr><th>Ending</th><th>Roughly what it takes</th></tr></thead>
+        <tbody>
+          <tr class="caught">
+            <td class="ending-name">Caught</td>
+            <td class="ending-cond">Ms. Iva catches a hallucinated citation, an instant, separate ending, regardless of anything else.</td>
+          </tr>
+          <tr>
+            <td class="ending-name">Special Good</td>
+            <td class="ending-cond">All three grades ≥85, zero AI uses, Critical Thinking ≥75, did it entirely on your own, and did it well.</td>
+          </tr>
+          <tr>
+            <td class="ending-name">Good (Guilt)</td>
+            <td class="ending-cond">You passed everything, but leaned on AI more than 3 times and Critical Thinking fell below 55.</td>
+          </tr>
+          <tr>
+            <td class="ending-name">Good (Solid)</td>
+            <td class="ending-cond">You passed everything without tripping the guilt or special-good conditions.</td>
+          </tr>
+          <tr>
+            <td class="ending-name">Redemption</td>
+            <td class="ending-cond">At least one INC, but Critical Thinking and Motivation both held at ≥45, down, but not out.</td>
+          </tr>
+          <tr>
+            <td class="ending-name">Bad</td>
+            <td class="ending-cond">An INC, and Critical Thinking or Motivation fell below 45.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="table-caption"><b>Table 1.</b> Your final stats are shown to you at the end regardless of which ending you land on.</p>
+    </div>
+  </section>
+
+  <!-- ============ SETTINGS GALLERY ============ -->
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head" style="max-width:640px;">
+        <p class="section-kicker">Where It Happens</p>
+        <h2>Eight weeks, one campus</h2>
+      </div>
+      <div class="settings-strip">
+        <a href="#"><img src="assets/images/bg_campus_gate.webp" alt="Campus gate"><span>Campus Gate</span></a>
+        <a href="#"><img src="assets/images/bg_classroom.webp" alt="Classroom"><span>Classroom</span></a>
+        <a href="#"><img src="assets/images/bg_lab.webp" alt="Computer lab"><span>Computer Lab</span></a>
+        <a href="#"><img src="assets/images/bg_hallway.webp" alt="Hallway"><span>Hallway</span></a>
+        <a href="#"><img src="assets/images/bg_bedroom_night.webp" alt="Bedroom at night"><span>3 AM</span></a>
+        <a href="#"><img src="assets/images/bg_zoom.webp" alt="Laptop screen glow"><span>The Tab That's Always Open</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CANDOR / THE IRONY ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="candor-block">
+        <p class="section-kicker">The Humorous Irony of this project.</p>
+        <h2>A student used AI to help build a game about AI dependence. Isn't that the exact contradiction?</h2>
+        <p class="wide">No, and the distinction is the same one the game is trying to teach. The in-game penalty for using AI doesn't fire because AI was used. It fires when AI use replaces understanding, when the grade boost is collected without the debugging, the subnetting math, or the citation-checking ever actually happening in the player's own head.</p>
+        <p class="wide">Every fix across this project's build log started with "here's the root cause" before a single line changed. That's the difference between using a tool to move faster and using a tool to skip the part where you'd have learned something.</p>
+        <blockquote class="pull-quote">AI is not supposed to be a crutch, or cheat code, or something that replaces critical thinking. But every change must be embraced, in order not to be crushed under it. -Clarin, 2026</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NAMEPLATE QUOTE ============ -->
+  <section class="section tight">
+    <div class="wrap nameplate-quote">
+      <p>"Kailan nagiging crutch ang isang tool?"</p>
+      <div class="nameplate-attr"><span class="hairline"></span>Ms. Iva<span class="hairline"></span></div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section alt" id="faq">
+    <div class="wrap" style="max-width:760px;">
+      <div class="section-head">
+        <p class="section-kicker">FAQ</p>
+        <h2>Before you play</h2>
+      </div>
+
+      <div class="faq-item open">
+        <button class="faq-q">Do I need to know Filipino to play?<span class="plus"></span></button>
+        <div class="faq-a"><p>Mostly Taglish, a natural mix of Tagalog and English, the way most Filipino college students actually talk. If you understand casual Filipino conversation, you'll follow it fine.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do the minigames require real IT knowledge?<span class="plus"></span></button>
+        <div class="faq-a"><p>No prior knowledge needed to play through the story, but every question is pulled from real coursework (networking, Python, cybersecurity law), not invented trivia, so it holds up if you do know the subject.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Does choosing "Ask AI" ever lock me out of an ending?<span class="plus"></span></button>
+        <div class="faq-a"><p>Not directly, every choice keeps the story moving. But your AI-use count is remembered for the entire eight weeks, and it's one of the values that decides which of the six endings you land on.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is this free? Do I need to install anything?<span class="plus"></span></button>
+        <div class="faq-a"><p>Free, and it runs in your browser, no download. Built in Ren'Py and exported to WebAssembly.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How long does a playthrough take?<span class="plus"></span></button>
+        <div class="faq-a"><p>Roughly 60–90 minutes for one ending, start to finish. Six endings means it's worth a second look.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="cta-band">
+    <div class="wrap">
+      <h2>Eight weeks. One semester.<br>Do you know how much you actually lean on it?</h2>
+      <p class="wide" style="margin-left:auto;margin-right:auto;">Free, plays in any browser, no download required.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" data-open-play>▶ Play in Browser</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">A.I. na lang!</div>
+        <p style="margin:6px 0 0;max-width:40ch;">A BSIT capstone project, Mabalacat City College, Institute of Computing Studies, 2026.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#premise">Premise</a></li>
+        <li><a href="#endings">Endings</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <!-- GITHUB REPO LINK, replace # once repo is live -->
+        <li><a href="https://github.com/clarink03-cmd/-A.I.-na-lang-an-interactive-Visual-Novel" target="_blank" rel="noopener">Source on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ PLAY MODAL ============ -->
+<div class="play-modal" id="playModal">
+  <div class="play-modal-backdrop" data-close-play></div>
+  <div class="play-modal-body">
+    <button class="play-modal-close" data-close-play aria-label="Close">&times;</button>
+    <iframe id="gameFrame" title="A.I. na lang!, game" allow="autoplay"></iframe>
+    <div class="play-modal-fallback">Modal not loading? <a href="./game/web-build/index.html" target="_blank" rel="noopener">Open the game directly</a>.</div>
+  </div>
+</div>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>

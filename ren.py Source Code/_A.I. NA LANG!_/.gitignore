@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Ren'Py build output
+dist/
+build/
+tmp/
+log.txt
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary verification scripts
+verify.py
+makedirs.py
+
+# Temporary files
+*.swp
+*.swo
+
+# Local environments and generated Ren'Py files
+/.venv*/
+/game/cache/
+/game/saves/
+*.rpyc
+*.bak
+dialogue.tab
+dialogue.txt
+errors.txt
+traceback.txt

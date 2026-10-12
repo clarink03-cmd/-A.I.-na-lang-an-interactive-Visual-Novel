@@ -46,10 +46,12 @@ label chapter3_debug_q1:
 
 label chapter3_debug_q1_correct:
     narrator "(Tama! Bakit: hindi puwedeng pag-dugtungin ang string at int gamit ang '+' operator nang walang explicit conversion.)"
+    $ quiz_fb = None
     jump chapter3_debug_q2
 
 label chapter3_debug_q1_wrong:
     narrator "(Hindi 'yan. Mahigpit ang Python sa paghahalo ng data types gamit ang '+' operator. Hindi puwedeng sabayin ang string at integer.)"
+    $ quiz_fb = None
     jump chapter3_debug_q1
 
 ## ── Question 2: IndentationError ─────────────────────────────────────────────
@@ -74,10 +76,12 @@ label chapter3_debug_q2:
 
 label chapter3_debug_q2_correct:
     narrator "(Tama! Bakit: kailangang naka-indent ang 'print' statement pagkatapos ng 'if'. \nGinagamit ng Python ang indentation para i-define ang code blocks.)"
+    $ quiz_fb = None
     jump chapter3_debug_q3
 
 label chapter3_debug_q2_wrong:
     narrator "(Hindi 'yan. Tingnan ang linya pagkatapos ng 'if x > 0:', \ndapat naka-indent 'yon pero hindi. Mahalaga sa Python ang whitespace.)"
+    $ quiz_fb = None
     jump chapter3_debug_q2
 
 ## ── Question 3: NameError (undefined variable) ───────────────────────────────
@@ -102,10 +106,12 @@ label chapter3_debug_q3:
 
 label chapter3_debug_q3_correct:
     narrator "(Tama! Bakit: hindi pa na-define ang 'a' at 'b' bago gamitin. Nag-raraise ang Python ng NameError.)"
+    $ quiz_fb = None
     jump chapter3_debug_q4
 
 label chapter3_debug_q3_wrong:
     narrator "(Hindi 'yan. Ginagamit ang 'a' at 'b' nang hindi pa naibibigay ang value nila. \nHindi alam ng Python kung ano ang tinutukoy nila.)"
+    $ quiz_fb = None
     jump chapter3_debug_q3
 
 ## ── Question 4: IndexError (list out of range) ───────────────────────────────
@@ -130,10 +136,12 @@ label chapter3_debug_q4:
 
 label chapter3_debug_q4_correct:
     narrator "(Tama! Bakit: 0, 1, at 2 lang ang indices ng listahan. Wala sa index 3, kaya IndexError ang lalabas.)"
+    $ quiz_fb = None
     jump chapter3_debug_q5
 
 label chapter3_debug_q4_wrong:
     narrator "(Isipin muli. Zero-indexed ang mga listahan sa Python. \nAng listahan na may tatlong elemento ay may indices 0, 1, at 2 lang. Ano ang mangyayari sa index 3?)"
+    $ quiz_fb = None
     jump chapter3_debug_q4
 
 ## ── Question 5: SyntaxError (missing colon) ──────────────────────────────────
@@ -158,10 +166,12 @@ label chapter3_debug_q5:
 
 label chapter3_debug_q5_correct:
     narrator "(Tama! Bakit: bawat compound statement gaya ng 'if', 'for', \n'while' ay kailangan ng colon sa dulo ng condition line.)"
+    $ quiz_fb = None
     jump chapter3_debug_q6
 
 label chapter3_debug_q5_wrong:
     narrator "(Hindi 'yan. Tingnan ang linya ng 'if', may kulang sa dulo. \nInaasahan ng Python ang colon pagkatapos ng condition sa mga compound statement.)"
+    $ quiz_fb = None
     jump chapter3_debug_q5
 
 ## ── Question 6: print() with undefined names ──────────────────────────────
@@ -187,10 +197,12 @@ label chapter3_debug_q6:
 
 label chapter3_debug_q6_correct:
     narrator "(Tama! Bakit: walang quotes ang 'Hello, World!' kaya tinuturing itong \ninvalid na expression ng Python, hindi text. SyntaxError agad, hindi pa nga nag-run.)"
+    $ quiz_fb = None
     jump chapter3_debug_q7
 
 label chapter3_debug_q6_wrong:
     narrator "(Hindi 'yan. Walang quotation marks ang 'Hello, World!' dito, kaya hindi ito valid na string. \nHindi nga makaka-run ang code para magkaroon pa ng runtime error.)"
+    $ quiz_fb = None
     jump chapter3_debug_q6
 
 ## ── Question 7: Tuple Immutability ──────────────────────────────────────────
@@ -216,11 +228,13 @@ label chapter3_debug_q7:
 
 label chapter3_debug_q7_correct:
     narrator "(Tama! Bakit: immutable ang tuples sa Python. \nHindi mo mababago ang laman nito pagkatapos itong magawa, kahit ano pang laman ang element.)"
+    $ quiz_fb = None
     narrator "(Kumpleto na ang pitong bugs. Malamang, proud si Mr. Kai sa debugging skills mo ngayon.)"
     jump chapter3_post_minigame
 
 label chapter3_debug_q7_wrong:
     narrator "(Hindi 'yan. Immutable ang tuples, kahit anong laman meron ito. \nHindi ito depende sa bilang ng elemento o kung strings ba ang laman.)"
+    $ quiz_fb = None
     jump chapter3_debug_q7
 
 ## ── Return point after all 7 questions ───────────────────────────────────────
@@ -231,6 +245,7 @@ label chapter3_post_minigame:
     show mr_kai normal at left with dissolve
     mr_kai "Okay, time. Let's check the scoreboard."
     narrator "(Lumitaw ang mga pangalan sa screen. Nasa gitna ang sa'yo. \nHindi pinaka-mataas. Hindi rin pinaka-mababa.)"
+    show mr_kai thinking at left with quickfade
     mr_kai "Good progress, everyone. Pero gusto ko pa ring makita 'yung individual approach niyo. \nHindi lahat ng sagot ay oo o hindi, minsan mas mahalaga 'yung proseso."
     hide mr_kai with dissolve
 
@@ -248,9 +263,11 @@ label chapter3_post_minigame:
     rey "...Nakita ko yung submission ni Gabby."
     narrator "(Tahimik. Lahat tumingin kay Rey.)" with vpunch
     rey "Pareho ng sagot namin sa debugging activity. Word for word. Pero hindi tayo nag-usap."
+    show gabby stressed at right with quickfade
     gabby "Coincidence lang 'yan. Pareho naman ang bugs, pareho ang solusyon."
     rey "Hindi ko sinasabi na kinopya mo. \nSinasabi ko lang, parehong solusyon. Ganoon talaga kapag AI ang nagbigay ng sagot."
     kent "Urm, technically, valid observation 'yan tungkol sa AI output homogeneity,"
+    show gabby stressed at right, jitter
     gabby "Okay, sige, patunayan mo."
     hide gabby with dissolve
 
@@ -278,8 +295,10 @@ label chapter3_post_minigame:
             else:
                 mc_f "Sarili ko. May mga parts na kinailangan ko ng tulong mula sa notes, pero sarili ko."
             if player_bestfriend == "carl":
+                show carl happy at right with quickfade
                 carl "(huminga sya ng malalim) Okay. Good."
             else:
+                show carly happy at right with quickfade
                 carly "(ngumiti) Sige. Ganoon talaga dapat."
             if player_gender == "male":
                 mc_m "(Nag-move on ang grupo. Pero sa isip ko, sigurado ba talaga ako?)"
@@ -309,8 +328,10 @@ label chapter3_post_minigame:
             else:
                 mc_f "Huwag mo nalang alamin."
             if player_bestfriend == "carl":
+                show carl stressed at right with quickfade
                 carl "...Sige."
             else:
+                show carly stressed at right with quickfade
                 carly "...Okay."
             if player_gender == "male":
                 mc_m "(Binalewala ko siya. Pero hindi siya tumitigil sa pagmasid sa akin.)"

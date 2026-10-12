@@ -50,24 +50,30 @@ label chapter5:
         show carly normal at left with dissolve
 
     if any_inc:
+        show gabby stressed at right with quickfade
         gabby "Huy, okay ka lang ba? Medyo tahimik ka ah..."
         if player_gender == "male":
             mc_m "(Tahimik lang...)"
         else:
             mc_f "(Habang tinitingnan ko ang papel, lumuluha ako nang hindi ko namamalayan.)"
         if player_bestfriend == "carl":
+            show carl stressed at left with quickfade
             carl "(mababa) Uy. Kaya pa ba."
         else:
+            show carly stressed at left with quickfade
             carly "(mababa) Hey. Huwag muna mag-isip ng masama."
         if player_gender == "male":
             mc_m "(Tumango ako, kahit hindi ko sinadya. Alam kong hindi ako okay. \nPero kung sasabihin ko nang malakas, magiging totoo talaga.)"
         else:
             mc_f "(Tumango ako, kahit hindi ko sinadya. Alam kong hindi ako okay. \nPero kung sasabihin ko nang malakas, magiging totoo talaga.)"
     else:
+        show gabby happy at right, hop
         gabby "Ay, okay naman! Ako rin, okay rin!"
         if player_bestfriend == "carl":
+            show carl happy at left with quickfade
             carl "Oo naman. Kaya pa natin."
         else:
+            show carly happy at left with quickfade
             carly "Maganda ang midterm scores! Next step, finals."
         if player_gender == "male":
             mc_m "(May relief. Pero may maliit na tinig din sa isip ko na nagtatanong \nkung natuto ba talaga ako ng kahit ano. \nMaganda ang grades, pero paano ang aking natutunan?)"
@@ -111,8 +117,10 @@ label chapter5:
     kent "Wala akong balak mag-expose ng kahit sino. Nandito ako dahil may finals pa tayo. \nAt completion exams para sa mga kakailanganin nito."
 
     if player_bestfriend == "carl":
+        show carl stressed at right with quickfade
         carl "Kent, personal 'yung grades,"
     else:
+        show carly stressed at right with quickfade
         carly "Kent, personal 'yung grades,"
 
     kent "Alam ko. Hindi ko hinihingi na i-share ninyo ang scores niyo. \nTinatanong ko lang kung pwede tayong mag-aral together. \nMay compiled notes na ako sa tatlong subjects. Pwede tayong mag-review. Mag-testahan. No AI, discussion lang."
@@ -136,6 +144,7 @@ label chapter5:
                 mc_m "Oo. Kailangan ko ng tulong. Sineseryoso ko 'to."
             else:
                 mc_f "Sige. Oo. Kailangan ko ng help, at aaminin ko 'yun."
+            show kent happy at center with quickfade
             kent "(ngumiti nang bihira) Good. Saturday, 9 AM. Library. I'll save you a seat."
             if player_gender == "male":
                 mc_m "(May bumago sa mesa. Maliit lang. Pero naramdaman ko.)"
@@ -156,6 +165,7 @@ label chapter5:
                 mc_f "...May paraan naman ako. Mag-o-organize ng AI reviewer."
             kent "(naging seryoso) Hindi problema ang AI reviewer. \nAng problema, kung hindi mo mabasa ang mga sagot niya nang may pag-unawa. May nakita akong AI-generated notes na parang tama, pero may buong concepts na nawawala."
             $ use_ai(None, 0)
+            $ ai_use_count += 1
             if player_gender == "male":
                 mc_m "(Alam kong tama siya. Pero nariyan na 'yung habit, \nkomportable, madali. At mahirap sirain ang mga habit.)"
             else:
@@ -178,7 +188,7 @@ label chapter5:
                 mc_f "(Hindi ako sumagot. Kasi ano naman ang masasabi ko? Tama siya.)"
                 mc_f "(Tumuloy ang usapan nang wala ako. At hinayaan ko na lang.)"
 
-    show gabby normal at right with dissolve
+    show gabby normal at rightish with dissolve
     gabby "Okay, kahit ano man ang mapagdesisyunan natin, \ndalawang linggo na lang ang finals. Wag na tayong magpanggap na forever pa tayo."
     rey "Tama si Gabby. Hindi naghihintay ang deadline para sa kahit sino."
     hide gabby with dissolve
@@ -210,6 +220,7 @@ label chapter5:
     ms_iva "Maging malinaw tayo. Kayang-kaya kong makilala kung sino ang nagbasa mismo ng aktwal na teksto ng batas. \nIba ang pagkakasulat. Iba ang daloy ng lohika. \nAng AI-generated citations, malinis ang tunog, pero kulang sa texture ng tunay na pag-unawa ng tao."
     ms_iva "Ni-cite ng estudyanteng 'to ang RA 10173 Section 4 at nag-quote ng definition na hindi umiiral sa aktwal na batas. \nGinawa-gawa 'yun ng AI. At isinumite ng estudyante nang hindi na-check."
     ms_iva "Matulog nang mahusay. Mag-aral nang mahusay. \nGisingin ang sarili ninyong utak bago ninyo hilingin sa isang makina, na mag-isip para sa inyo."
+    show ms_iva normal at center with quickfade
     ms_iva "(mas mahinahon) ...Hindi ko 'to ginagawa para hulihin kayo. \nGinagawa ko 'to dahil balang araw, wala nang ibang titingin sa gawa ninyo bago ninyo ito ipasa. Only you guys will know it before the submission. Gusto ko lang kayong maging handa."
     if player_gender == "male":
         mc_m "(Tahimik ang silid habang lumalabas siya. \nNaiwan ako sa notes ko, sa konsensya ko, at dalawang linggo na lang bago ang finals.)"

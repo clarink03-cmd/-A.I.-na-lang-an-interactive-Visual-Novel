@@ -38,7 +38,6 @@ init python:
             store.cyber_grade = max(0, min(100, store.cyber_grade + delta))
 
     def use_ai(subject=None, grade_boost=8):
-        store.ai_use_count += 1
         ct_change(-10)
         if subject:
             grade_change(subject, grade_boost)
@@ -76,7 +75,7 @@ init python:
                 return "ending_bad"
         if all_high and ai == 0 and ct >= 75:
             return "ending_special_good"
-        if all_pass and ai > 3 and ct < 55:
+        if all_pass and (ai > 3 or ct < 55):
             return "ending_good_guilt"
         if all_pass:
             return "ending_good_solid"

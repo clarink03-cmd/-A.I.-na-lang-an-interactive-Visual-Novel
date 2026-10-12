@@ -96,7 +96,7 @@ label chapter2_effort_route:
         hide carl with dissolve
     else:
         show carly normal at right with moveinright
-        carly "(text) how's the activity going? msg me if you're stuck"
+        carly "(text) how's the activity going? message me if you're stuck"
         hide carly with dissolve
 
     if player_gender == "male":
@@ -130,10 +130,12 @@ label chapter2_effort_q1:
 
 label chapter2_effort_q1_correct:
     sys_voice "(Tama! Bakit: 'switchport mode access' ang nagtatakda ng port bilang access port\n bago i-assign sa isang VLAN gamit ang 'switchport access vlan 10'.)"
+    $ quiz_fb = None
     jump chapter2_effort_q2
 
 label chapter2_effort_q1_wrong:
     sys_voice "(Mali ang syntax. Sa interface config mode ng Cisco switch, \nkailangan mo munang i-set ang port sa access mode, bago i-assign sa specific VLAN.)"
+    $ quiz_fb = None
     jump chapter2_effort_q1
 
 ## ── ROUTE A, Question 2: Trunk Port Configuration ──────────────────────────
@@ -159,10 +161,12 @@ label chapter2_effort_q2:
 
 label chapter2_effort_q2_correct:
     sys_voice "(Tama! Bakit: 'switchport mode trunk' ang nagbubukas ng trunk mode, \ntapos 'switchport trunk allowed vlan' ang nagsasabi kung aling VLANs ang pwedeng dumaan.)"
+    $ quiz_fb = None
     jump chapter2_effort_q3
 
 label chapter2_effort_q2_wrong:
     sys_voice "(Hindi tama. Sa Cisco switch, ang pag-set ng port sa trunk mode ay ginagawa gamit ang 'switchport mode trunk', \ntapos ise-specify kung aling mga VLAN ang pwedeng dumaan dito.)"
+    $ quiz_fb = None
     jump chapter2_effort_q2
 
 ## ── ROUTE A, Question 3: Creating a VLAN ────────────────────────────────────
@@ -188,10 +192,12 @@ label chapter2_effort_q3:
 
 label chapter2_effort_q3_correct:
     sys_voice "(Tama! Bakit: VLANs are created in global config mode, 'vlan <id>' first, then 'name' to label it, hindi sa interface o vlan database mode.)"
+    $ quiz_fb = None
     jump chapter2_effort_q4
 
 label chapter2_effort_q3_wrong:
     sys_voice "(Hindi tama. Sa Cisco switch, ginagawa ang mga VLAN sa global configuration mode. \nUna, 'configure terminal', tapos ang command na 'vlan' na sinusundan ng VLAN number, tapos 'name' para i-label.)"
+    $ quiz_fb = None
     jump chapter2_effort_q3
 
 ## ── ROUTE A, Question 4: Verifying VLAN Configuration ──────────────────────
@@ -217,10 +223,12 @@ label chapter2_effort_q4:
 
 label chapter2_effort_q4_correct:
     sys_voice "(Tama! Bakit: 'show vlan brief' ang standard verification command, nagbibigay ito ng maikling summary ng VLANs at port assignments.)"
+    $ quiz_fb = None
     jump chapter2_effort_q5
 
 label chapter2_effort_q4_wrong:
     sys_voice "(May specific na 'show' command na nagbibigay ng maikling summary ng mga VLAN at ang port assignments nila. \nHint: isa 'yan sa pinaka-common na CCNA verification commands.)"
+    $ quiz_fb = None
     jump chapter2_effort_q4
 
 ## ── ROUTE A, Question 5: Native VLAN ────────────────────────────────────────
@@ -246,10 +254,12 @@ label chapter2_effort_q5:
 
 label chapter2_effort_q5_correct:
     sys_voice "(Tama! Bakit: VLAN 1 ang default native VLAN sa lahat ng Cisco switch. \nKilalang security risk ang pag-iwan nito as-is, kaya dapat baguhin sa unused VLAN.)"
+    $ quiz_fb = None
     jump chapter2_effort_q6
 
 label chapter2_effort_q5_wrong:
     sys_voice "(Isipin ang default VLAN na existing sa bawat Cisco switch. \nAng hindi pagbabago nito sa trunk ports ay kilalang security risk sa CCNA.)"
+    $ quiz_fb = None
     jump chapter2_effort_q5
 
 ## ── ROUTE A, Question 6: Removing a Single VLAN ─────────────────────────────
@@ -275,10 +285,12 @@ label chapter2_effort_q6:
 
 label chapter2_effort_q6_correct:
     sys_voice "(Tama! Bakit: 'no vlan 100' sa global config mode ang tanging command \nna talagang bubura ng VLAN 100 mismo, hindi lang tatanggalin sa isang port o trunk.)"
+    $ quiz_fb = None
     jump chapter2_effort_q7
 
 label chapter2_effort_q6_wrong:
     sys_voice "('delete flash:vlan.dat' ay bubura ng LAHAT ng VLAN, hindi lang isa. \n'no switchport access/trunk allowed vlan' ay tatanggal lang ng VLAN sa isang interface o trunk, hindi buburahin ang VLAN mismo. Ang 'no vlan <id>' sa global config mode ang siyang bubura ng VLAN talaga.)"
+    $ quiz_fb = None
     jump chapter2_effort_q6
 
 ## ── ROUTE A, Question 7: Store-and-Forward vs Cut-Through ───────────────────
@@ -304,6 +316,7 @@ label chapter2_effort_q7:
 
 label chapter2_effort_q7_correct:
     sys_voice "(Tama! Bakit: store-and-forward switching checks the frame's \nFCS value for errors BEFORE forwarding it. Cut-through skips this check para bumilis.)"
+    $ quiz_fb = None
     if player_gender == "male":
         mc_m "(Isinara ang terminal. Naka-save na ang topology. Bago matulog, sinilip ko ulit ang oras. Bago pa mag-hatinggabi.)"
         mc_m "(May katuwaan dito na hindi ko inaasahan. 'Yung galing sa sarili kong pag-unawa.)"
@@ -316,6 +329,7 @@ label chapter2_effort_q7_correct:
 
 label chapter2_effort_q7_wrong:
     sys_voice "(Hindi 'yan ang isa na nagche-check ng error bago mag-forward. \n'Cut-through' ay bumibilis nga, pero hindi nag-che-check ng frame check sequence bago i-forward. Alin ang siyang gumagawa ng full error check?)"
+    $ quiz_fb = None
     jump chapter2_effort_q7
 
 ## ── ROUTE B: AI Route ────────────────────────────────────────────────────────
@@ -358,6 +372,7 @@ label chapter2_scene3:
         mc_m "(Tumayo siya sa harap ng klase, hawak ang isang printout. Parang may dalang death note.)"
     else:
         mc_f "(Tumayo siya sa harap ng klase, hawak ang isang printout. Parang may dalang death note.)"
+    show mr_earns disappointed at center with quickfade
     mr_earns "May dalawang topology na may parehong interface numbering error. Pareho. Hindi nagkataon."
     if player_gender == "male":
         mc_m "(Ramdam ko ang biglaang init sa leeg ko.)" with vpunch
@@ -372,6 +387,7 @@ label chapter2_scene3:
     else:
         mc_f "(Hindi siya tumingin sa akin. Pero naramdaman ko. Lahat naramdaman.)"
         mc_f "(May bumubulong sa likod. Hindi ko sigurado kung si Gabby o si Kent o ang sarili kong konsensya.)"
+    show mr_earns normal at center with quickfade
     mr_earns "Next topic. Subnetting."
     if player_gender == "male":
         mc_m "(Huminto siya. Tumingin sa buong klase — hindi biro 'yung tingin niya.)"
@@ -410,6 +426,7 @@ label chapter2_scene3:
             mc_m "...Sige na. Subnetting pa."
         else:
             mc_f "...Next topic na lang. Subnetting."
+        show carl normal at right with quickfade
         carl "(tapik sa balikat) Oo. Sige. Text mo ako kung gusto mo ng tulong. Totoong tulong."
         hide carl with dissolve
     else:
@@ -429,6 +446,7 @@ label chapter2_scene3:
             mc_m "...Gusto mo bang sabihin kay Kent na mag-focus na lang sa sarili niyang grades?"
         else:
             mc_f "...Pwedeng sabihin kay Kent na mag-aral na lang siya ng sarili niya?"
+        show carly happy at right with quickfade
         carly "(tawa) Oo nga 'no. Sige, subnetting na tayo. Pero totoo, kung kailangan mo ng tulong, nandito lang ako. 'Yung totoong tulong ha."
         hide carly with dissolve
 

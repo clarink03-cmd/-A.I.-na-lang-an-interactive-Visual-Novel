@@ -61,9 +61,9 @@ translate english chapter8_ff6ea2a5:
     mc_f "Yeah. I'm taking this seriously now. Too late to back down."
 
 # game/chapter8.rpy:35
-translate english chapter8_7e2f5881:
+translate english chapter8_c37b78b9:
 
-    # carly "Heto, dalawa kang kape. Isa para ngayon, isa para in between exams."
+    # carly "Heto, dalawang kape. Isa para ngayon, isa para in between exams."
     carly "Here, two coffees for you. One for now, one for between exams."
 
 # game/chapter8.rpy:37
@@ -277,9 +277,9 @@ translate english chapter8_essay_bfb6061a:
     mc_m "(I started writing. Not fast. Not perfect. But every word, mine.)"
 
 # game/chapter8.rpy:203
-translate english chapter8_essay_09d52a0d:
+translate english chapter8_essay_3d14e66b:
 
-    # mc_m "(RA 10173, Section 3. Ang kahulugan ng personal information. Tama ang section number, kasi bina-verify ko.)"
+    # mc_m "(RA 10173, Section 3. Ang kahulugan ng personal information. Tama ang section number, kasi vinerify ko.)"
     mc_m "(RA 10173, Section 3. The definition of personal information. The section number's correct, because I verified it.)"
 
 # game/chapter8.rpy:204
@@ -313,9 +313,9 @@ translate english chapter8_essay_fcb60708:
     mc_f "(I started writing. Not fast. Not perfect. But every word, mine.)"
 
 # game/chapter8.rpy:210
-translate english chapter8_essay_63ccac4c:
+translate english chapter8_essay_37330015:
 
-    # mc_f "(RA 10173, Section 3. Ang kahulugan ng personal information. Tama ang section number, kasi bina-verify ko.)"
+    # mc_f "(RA 10173, Section 3. Ang kahulugan ng personal information. Tama ang section number, kasi vinerify ko.)"
     mc_f "(RA 10173, Section 3. The definition of personal information. The section number's correct, because I verified it.)"
 
 # game/chapter8.rpy:211
@@ -409,9 +409,9 @@ translate english chapter8_essay_42fd5c6c:
     mc_m "Yeah. On my own. I even verified every citation."
 
 # game/chapter8.rpy:251
-translate english chapter8_essay_73a3b556:
+translate english chapter8_essay_d76d0187:
 
-    # mc_f "Oo. Sarili kong salita. Lahat bina-verify ko."
+    # mc_f "Oo. Sarili kong salita. Lahat vinerify ko."
     mc_f "Yeah. My own words. I verified everything."
 
 # game/chapter8.rpy:252

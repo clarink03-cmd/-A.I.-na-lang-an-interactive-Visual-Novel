@@ -147,10 +147,12 @@ label chapter4_subnet_q1:
 
 label chapter4_subnet_q1_correct:
     sys_voice "(Tama! Bakit: 6 host bits ang /26. 2^6 = 64, tanggalin ang network at broadcast = 62 usable.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q2
 
 label chapter4_subnet_q1_wrong:
     sys_voice "(Hindi 'yan. Ang /26 prefix ay nag-iiwan ng 6 host bits. \nI-compute mo ang 2^6, tapos bawasan ng 2 para sa network at broadcast address.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q1
 
 ## ── Question 2: Subnet Mask ──────────────────────────────────────────────────
@@ -175,10 +177,12 @@ label chapter4_subnet_q2:
 
 label chapter4_subnet_q2_correct:
     sys_voice "(Tama! Bakit: 24 bits = 255.255.255, dagdag pa ng 4 bits = 240. Kaya ang /28 ay 255.255.255.240, may natitirang 4 host bits.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q3
 
 label chapter4_subnet_q2_wrong:
     sys_voice "(Isipin sa binary. Ang /28 ay nangangahulugang unang 28 bits ay network bits. 24 bits = 255.255.255, tapos 4 pang bits = 240.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q2
 
 ## ── Question 3: Number of Subnets ────────────────────────────────────────────
@@ -203,10 +207,12 @@ label chapter4_subnet_q3:
 
 label chapter4_subnet_q3_correct:
     sys_voice "(Tama! Bakit: ang pag-hiram ng 2 bits mula /24 ay nagbibigay ng /26, gumagawa ng 4 subnets (2^2), 62 usable hosts bawat isa.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q4
 
 label chapter4_subnet_q3_wrong:
     sys_voice "(Para gumawa ng 4 subnets, kailangan mo ng sapat na bits. \n2 bits = 4 subnets. Mula /24, ang paghiram ng 2 ay nagbibigay ng /26.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q3
 
 ## ── Question 4: Broadcast Address ────────────────────────────────────────────
@@ -231,10 +237,12 @@ label chapter4_subnet_q4:
 
 label chapter4_subnet_q4_correct:
     sys_voice "(Tama! Bakit: /20 = 255.255.240.0, block size na 16 bawat subnet. \nNagsisimula sa 172.16.32.0 ang subnet 3, kaya 172.16.47.255 ang broadcast.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q5
 
 label chapter4_subnet_q4_wrong:
     sys_voice "(Sa /20 mask, 16 ang block size sa third octet. \nSubnet 0 = 172.16.0.0, Subnet 1 = .16.0, Subnet 2 = .32.0. Ang broadcast ay 'yung susunod na subnet, minus 1.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q4
 
 ## ── Question 5: Wildcard Mask ────────────────────────────────────────────────
@@ -259,10 +267,12 @@ label chapter4_subnet_q5:
 
 label chapter4_subnet_q5_correct:
     sys_voice "(Tama! Bakit: /27 = 255.255.255.224. Ang wildcard ay inverse ng mask = 0.0.0.31.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q6
 
 label chapter4_subnet_q5_wrong:
     sys_voice "(Ang wildcard mask ay inverse ng subnet mask. \nPara sa /27 = 255.255.255.224. Bawasan ang 255 sa bawat octet.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q5
 
 ## ── Question 6: BOOT Environment Variable ────────────────────────────────────
@@ -288,10 +298,12 @@ label chapter4_subnet_q6:
 
 label chapter4_subnet_q6_correct:
     sys_voice "(Tama! Bakit: 'boot system' ang command na nagse-set ng BOOT environment variable.\n Ang config-register/confreg ay para sa configuration register, hindi para dito.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q7
 
 label chapter4_subnet_q6_wrong:
     sys_voice "(Hindi 'yan. Ang 'boot system' ang command na nagta-take charge ng BOOT environment variable.\n 'config-register' at 'confreg' ay para sa ibang bagay, ang configuration register.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q6
 
 ## ── Question 7: Remote Access Security Protocol ──────────────────────────────
@@ -317,6 +329,7 @@ label chapter4_subnet_q7:
 
 label chapter4_subnet_q7_correct:
     sys_voice "(Tama! Bakit: SSH ang nagbibigay ng secure na connection papuntang remote device.\n Ang HTTP ay para sa web pages, FTP ay para sa file transfer, POP naman ay para mag-download ng email.)"
+    $ quiz_fb = None
     if player_gender == "male":
         mc_m "(Pumapayat na ang oras. Binaliktad ko ang papel. Deep breath. Isa pa.)"
         mc_m "(Hindi ako sigurado sa lahat ng sagot ko. Pero sinubukan ko. Walang AI. Walang phone. Ako lang at ang natutunan ko.)"
@@ -327,6 +340,7 @@ label chapter4_subnet_q7_correct:
 
 label chapter4_subnet_q7_wrong:
     sys_voice "(Hindi 'yan. Ang SSH lang ang nagbibigay ng encrypted, \nsecure na koneksyon papunta sa isang remote device. Ang iba dito ay plaintext o para sa ibang gamit.)"
+    $ quiz_fb = None
     jump chapter4_subnet_q7
 
 ## ── Exam completion ──────────────────────────────────────────────────────────
@@ -339,6 +353,7 @@ label chapter4_exam_done:
 
     show mr_earns normal at center with dissolve
     mr_earns "Pens down. Pass your papers forward."
+    show mr_earns thinking at center with quickfade
     mr_earns "...Mas mabilis kayong tumapos ngayong term kumpara sa nakaraan. Palagay ko, may nag-aaral."
     hide mr_earns with dissolve
 
@@ -349,6 +364,7 @@ label chapter4_exam_done:
             mc_m "Okay lang. 'Yung subnetting... hindi ko sure."
         else:
             mc_f "Ewan. Sagot ko sa subnetting, 62. Tama ba?"
+        show carl happy at right with quickfade
         carl "Ako rin. Tama 'yun. Sixty-two."
         hide carl with dissolve
     else:
@@ -358,6 +374,7 @@ label chapter4_exam_done:
             mc_m "Siguro. Yung isa o dalawa hindi ko sure."
         else:
             mc_f "Ewan, pero yung subnetting sagot ko ay sixty-two. Tama?"
+        show carly happy at right with quickfade
         carly "Sixty-two rin sagot ko! Sana tama."
         hide carly with dissolve
 

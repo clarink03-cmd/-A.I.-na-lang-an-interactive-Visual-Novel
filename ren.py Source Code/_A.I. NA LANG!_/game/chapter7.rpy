@@ -53,12 +53,14 @@ label chapter7:
 
     show rey normal at left with dissolve
     rey "..."
+    show rey happy at left with quickfade
     narrator "(Tiningnan ka ni Rey. May bahagyang ngiti, bihira para sa kanya.)"
     rey "Hindi ka ganito dati. Sa lab activities noon."
     if player_gender == "male":
         mc_m "Tinatamad lang ako dati."
     else:
         mc_f "...Oo. Tinatamad lang talaga."
+    show rey normal at left with quickfade
     rey "Hindi tinatamad. Takot. May pagkakaiba."
     if player_gender == "male":
         mc_m "(Tumingin ako sa kanya. Wala akong nasabi. Wala akong itinanggi.)"
@@ -73,11 +75,15 @@ label chapter7:
         hide carly with dissolve
 
     ## Gabby arrives late
-    show gabby normal at right with hpunch
+    show gabby happy at right with hpunch
     gabby "Uy! Nandito na! Sorry late, nalaro ko ng konti,"
     show kent normal at center with dissolve
     kent "(bumabalik) Gabby. Sit down. Cybersecurity na tayo."
+    show gabby stressed at right with quickfade
     gabby "(tahimik na umupo) Sige na, sige na."
+
+    ## RA 8293 (copyright) review with Kent, then the quiz
+    call copyright_review
 
     ## ── SCENE 7-2: Evening, Programming review ──────────────────────────────
     scene bg_canteen with dissolve
@@ -99,6 +105,7 @@ label chapter7:
     kent "Bukas, Programming review. May coding output required ang finals ni Mr. Kai. Walang AI."
     gabby "Alam ko na 'yun, Kent."
     kent "Sinasabi ko para sa lahat."
+    show rey normal at leftish with dissolve
     rey "...Kasama ka ba bukas?"
 
     ## CHOICE 7-A: Finals eve decision
@@ -110,6 +117,7 @@ label chapter7:
                 mc_m "Nandito. Promise. Sineseryoso ko na 'to."
             else:
                 mc_f "Nandito. Wala na akong excuse. Sineseryoso ko ito."
+            show kent happy at center with quickfade
             narrator "(Ngumiti si Kent nang bihira. Tumango si Rey.)"
             $ grade_change("programming", 8)
             $ grade_change("networking", 5)

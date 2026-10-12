@@ -15,3 +15,6 @@ Thumbs.db
 *~
 .sublime-workspace
 .sublime-project
+
+# Duplicate Ren'Py release export
+/ren.py Source Code/AInaLang-v1.3-dists/

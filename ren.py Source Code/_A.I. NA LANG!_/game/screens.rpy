@@ -131,11 +131,11 @@ screen hud():
 
             _dl = day_label.lower()
             if "gabi" in _dl:
-                _day_color = "#4A5578"   # night
+                _day_color = cb("night")   # night
             elif "umaga" in _dl or "tanghali" in _dl or "hapon" in _dl:
-                _day_color = "#E0A836"   # day
+                _day_color = cb("day")   # day
             else:
-                _day_color = "#C41230"   # special / event day (exam, submission, etc.)
+                _day_color = cb("special")   # special / event day (exam, submission, etc.)
 
         vbox:
             xfill True
@@ -184,17 +184,13 @@ screen hud():
                             padding (18, 10)
                             vbox:
                                 spacing 6
-                                text "CRITICAL THINKING" size 17 color "#C41230" bold True
+                                text (("CRITICAL THINKING  " + str(critical_thinking) + "/100") if cb_on() else "CRITICAL THINKING") size 17 color "#C41230" bold True
                                 hbox:
                                     spacing 4
                                     for i in range(10):
                                         python:
                                             filled = (critical_thinking // 10) > i
-                                            if   i < 2: seg_color = "#b91c1c" if filled else "#E3DBD2"
-                                            elif i < 4: seg_color = "#b45309" if filled else "#E3DBD2"
-                                            elif i < 6: seg_color = "#854d0e" if filled else "#E3DBD2"
-                                            elif i < 8: seg_color = "#166534" if filled else "#E3DBD2"
-                                            else:       seg_color = "#15803d" if filled else "#E3DBD2"
+                                            seg_color = cb_ct_seg(i, filled)
                                         frame:
                                             xsize 44
                                             ysize 18
@@ -214,14 +210,14 @@ screen hud():
                                 hbox:
                                     spacing 8
                                     yalign 0.5
-                                    text "♥" size 28 color "#f43f5e" yalign 0.5
-                                    text "MOTIVATION" size 17 color "#C41230" bold True yalign 0.5
+                                    text "♥" size 28 color cb("motivation") yalign 0.5
+                                    text (("MOTIVATION  " + str(motivation) + "/100") if cb_on() else "MOTIVATION") size 17 color "#C41230" bold True yalign 0.5
                                 bar:
                                     value motivation
                                     range 100
                                     xsize 200
                                     ysize 18
-                                    left_bar  Solid("#f43f5e")
+                                    left_bar  Solid(cb("motivation"))
                                     right_bar Solid("#B8AFA6")
 
                         null width True
@@ -269,17 +265,13 @@ screen hud():
                             padding (18, 10)
                             vbox:
                                 spacing 6
-                                text "CRITICAL THINKING" size 17 color "#C41230" bold True
+                                text (("CRITICAL THINKING  " + str(critical_thinking) + "/100") if cb_on() else "CRITICAL THINKING") size 17 color "#C41230" bold True
                                 hbox:
                                     spacing 4
                                     for i in range(10):
                                         python:
                                             filled = (critical_thinking // 10) > i
-                                            if   i < 2: seg_color = "#b91c1c" if filled else "#E3DBD2"
-                                            elif i < 4: seg_color = "#b45309" if filled else "#E3DBD2"
-                                            elif i < 6: seg_color = "#854d0e" if filled else "#E3DBD2"
-                                            elif i < 8: seg_color = "#166534" if filled else "#E3DBD2"
-                                            else:       seg_color = "#15803d" if filled else "#E3DBD2"
+                                            seg_color = cb_ct_seg(i, filled)
                                         frame:
                                             xsize 44
                                             ysize 18
@@ -299,14 +291,14 @@ screen hud():
                                 hbox:
                                     spacing 8
                                     yalign 0.5
-                                    text "♥" size 28 color "#f43f5e" yalign 0.5
-                                    text "MOTIVATION" size 17 color "#C41230" bold True yalign 0.5
+                                    text "♥" size 28 color cb("motivation") yalign 0.5
+                                    text (("MOTIVATION  " + str(motivation) + "/100") if cb_on() else "MOTIVATION") size 17 color "#C41230" bold True yalign 0.5
                                 bar:
                                     value motivation
                                     range 100
                                     xsize 200
                                     ysize 18
-                                    left_bar  Solid("#f43f5e")
+                                    left_bar  Solid(cb("motivation"))
                                     right_bar Solid("#B8AFA6")
 
                         null width True
@@ -515,7 +507,7 @@ screen phone_ai_overlay():
                 xfill True
                 ysize 80
                 background Solid("#F3EFEA")
-                text_color "#7ee787"
+                text_color cb("ai_text")
                 text_size 30
                 text_xalign 0.5
                 text_yalign 0.5
@@ -794,10 +786,72 @@ screen chapter_title(chapter_num, chapter_name, subtitle):
         yfill True
         action Return()
         background None
+## ── QUIZ CARD (redesigned for the defense build) ───────────────────────────
+## Same behaviour as before (same arguments, same labels, shuffled answers,
+## AI shortcut). New: category chip, topic, progress bar, CT meter, question
+## number, hover motion, a Hint button for non-IT players, and a one-time tip.
+## NOTE: _() only MARKS a string; tr() (ui_polish.rpy) translates immediately,
+## which is needed whenever a string is joined to another or edited before display.
+default quiz_tip_seen = False
+
+transform quiz_card_in:
+    alpha 0.0 yoffset 26
+    easeout 0.28 alpha 1.0 yoffset 0
+
+transform quiz_option_hover:
+    on idle:
+        easein 0.12 xoffset 0
+    on hover:
+        easeout 0.12 xoffset 10
+
+screen quiz_hint_popup(hint_text):
+    modal True
+    zorder 190
+
+    frame:
+        xfill True
+        yfill True
+        background Solid("#14110F99")
+
+    frame:
+        at quiz_card_in
+        xalign 0.5
+        yalign 0.5
+        xsize 960
+        background Solid("#FAF7F3")
+        padding (0, 0)
+
+        vbox:
+            xfill True
+            frame:
+                xfill True
+                ysize 8
+                background Solid("#0072B2")
+            vbox:
+                xalign 0.5
+                xsize 880
+                spacing 18
+                null height 22
+                text "HINT" size 34 color "#005A9C" bold True
+                text hint_text size 30 color "#2B2624"
+                text tr("Ito ay paliwanag ng ideya, hindi ng sagot.") size 20 color "#6B6259"
+                textbutton tr("Sige, balik sa tanong"):
+                    action Hide("quiz_hint_popup")
+                    xalign 0.5
+                    xsize 360
+                    ysize 64
+                    background Solid("#005A9C")
+                    hover_background Solid("#003F6E")
+                    text_color "#FFFFFF"
+                    text_size 26
+                    text_xalign 0.5
+                    text_yalign 0.5
+                null height 24
+
 screen minigame(title, question, options, correct_idx, subject, ct_reward=8, grade_reward=10, correct_label="minigame_correct", wrong_label="minigame_wrong"):
     modal True
     zorder 180
-    on "show" action [SetVariable("minigame_active", True), Function(stop_skipping)]
+    on "show" action [SetVariable("minigame_active", True), SetVariable("quiz_fb", None), Function(stop_skipping)]
     on "hide" action SetVariable("minigame_active", False)
 
     python:
@@ -806,6 +860,10 @@ screen minigame(title, question, options, correct_idx, subject, ct_reward=8, gra
         _btn_h  = 100 if _is_small else 78
         _txt_sz = 30  if _is_small else 26
         _q_sz   = 30  if _is_small else 28
+        _q_t, _explained = quiz_expand(tr(question))
+        _cat, _topic, _note, _qi, _qn = mg_parse_title(tr(title))
+        _accent = quiz_accent(subject)
+        _hint = quiz_hint(question)
 
     ## Dim backdrop
     frame:
@@ -813,9 +871,8 @@ screen minigame(title, question, options, correct_idx, subject, ct_reward=8, gra
         yfill True
         background Solid("#FAF7F3F2")
 
-        ## Card — sized ONLY by its own content. No viewport, no fixed
-        ## heights, no nested border frames. This cannot collapse to zero.
         frame:
+            at quiz_card_in
             xalign 0.5
             yalign 0.5
             xsize _card_w
@@ -826,31 +883,83 @@ screen minigame(title, question, options, correct_idx, subject, ct_reward=8, gra
                 xfill True
                 spacing 0
 
-                ## Top accent bar
+                ## Accent bar in the subject colour
                 frame:
                     xfill True
-                    ysize 6
-                    background Solid("#C41230")
+                    ysize 8
+                    background Solid(_accent)
 
-                ## Header
+                ## Header: category chip + topic on the left, CT meter on the right
                 frame:
                     xfill True
-                    ysize 64
+                    ysize 72
                     background Solid("#C41230")
                     padding (24, 0)
-                    hbox:
-                        yalign 0.5
-                        spacing 20
-                        text title size 30 color "#FFFFFF" bold True
-                        null width True
-                        text "CT [critical_thinking]/100" size 22 color "#F3EFEA" yalign 0.5
+                    fixed:
+                        hbox:
+                            yalign 0.5
+                            spacing 16
+                            frame:
+                                yalign 0.5
+                                background Solid("#2B2624")
+                                padding (14, 6)
+                                text _cat.upper() size 20 color "#FFFFFF" bold True
+                            text _topic size (24 if _is_small else 28) color "#FFFFFF" bold True yalign 0.5
+                        if not _is_small:
+                            vbox:
+                                xalign 1.0
+                                yalign 0.5
+                                spacing 4
+                                text "Critical Thinking [critical_thinking]/100" size 20 color "#F3EFEA" xalign 1.0
+                                bar:
+                                    value StaticValue(critical_thinking, 100)
+                                    xsize 150
+                                    ysize 8
+                                    thumb None
+                                    left_bar Solid("#FFFFFF")
+                                    right_bar Solid("#FFFFFF55")
 
-                ## Question
+                ## Progress segments (only when the title has a counter like (3/7))
+                if _qn > 0:
+                    frame:
+                        xfill True
+                        background Solid("#F3EFEA")
+                        padding (24, 10)
+                        hbox:
+                            spacing 8
+                            yalign 0.5
+                            text (str(_qi) + " / " + str(_qn)) size 20 color "#6B6259" yalign 0.5
+                            for _k in range(_qn):
+                                frame:
+                                    xsize (28 if _is_small else 44)
+                                    ysize 8
+                                    yalign 0.5
+                                    background Solid("#C41230" if _k < (_qi - 1) else (_accent if _k == (_qi - 1) else "#D9D0C6"))
+
+                ## Question (with the Hint button for non-IT players)
                 frame:
                     xfill True
                     background Solid("#FFFFFFAA")
                     padding (22, 20)
-                    text question size _q_sz color "#2B2624"
+                    vbox:
+                        spacing 8
+                        fixed:
+                            xfill True
+                            ysize 38
+                            text (tr("TANONG") + ((" " + str(_qi)) if _qi else "")) size 18 color "#C41230" bold True yalign 0.5
+                            if _hint:
+                                textbutton tr("Hint (para sa hindi IT)"):
+                                    action [SetVariable("quiz_tip_seen", True), Show("quiz_hint_popup", hint_text=_hint)]
+                                    xalign 1.0
+                                    yalign 0.5
+                                    background Solid("#E8EEF3")
+                                    hover_background Solid("#C8D8E6")
+                                    padding (16, 6)
+                                    text_color "#005A9C"
+                                    text_size 20
+                        text _q_t size _q_sz color "#2B2624"
+                        if _note:
+                            text _note size 18 color "#6B6259"
 
                 null height 16
 
@@ -859,12 +968,13 @@ screen minigame(title, question, options, correct_idx, subject, ct_reward=8, gra
                     xfill True
                     spacing 12
 
-                    $ __minigame_correct = correct_idx
+                    $ _mg_order = mg_order(question, len(options))
                     for idx in range(len(options)):
                         python:
-                            _opt = options[idx]
+                            _src = _mg_order[idx]
+                            _opt, _x = quiz_expand(mg_strip(tr(options[_src])), _explained, True)
                             _letter = chr(65 + idx)
-                            _is_correct = (idx == __minigame_correct)
+                            _is_correct = (_src == correct_idx)
                             _jump = Jump(correct_label) if _is_correct else Jump(wrong_label)
 
                         hbox:
@@ -880,13 +990,18 @@ screen minigame(title, question, options, correct_idx, subject, ct_reward=8, gra
                                 text _letter size 26 color "#ffffff" bold True xalign 0.5 yalign 0.5
 
                             textbutton _opt:
+                                at quiz_option_hover
                                 action [
+                                    SetVariable("quiz_tip_seen", True),
+                                    SetVariable("quiz_fb", "correct" if _is_correct else "wrong"),
+                                    SetVariable("quiz_last_ct", ct_reward if _is_correct else -5),
+                                    SetVariable("quiz_last_grade", ((grade_reward if _is_correct else -5) if subject else 0)),
                                     Function(ct_change, ct_reward if _is_correct else -5),
                                     Function(grade_change, subject, grade_reward if _is_correct else -5),
                                     Hide("minigame"),
                                     _jump
                                 ]
-                                xfill True
+                                xsize (_card_w - 78)
                                 yfill True
                                 background Solid("#F3EFEA")
                                 hover_background Solid("#C4123033")
@@ -899,22 +1014,38 @@ screen minigame(title, question, options, correct_idx, subject, ct_reward=8, gra
 
                 null height 16
 
+                ## One-time reassurance for players without an IT background
+                if not quiz_tip_seen:
+                    frame:
+                        xfill True
+                        background Solid("#E8EEF3")
+                        padding (20, 12)
+                        text _("Walang IT background? Okay lang. Pindutin ang Hint kung kailangan. Pag-isipan muna, saka pumili.") size 20 color "#2B2624"
+                    null height 12
+
                 ## AI shortcut
                 frame:
                     xfill True
                     background Solid("#C4123015")
                     padding (20, 16)
-                    hbox:
-                        spacing 20
-                        yalign 0.5
+                    fixed:
+                        ysize 60
                         vbox:
                             yalign 0.5
                             spacing 4
-                            text "Itanong sa AI" size _txt_sz color "#C41230" bold True
-                            text ("CT -10  |  Grade +" + str(grade_reward) + "  (pero walang naiintindihan)") size 18 color "#6B6259"
-                        null width True
+                            text tr("Itanong sa AI") size _txt_sz color "#C41230" bold True
+                            if subject:
+                                text ("Critical Thinking -10  |  Grade +" + str(grade_reward) + "  " + tr("(pero walang naiintindihan)")) size 18 color "#6B6259"
+                            else:
+                                text ("Critical Thinking -10  |  " + tr("(pero walang naiintindihan)")) size 18 color "#6B6259"
                         textbutton _("Gamitin"):
+                            xalign 1.0
+                            yalign 0.5
                             action [
+                                SetVariable("quiz_tip_seen", True),
+                                SetVariable("quiz_fb", "ai"),
+                                SetVariable("quiz_last_ct", -10),
+                                SetVariable("quiz_last_grade", (grade_reward if subject else 0)),
                                 Function(use_ai, subject, grade_reward),
                                 Hide("minigame"),
                                 Call("ai_used_result")
@@ -935,65 +1066,127 @@ screen grade_results():
     modal True
     zorder 170
 
-    ## Dim backdrop — hides the scene, HUD, and dialogue behind the card
+    python:
+        _subjects = [
+            ("Networking", networking_grade, cb("grade_net")),
+            ("Programming", programming_grade, cb("grade_prog")),
+            ("Cybersecurity", cyber_grade, cb("grade_cyber")),
+        ]
+        _meters = [
+            ("CRITICAL THINKING", critical_thinking, cb("ct4")),
+            ("MOTIVATION", motivation, cb("motivation")),
+        ]
+
+    ## Backdrop: hides the scene, HUD, and dialogue behind the card
     frame:
         xfill True
         yfill True
         background Solid("#FAF7F3F2")
 
     frame:
-        xsize 900
+        at quiz_card_in
+        xsize 1120
         yalign 0.5
         xalign 0.5
         background Solid("#FFFFFFF8")
+        padding (0, 0)
 
         vbox:
             xfill True
             spacing 0
 
-            ## Top accent bar, matches minigame()'s card treatment
             frame:
                 xfill True
-                ysize 6
+                ysize 8
                 background Solid("#C41230")
 
             vbox:
                 xalign 0.5
-                xmaximum 820
-                spacing 24
+                xsize 1040
+                spacing 22
 
-                null height 30
-                text "RESULTA NG GRADES" size 38 color "#E5677A" xalign 0.5 bold True
-                null height 6
+                null height 24
+                vbox:
+                    spacing 4
+                    text _("RESULTA NG GRADES") size 42 color "#C41230" xalign 0.5 bold True
+                    text day_label size 22 color "#6B6259" xalign 0.5
 
+                ## One card per subject: grade, letter, bar, and a status word
                 hbox:
                     xalign 0.5
-                    spacing 60
-                    vbox:
-                        spacing 10
-                        text "Networking"   size 28 color "#e3b341" xalign 0.5
-                        text "[networking_grade]  ([letter_grade(networking_grade)])" size 34 color "#1F1B19" xalign 0.5 bold True
-                    vbox:
-                        spacing 10
-                        text "Programming"  size 28 color "#ff7b72" xalign 0.5
-                        text "[programming_grade]  ([letter_grade(programming_grade)])" size 34 color "#1F1B19" xalign 0.5 bold True
-                    vbox:
-                        spacing 10
-                        text "Cybersecurity" size 28 color "#56d364" xalign 0.5
-                        text "[cyber_grade]  ([letter_grade(cyber_grade)])" size 34 color "#1F1B19" xalign 0.5 bold True
+                    spacing 24
+                    for _name, _score, _col in _subjects:
+                        $ _pass = _score >= 60
+                        frame:
+                            xsize 320
+                            background Solid("#F3EFEA")
+                            padding (0, 0)
+                            vbox:
+                                spacing 12
+                                frame:
+                                    xfill True
+                                    ysize 8
+                                    background Solid(_col)
+                                vbox:
+                                    xalign 0.5
+                                    xsize 280
+                                    spacing 12
+                                    text _name size 28 color "#2B2624" bold True xalign 0.5
+                                    frame:
+                                        xalign 0.5
+                                        xsize 120
+                                        ysize 120
+                                        background Solid("#2B2624" if _pass else "#C41230")
+                                        text letter_grade(_score) size (72 if _pass else 48) color "#FFFFFF" bold True xalign 0.5 yalign 0.5
+                                    text (str(_score) + " / 100") size 30 color "#2B2624" bold True xalign 0.5
+                                    bar:
+                                        value StaticValue(_score, 100)
+                                        xfill True
+                                        ysize 14
+                                        thumb None
+                                        left_bar Solid("#2B2624" if _pass else "#C41230")
+                                        right_bar Solid("#D9D0C6")
+                                    frame:
+                                        xalign 0.5
+                                        background Solid("#2B2624" if _pass else "#C41230")
+                                        padding (16, 4)
+                                        text ("PASSED" if _pass else "INCOMPLETE") size 20 color "#FFFFFF" bold True
+                                    null height 14
 
-                null height 4
+                ## Critical Thinking, Motivation, and the AI counter (the core mechanic)
                 frame:
                     xfill True
-                    ysize 1
-                    background Solid("#ffffff14")
-                null height 4
+                    background Solid("#F3EFEA")
+                    padding (28, 20)
+                    vbox:
+                        spacing 14
+                        for _label, _val, _col in _meters:
+                            vbox:
+                                spacing 6
+                                fixed:
+                                    xfill True
+                                    ysize 30
+                                    text _label size 22 color "#2B2624" bold True xalign 0.0
+                                    text (str(_val) + " / 100") size 22 color "#2B2624" bold True xalign 1.0
+                                bar:
+                                    value StaticValue(_val, 100)
+                                    xfill True
+                                    ysize 14
+                                    thumb None
+                                    left_bar Solid(_col)
+                                    right_bar Solid("#D9D0C6")
+                        fixed:
+                            xfill True
+                            ysize 40
+                            text "AI ANSWERS" size 22 color "#2B2624" bold True xalign 0.0 yalign 0.5
+                            frame:
+                                xalign 1.0
+                                yalign 0.5
+                                background Solid("#C41230" if ai_use_count > 0 else "#2B2624")
+                                padding (18, 4)
+                                text str(ai_use_count) size 24 color "#FFFFFF" bold True
+                        text (tr("Bawat sagot ng AI ay bawas sa Critical Thinking mo.") if ai_use_count > 0 else tr("Walang AI. Lahat ay sarili mong pag-iisip.")) size 20 color "#6B6259"
 
-                text "Critical Thinking: [critical_thinking]/100" size 26 color "#6B6259" xalign 0.5
-                text "Motivation: [motivation]/100"               size 26 color "#6B6259" xalign 0.5
-                text "AI Uses: [ai_use_count]"                   size 26 color "#6B6259" xalign 0.5
-
-                null height 6
                 textbutton _("Magpatuloy"):
                     action Hide("grade_results")
                     xalign 0.5
@@ -1006,65 +1199,118 @@ screen grade_results():
                     text_xalign 0.5
                     text_yalign 0.5
                 null height 30
-                    
+
 ################################################################################
 ## SAY SCREEN — dialogue textbox
 ################################################################################
+default quiz_fb = None
+default quiz_last_ct = 0
+default quiz_last_grade = 0
+
 screen say(who, what):
     style_prefix "say"
 
-    window:
-        id "window"
-        xfill True
-        yalign 1.0
-        ysize 420
-        background None
+    if quiz_fb:
+        ## Quiz feedback (correct / wrong / AI answer): the explanation line is shown
+        ## as a card, like the "AI answered" screen. quiz_fb is cleared by a
+        ## "$ quiz_fb = None" line placed right after that first line in each label.
+        python:
+            _fb_col = quiz_fb_color(quiz_fb)
+            _fb_head = quiz_fb_heading(quiz_fb)
+            _fb_sz = say_fit_size(what, 36, width=960, height=250)
 
-        frame:
+        window:
+            id "window"
+            xfill True
+            yfill True
+            background Solid("#14110FB3")
+
+            frame:
+                at quiz_card_in
+                xalign 0.5
+                yalign 0.5
+                xsize 1100
+                background Solid("#FAF7F3")
+                padding (0, 0)
+                vbox:
+                    xfill True
+                    frame:
+                        xfill True
+                        ysize 10
+                        background Solid(_fb_col)
+                    vbox:
+                        xalign 0.5
+                        xsize 980
+                        spacing 24
+                        null height 26
+                        frame:
+                            xalign 0.5
+                            background Solid(_fb_col)
+                            padding (48, 12)
+                            text _fb_head size 56 color "#FFFFFF" bold True xalign 0.5
+                        text what:
+                            id "what"
+                            size _fb_sz
+                            color "#2B2624"
+                            xalign 0.5
+                            text_align 0.5
+                            xmaximum 960
+                        hbox:
+                            xalign 0.5
+                            spacing 16
+                            frame:
+                                background Solid("#2B2624")
+                                padding (18, 6)
+                                text ("Critical Thinking " + ("%+d" % quiz_last_ct)) size 24 color "#FFFFFF" bold True
+                            if quiz_last_grade != 0:
+                                frame:
+                                    background Solid("#2B2624")
+                                    padding (18, 6)
+                                    text ("Grade " + ("%+d" % quiz_last_grade)) size 24 color "#FFFFFF" bold True
+                        text tr("I-click para magpatuloy") size 22 color "#6B6259" xalign 0.5
+                        null height 24
+
+    else:
+        python:
+            ## with a speaker name the text gets a little less height inside the box
+            _say_sz = say_fit_size(what, tsz(40), height=(150 if who else 200))
+
+        window:
+            id "window"
             xfill True
             yalign 1.0
-            ysize 300
-            background Frame("gui/textbox.png", Borders(0, 0, 0, 0))
-            padding (30, 30, 30, 70)
+            ysize 420
+            background None
 
-            vbox:
+            frame:
                 xfill True
-                spacing 8
+                yalign 1.0
+                ysize 300
+                background Frame("gui/textbox.png", Borders(0, 0, 0, 0))
+                padding (30, 24, 30, 70)
 
-                if who:
-                    vbox:
-                        xfill True
-                        spacing 6
-                        text who:
+                vbox:
+                    xfill True
+                    spacing 4
+
+                    ## The speaker's name sits inside the box, small, with a dark outline so
+                    ## bright character colours stay readable on the light box
+                    if who:
+                        text cb_who(who):
                             id "who"
-                            size tsz(40)
-                            color "#C41230"
+                            size tsz(30)
                             bold True
                             xalign 0.5
-                        fixed:
-                            xfill True
-                            ysize 18
-                            frame:
-                                xfill True
-                                ysize 1
-                                yalign 0.5
-                                background Solid("#00000033")
-                            frame:
-                                xalign 0.5
-                                yalign 0.5
-                                background Solid("#FAF7F3")
-                                padding (6, 0)
-                                text "":
-                                    size 16
-                                    color "#C41230"
+                            outlines [ (2, "#2B2624", 0, 0) ]
 
-                text what:
-                    id "what"
-                    size tsz(40)
-                    color "#0e0e0e"
-                    xalign 0.5
-                    text_align 0.5
-                    xmaximum 1700
+                    ## 1480 wide keeps the text clear of the dark fades at both ends of the box
+                    text what:
+                        id "what"
+                        size _say_sz
+                        color "#0e0e0e"
+                        xalign 0.5
+                        text_align 0.5
+                        xmaximum 1480
 
 style say_window:
     xfill True
@@ -1442,66 +1688,92 @@ screen mcc_content_preferences():
             yfill True
             background Frame("gui/nvl.png", Borders(0, 0, 0, 0))
 
-            vbox:
-                spacing 20
-                xalign 0.5
-                xmaximum 860
+            side "c r":
+                xfill True
+                yfill True
 
-                null height 24
+                viewport:
+                    id "prefs_vp"
+                    xfill True
+                    mousewheel True
+                    draggable True
 
-                if not renpy.variant("web") and not renpy.variant("small"):
-                    use settings_card(_("Display")):
-                        hbox:
-                            spacing 40
-                            use pref_tick_option(_("Fullscreen"), _preferences.fullscreen, Preference("display", "fullscreen"))
-                            use pref_tick_option(_("Window"), not _preferences.fullscreen, Preference("display", "window"))
-
-                use settings_card(_("Wika / Language")):
-                    hbox:
-                        spacing 40
-                        use pref_tick_option(_("Tagalog"), _preferences.language is None, Language(None))
-                        use pref_tick_option(_("English"), _preferences.language == "english", Language("english"))
-
-                use settings_card(_("Bilis ng Teksto / Text Speed")):
-                    bar:
-                        value Preference("text speed")
+                    vbox:
                         xfill True
-                        ysize 36
-                        left_bar Solid("#C41230")
-                        right_bar Solid("#E3DBD2")
 
-                use settings_card(_("Laki ng Teksto / Text Size")):
-                    hbox:
-                        spacing 40
-                        use pref_tick_option(_("Maliit"), persistent.text_scale == 0.85, SetField(persistent, "text_scale", 0.85))
-                        use pref_tick_option(_("Normal"), persistent.text_scale == 1.0, SetField(persistent, "text_scale", 1.0))
-                        use pref_tick_option(_("Malaki"), persistent.text_scale == 1.2, SetField(persistent, "text_scale", 1.2))
+                        vbox:
+                            spacing 20
+                            xalign 0.5
+                            xmaximum 860
 
-                use settings_card(_("Bilis ng Auto-Forward")):
-                    bar:
-                        value Preference("auto-forward time")
-                        xfill True
-                        ysize 36
-                        left_bar Solid("#C41230")
-                        right_bar Solid("#E3DBD2")
+                            null height 24
 
-                    use settings_card(_("Musika / Music")):
-                        bar:
-                            value Preference("music volume")
-                            xfill True
-                            ysize 36
-                            left_bar Solid("#56d364")
-                            right_bar Solid("#E3DBD2")
+                            if not renpy.variant("web") and not renpy.variant("small"):
+                                use settings_card(_("Display")):
+                                    hbox:
+                                        spacing 40
+                                        use pref_tick_option(_("Fullscreen"), _preferences.fullscreen, Preference("display", "fullscreen"))
+                                        use pref_tick_option(_("Window"), not _preferences.fullscreen, Preference("display", "window"))
 
-                    use settings_card(_("Tunog / Sound")):
-                        bar:
-                            value Preference("sound volume")
-                            xfill True
-                            ysize 36
-                            left_bar Solid("#e3b341")
-                            right_bar Solid("#E3DBD2")
+                            use settings_card(_("Wika / Language")):
+                                hbox:
+                                    spacing 40
+                                    use pref_tick_option(_("Tagalog"), _preferences.language is None, Language(None))
+                                    use pref_tick_option(_("English"), _preferences.language == "english", Language("english"))
 
-                    null height 40
+                            use settings_card(_("Bilis ng Teksto / Text Speed")):
+                                bar:
+                                    value Preference("text speed")
+                                    xfill True
+                                    ysize 36
+                                    left_bar Solid("#C41230")
+                                    right_bar Solid("#E3DBD2")
+
+                            use settings_card(_("Laki ng Teksto / Text Size")):
+                                hbox:
+                                    spacing 40
+                                    use pref_tick_option(_("Maliit"), persistent.text_scale == 0.85, SetField(persistent, "text_scale", 0.85))
+                                    use pref_tick_option(_("Normal"), persistent.text_scale == 1.0, SetField(persistent, "text_scale", 1.0))
+                                    use pref_tick_option(_("Malaki"), persistent.text_scale == 1.2, SetField(persistent, "text_scale", 1.2))
+
+                            use settings_card(_("Colorblind Mode")):
+                                hbox:
+                                    spacing 40
+                                    use pref_tick_option(_("Off"), persistent.colorblind_mode == "off", SetField(persistent, "colorblind_mode", "off"))
+                                    use pref_tick_option(_("Red-Green"), persistent.colorblind_mode == "rg", SetField(persistent, "colorblind_mode", "rg"))
+                                    use pref_tick_option(_("Blue-Yellow"), persistent.colorblind_mode == "by", SetField(persistent, "colorblind_mode", "by"))
+                                text _("Red-Green: protanopia / deuteranopia.  Blue-Yellow: tritanopia. Also shows numbers on the HUD bars.") size 20 color "#6B6259"
+
+                            use settings_card(_("Bilis ng Auto-Forward")):
+                                bar:
+                                    value Preference("auto-forward time")
+                                    xfill True
+                                    ysize 36
+                                    left_bar Solid("#C41230")
+                                    right_bar Solid("#E3DBD2")
+
+                            use settings_card(_("Musika / Music")):
+                                bar:
+                                    value Preference("music volume")
+                                    xfill True
+                                    ysize 36
+                                    left_bar Solid("#56d364")
+                                    right_bar Solid("#E3DBD2")
+
+                            use settings_card(_("Tunog / Sound")):
+                                bar:
+                                    value Preference("sound volume")
+                                    xfill True
+                                    ysize 36
+                                    left_bar Solid("#e3b341")
+                                    right_bar Solid("#E3DBD2")
+
+                            null height 40
+
+                vbar:
+                    value YScrollValue("prefs_vp")
+                    style "prefs_vscrollbar"
+
 
 ## Reusable bordered card wrapper for a single settings row.
 screen settings_card(label):
@@ -1542,6 +1814,13 @@ screen pref_tick_option(label, is_selected, act):
                 hover_color "#C41230"
                 bold is_selected
                 yalign 0.5
+
+## Scrollbar for the Settings tab (matches the red/cream theme).
+style prefs_vscrollbar is vscrollbar:
+    xsize 18
+    base_bar Solid("#E3DBD2")
+    thumb Solid("#C41230")
+    unscrollable "hide"
 
 screen preferences():
     tag menu

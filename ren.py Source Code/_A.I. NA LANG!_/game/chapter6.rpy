@@ -79,6 +79,7 @@ label chapter6:
             mc_m "Hindi ko in-expect na ganoon ka-strict si Ms. Iva."
         else:
             mc_f "Hindi ko in-expect na... ganoon pala talaga 'yun. Na mapapansin."
+        show carl normal at center with quickfade
         carl "Lagi naman sinasabi ni Kent, 'verify your citations.' Ngayon alam mo na kung bakit."
         hide carl with dissolve
     else:
@@ -88,6 +89,7 @@ label chapter6:
             mc_m "Okay lang. Medyo napahiya ako, pero... kailangan ko na 'tong harapin."
         else:
             mc_f "Hindi okay, pero... kailangan ko nang gawin nang tama."
+        show carly normal at center with quickfade
         carly "Tama 'yun. Nandito ako kung kailangan mo ng help sa resubmission."
         hide carly with dissolve
 
@@ -134,10 +136,12 @@ label chapter6_cyber_q1:
 
 label chapter6_cyber_q1_correct:
     narrator "(Tama! Bakit: ang right to access ay isa sa mga karapatan ng data subject sa RA 10173, \nang karapatang malaman at makuha ang kopya ng sariling personal data na hawak ng isang organisasyon.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q2
 
 label chapter6_cyber_q1_wrong:
     narrator "(Hindi 'yan. Isipin kung ano ang natural na karapatan ng may-ari ng datos, hindi ng kumpanyang humahawak nito.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q1
 
 ## Source: CyberTM Final Exam, Q2
@@ -162,10 +166,12 @@ label chapter6_cyber_q2:
 
 label chapter6_cyber_q2_correct:
     narrator "(Tama! Bakit: ang acceptable use policy ang nagtatakda ng access \nat usage rules ng network resources, kasama ang consequences ng violations.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q3
 
 label chapter6_cyber_q2_wrong:
     narrator "(Hindi 'yan. Ang password policy ay para sa password requirements, \nremote access policy naman ay para sa pag-konekta mula sa labas. May specific policy para sa general usage rules at consequences.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q2
 
 ## Source: CyberTM Final Exam, Q3
@@ -190,10 +196,12 @@ label chapter6_cyber_q3:
 
 label chapter6_cyber_q3_correct:
     narrator "(Tama! Bakit: ang ISO/IEC 27000 ang standard family na nagtatakda ng comprehensive\n information security management system, hindi lang isang model o triad.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q4
 
 label chapter6_cyber_q3_wrong:
     narrator "(Hindi 'yan. Ang CIA Triad ay isang konsepto lang (confidentiality, integrity, availability), \nhindi isang buong management framework. May specific na ISO family para dito.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q3
 
 ## Source: CyberTM Final Exam, Q4
@@ -218,10 +226,12 @@ label chapter6_cyber_q4:
 
 label chapter6_cyber_q4_correct:
     narrator "(Tama! Bakit: ang Computer Fraud and Abuse Act (CFAA) ang nagbibigay ng foundation \npara sa mga batas laban sa unauthorized access ng computer systems.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q5
 
 label chapter6_cyber_q4_wrong:
     narrator "(Hindi 'yan. Ang SOX ay para sa financial reporting, GLBA para sa financial institutions, \nECPA para sa electronic communications. May specific act para sa unauthorized computer access.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q4
 
 ## Source: CyberTM Final Exam, Q6
@@ -246,10 +256,12 @@ label chapter6_cyber_q5:
 
 label chapter6_cyber_q5_correct:
     narrator "(Tama! Bakit: ang penetration testing ay gumagamit ng simulated attacks \npara malaman ang posibleng consequences ng isang tunay na threat. Iba 'yan sa vulnerability scanning, na naghahanap lang ng weaknesses.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q6
 
 label chapter6_cyber_q5_wrong:
     narrator "(Hindi 'yan. Ang vulnerability scanning ay naghahanap lang ng weaknesses, \nhindi sumusubok ng simulated attack. May specific test na gumagaya ng aktwal na atake.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q5
 
 ## Source: CyberTM Final Exam, Q14
@@ -274,10 +286,12 @@ label chapter6_cyber_q6:
 
 label chapter6_cyber_q6_correct:
     narrator "(Tama! Bakit: ang MITRE Corporation ang nag-maintain ng \nCVE list na ginagamit ng mga prominent security organizations sa buong mundo.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q7
 
 label chapter6_cyber_q6_wrong:
     narrator "(Hindi 'yan. Ang SANS ay kilala sa NewsBites digest, hindi CVE list. \nMay specific na organization na siyang nag-maintain ng CVE database.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q6
 
 ## Source: CyberTM Final Exam, Q31
@@ -302,6 +316,7 @@ label chapter6_cyber_q7:
 
 label chapter6_cyber_q7_correct:
     narrator "(Tama! Bakit: preventive controls ang nag-aapply ng restrictions para pigilan \nang unauthorized activities bago pa man ito mangyari, tulad ng ID card locks.)"
+    $ quiz_fb = None
     scene bg_lab with dissolve
     if player_gender == "male":
         mc_m "(Natapos ko ang resubmission paper. Bawat citation, may totoong section number.)"
@@ -314,4 +329,5 @@ label chapter6_cyber_q7_correct:
 
 label chapter6_cyber_q7_wrong:
     narrator "(Hindi 'yan. Ang preventive controls ang nagpipigil sa unauthorized activities bago pa mangyari, \ngaya ng physical locks. Corrective at recovery ay pagkatapos na ng insidente, compensative ay panandaliang alternative lang.)"
+    $ quiz_fb = None
     jump chapter6_cyber_q7

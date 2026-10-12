@@ -211,10 +211,10 @@ translate english chapter2_effort_route_34aace34:
     carl "(text) hey done yet? txt me if u need help"
 
 # game/chapter2.rpy:99
-translate english chapter2_effort_route_e48c2f5f:
+translate english chapter2_effort_route_8fe62d01:
 
-    # carly "(text) how's the activity going? msg me if you're stuck"
-    carly "(text) how's the activity going? msg me if you're stuck"
+    # carly "(text) how's the activity going? message me if you're stuck"
+    carly "(text) how's the activity going? message me if you're stuck"
 
 # game/chapter2.rpy:103
 translate english chapter2_effort_route_8d6b64da:

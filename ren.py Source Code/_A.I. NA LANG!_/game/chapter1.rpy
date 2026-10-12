@@ -24,7 +24,7 @@ label chapter1:
         mc_f "(Umupo ako sa gitna. 'Yung pwede na zone. Hindi ka masyadong nakikita, pero hindi ka rin nawawala.)"
         mc_f "(Amoy cables. At 'yung specific na brand ng panic na alam kong tatagal ng isang buong semester.)"
 
-    show gabby normal at center with dissolve
+    show gabby happy at center with dissolve
     gabby "UY! Guys! Tayo na naman magkakaklase!"
     gabby "Sabog na naman tayo this sem!"
 
@@ -35,7 +35,7 @@ label chapter1:
     kent "That would be an inefficient use of your kinetic energy.\n Pero appreciated ang sentiment, po."
 
     if player_bestfriend == "carl":
-        show carl normal at right with dissolve
+        show carl normal at right, enter_right
         carl "(sabay upo sa tabi mo) Huy. Na-review mo na ba syllabus?"
         if player_gender == "male":
             mc_m "Meron na palang syllabus?"
@@ -44,11 +44,12 @@ label chapter1:
         carl "(tawa) Classic. Ayos lang 'yan. Basta magkaklase tayo, keri na."
         carl "Saka sabi ni Gabby, madami raw breaks this sem. \nParang nag-design si Ms. Iva ng calendar para sa mga gustong matulog."
         kent "Actually, na-compute ko na 'yung break distribution.\nMay total na 14 non-instructional days sa buong semester, hindi pa kasama ang holidays. Above national average 'yan para sa IT programs."
+        show gabby happy at center, hop
         gabby "See! Sabi ko sa inyo! Break tayo nang break!"
         carl "(sa iyo, mababa) Ginawang research paper ni Kent 'yung enrollment natin."
         hide carl with dissolve
     else:
-        show carly normal at right with dissolve
+        show carly normal at right, enter_right
         carly "(sabay upo sa tabi mo) Huy! Same block tayo! Sabi ko na eh. Magkaklase ulit tayo."
         if player_gender == "male":
             mc_m "Buti na lang. Kung hindi, wala akong kausap."
@@ -57,6 +58,7 @@ label chapter1:
         carly "Totoo!"
         carly "Sabi ni Gabby, maraming breaks daw this sem. Baka ma-enjoy ko pa 'tong IT."
         kent "Actually, na-compute ko na 'yung break distribution.\nMay total na 14 non-instructional days sa buong semester, hindi pa kasama ang holidays. Above national average 'yan para sa IT programs."
+        show gabby happy at center, hop
         gabby "See! Panalo tayo!"
         carly "(sa iyo, mababa) Ginawa ni Kent na Excel sheet 'yung buong semester natin."
         hide carly with dissolve
@@ -74,7 +76,7 @@ label chapter1:
         mc_f "(Tiningnan ang phone. May notification nga mula sa group chat: \nisang PDF, title na 'SEMESTER OPTIMIZATION GUIDE v1.3.')"
         mc_f "(v1.3. Ibig sabihin, dalawang beses niya na 'to na-update bago pa man magsimula ang klase.)"
 
-    show rey normal at right with dissolve
+    show rey normal at right, enter_right
     if player_gender == "male":
         mc_m "(Pumasok si Rey. Walang ingay na pagbati,\n dumeretso lang sa tabi ng bintana, kinuha ang notebook, nagbasa.)"
     else:
@@ -111,6 +113,7 @@ label chapter1:
     ms_iva "Gusto kong pag-usapan ngayon 'yung isang bagay na \nginagamit niyo na lahat, simula pa noong high school niyo."
     narrator "(Nagsulat siya sa board: ARTIFICIAL INTELLIGENCE.)"
     ms_iva "Ang AI ay isang tool. Sigurado ako alam na ninyong lahat kung ano 'to."
+    show ms_iva normal at center with quickfade
     ms_iva "Ang tanong ko sa inyo, at gusto kong seryosohin niyo 'to:"
     ms_iva "Kailan nagiging crutch ang isang tool?"
 
@@ -158,6 +161,7 @@ label chapter1:
     gabby "Hoy, 'yung sinabi ni Ms. Iva kanina, grabe ang O.A. Obvious naman kung sino tinutukoy nun."
     kent "Actually, tinutukoy niya 'yung isang documented na phenomenon sa cognitive science. \nSkill atrophy. Paulit-ulit mong i-externalize ang isang cognitive task sa isang tool, 'yung neural pathway na dapat mag-ha-handle nun ay,"
     gabby "Kent. Kumain ka muna."
+    show kent stressed at center with quickfade
     kent "...Valid pa rin ang concern ko."
 
     if player_bestfriend == "carl":
@@ -181,6 +185,8 @@ label chapter1:
         mc_f "Pero may choice naman tayo noon. Hindi lang natin pinili 'yun."
 
     narrator "(Tumahimik ang mesa ng isang segundo. Tapos binasag ni Gabby ang katahimikan, kagaya ng dati.)"
+    show kent normal at center with quickfade
+    show gabby happy at left, hop
     gabby "Uy, ang seryoso naman ng aura niyo! Kain na, mag-usap tayo ng masaya! May bagong season nga pala! G na!"
     if player_gender == "male":
         mc_m "(Nagbago ang mood. Tawanan. Lumipas ang sandali. Pero may nanatili sa akin.)"
@@ -201,20 +207,21 @@ label chapter1:
     show mr_kai normal at left with dissolve
     mr_kai "Class, naka-post na 'yung unang programming activity niyo. \nBasic Python, input-output, conditionals, loops. Due in three days. Independently po, please."
     mr_kai "Gusto kong makita 'yung sarili niyong logic, hindi 'yung generated na sagot. Magiging malinaw kung alin ang alin."
+    show mr_kai thinking at left with quickfade
     mr_kai "(mas mahinang tono) At kung sakaling ma-stuck kayo . may consultation hours ako. Gamitin niyo. 'Yun ang tamang shortcut."
     hide mr_kai with dissolve
 
     show gabby normal at right with dissolve
     gabby "(agad tiningnan ang phone) Three days? Kukunin ko na lang 'to mamaya. Sampung minuto, tapos na."
-    show kent normal at center with dissolve
+    show kent stressed at center with dissolve
     kent "Gabby. Specifically sinabi ni Mr. Kai na independently,"
     gabby "Lahat naman ata gumagawa niyon, Kent."
 
     if player_bestfriend == "carl":
-        show carl normal at left with dissolve
+        show carl normal at left, enter_left
         carl "Ikaw? Gagawin mo talaga?"
     else:
-        show carly normal at left with dissolve
+        show carly normal at left, enter_left
         carly "Ikaw? Paano mo gagawin?"
 
     ## CHOICE NODE 1-A: How to handle first programming assignment

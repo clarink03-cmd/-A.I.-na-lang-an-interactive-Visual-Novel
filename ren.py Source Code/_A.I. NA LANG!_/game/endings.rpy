@@ -6,7 +6,12 @@ screen ending_title(kind, ending_name, tagline):
     on "show" action Play("sound", "audio/sfx/sfx_page_turn.ogg")
 
     python:
-        _accent = "#166534" if kind == "good" else "#8C0E23"
+        if kind == "good":
+            _accent = cb("end_good")
+        elif kind == "neutral":
+            _accent = cb("end_neutral")
+        else:
+            _accent = cb("end_bad")
 
     frame:
         xfill True
@@ -24,7 +29,7 @@ screen ending_title(kind, ending_name, tagline):
             yalign 0.45
             spacing 14
 
-            text (_("MAGANDANG WAKAS") if kind == "good" else _("MASAKIT NA WAKAS")) size 26 color _accent xalign 0.5
+            text (_("MAGANDANG WAKAS") if kind == "good" else (_("HINDI PA SAPAT") if kind == "neutral" else _("MASAKIT NA WAKAS"))) size 26 color _accent xalign 0.5
             text ending_name size 62 color "#1F1B19" xalign 0.5 bold True outlines [(3, _accent, 0, 0)]
             text tagline size 30 color "#6B6259" xalign 0.5 italic True
 
@@ -71,6 +76,7 @@ label ending_special_good:
     ms_iva "Ang tunay na pag-unawa. Hindi perpekto. Pero totoo. At may lakas, may dating, na hindi kayang gayahin ng kahit anong language model."
     ms_iva "Ito ang tunay na estudyanteng hindi kumuha ng shortcut. Hindi dahil bawal. Kundi dahil pinili niyang matuto."
     narrator "(Tahimik ang buong klase. Ilang segundo. Pakiramdam, mas matagal.)"
+    show ms_iva normal at left with quickfade
     ms_iva "Ipinagmamalaki ko kayo."
     if player_gender == "male":
         mc_m "(Nakilala ko ang sarili kong pangalan sa board. Hindi ako makapaniwala.)"
@@ -94,7 +100,7 @@ label ending_special_good:
     show carl happy at left with moveinleft
     show gabby happy at right with moveinright
     show kent happy at center with dissolve
-    show rey normal at right with dissolve
+    show rey normal at rightish with dissolve
 
     narrator "(Grupo sa canteen. Extra rice para kay Carl. Tahimik na masaya si Kent. Si Gabby, nagnanakaw ng notes mo para sa susunod na semester.)"
     gabby "Pwede mo ba akong turuan? For real this time. 'Yung authentic na paraan."
@@ -126,7 +132,7 @@ label ending_special_good:
     pause 2.0
 
     scene black
-    narrator "✦ SPECIAL GOOD ENDING, 'The Real Deal' ✦"
+    narrator "SPECIAL GOOD ENDING, 'The Real Deal'"
     pause 1.5
     narrator "Networking: [letter_grade(networking_grade)] | Programming: [letter_grade(programming_grade)] | Cybersecurity: [letter_grade(cyber_grade)]"
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
@@ -139,7 +145,7 @@ label ending_special_good:
 # ══════════════════════════════════════════════════════════════════════════════
 label ending_good_guilt:
     $ persistent.last_ending = "At What Cost?"
-    call screen ending_title("good", "At What Cost?", "Nakapasa ka. Pero may tanong na hindi pa nasasagot.")
+    call screen ending_title("neutral", "At What Cost?", "Nakapasa ka. Pero may tanong na hindi pa nasasagot.")
     $ safe_play("music", "audio/bgm/bgm_good_ending.ogg", loop=True)
     scene bg_canteen with dissolve
 
@@ -178,7 +184,7 @@ label ending_good_guilt:
     pause 1.5
 
     scene black
-    narrator "✦ GOOD ENDING, 'At What Cost?' ✦"
+    narrator "NEUTRAL ENDING, 'At What Cost?'"
     pause 1.0
     narrator "Networking: [letter_grade(networking_grade)] | Programming: [letter_grade(programming_grade)] | Cybersecurity: [letter_grade(cyber_grade)]"
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
@@ -227,7 +233,7 @@ label ending_good_solid:
     pause 2.0
 
     scene black
-    narrator "✦ GOOD ENDING, 'Solid Enough' ✦"
+    narrator "GOOD ENDING, 'Solid Enough'"
     pause 1.0
     narrator "Networking: [letter_grade(networking_grade)] | Programming: [letter_grade(programming_grade)] | Cybersecurity: [letter_grade(cyber_grade)]"
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
@@ -298,7 +304,7 @@ label ending_redemption:
     pause 2.0
 
     scene black
-    narrator "✦ REDEMPTION ENDING, 'Not Yet, But Getting There' ✦"
+    narrator "REDEMPTION ENDING, 'Not Yet, But Getting There'"
     pause 1.0
     narrator "Critical Thinking: [critical_thinking] / 100 | Motivation: [motivation] / 100"
     narrator "(Nagsimula sa INC. Natapos nang wala. Ganoon ang redemption.)"
@@ -348,7 +354,7 @@ label ending_bad:
     pause 1.5
 
     scene black
-    narrator "✦ BAD ENDING, 'See You Next Year' ✦"
+    narrator "BAD ENDING, 'See You Next Year'"
     pause 1.0
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
 
@@ -397,9 +403,9 @@ label ending_caught:
     pause 2.0
 
     scene black
-    narrator "✦ CAUGHT ENDING, 'Academic Integrity Issue' ✦"
+    narrator "CAUGHT ENDING, 'Academic Integrity Issue'"
     pause 1.0
-    narrator "got_caught: True | Critical Thinking: [critical_thinking] / 100"
+    narrator "Critical Thinking: [critical_thinking] / 100"
 
     menu:
         "Try again (Go back to Chapter 5, make different choices to avoid INCs)":

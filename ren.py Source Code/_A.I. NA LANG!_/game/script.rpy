@@ -10,7 +10,7 @@ label splashscreen:
     pause 1.2
 
     play sound "audio/sfx/sfx_click.ogg"
-    show text "{color=#1f6feb}{size=40}{cps=30}> v1.3  loading...{/cps}{/color}" at truecenter with dissolve
+    show text "{color=#1f6feb}{size=40}{cps=30}> A.I. na lang!  Defense Build  loading...{/cps}{/color}" at truecenter with dissolve
     pause 1.2
     hide text
 
@@ -19,7 +19,6 @@ label splashscreen:
     pause 1.2
     hide text
     return
-
 label extras_setup:
     $ raw_name = renpy.input("I see, you've been here before na.\nAnong pangalan ang nais mong gagamitin?", default=player_name, length=20)
     $ player_name = raw_name.strip() if raw_name.strip() else player_name
@@ -31,9 +30,9 @@ label extras_setup:
             $ player_gender = "female"
 
     menu:
-        "Si Carl ang bestfriend":
+        "Carl ang bestfriend":
             $ player_bestfriend = "carl"
-        "Si Carly ang bestfriend":
+        "Carly ang bestfriend":
             $ player_bestfriend = "carly"
 
     narrator "Sa puntong ito ng kwento, kumusta ang naging takbo ng buhay-eskwela mo? (this may affect the ending of the story.)"
@@ -70,15 +69,22 @@ label extras_setup:
 
     jump expression _extras_target
 
+
 # PROLOGUE
+## Restructured for the defense build: shorter cold open, HUD revealed only
+## when it is explained, the bars really move during the flashback and are
+## reset at the campus gate (so the Alpha/Beta balance is unchanged).
+default mc = mc_m   # set for real after the gender choice; default keeps lint/loads happy
+default pro_ct_base  = 50
+default pro_mot_base = 50
+
 label start:
 label prologue:
-    $ show_hud = True
+    $ show_hud = False
+    $ day_label = "2020, Online"
     scene black with fade
     pause 0.6
 
-    narrator "(Bago tayo magsimula...)"
-    pause 0.4
     narrator "(Sino ka sa kwentong ito?)"
 
     menu:
@@ -89,194 +95,118 @@ label prologue:
             $ player_gender = "female"
             $ player_name   = "Alexa"
 
-    narrator "(Ano'ng itatawag sa'yo ng ibang tao?)"
+    $ mc = mc_m if player_gender == "male" else mc_f
 
-    menu:
-        "Gusto ko ng ibang pangalan (Custom name, 20 characters max only)":
-            $ raw_name = renpy.input("Pangalan:", default=player_name, length=20)
-            $ player_name = raw_name.strip() if raw_name.strip() else player_name
-        "[player_name] na lang":
-            pass
+    $ raw_name = renpy.input(_("Ano'ng itatawag sa'yo ng ibang tao?"), default=player_name, length=20)
+    $ player_name = raw_name.strip() if raw_name.strip() else player_name
 
-    pause 0.6
+    ## ---- COLD OPEN: 3 AM, 2020 ----
     $ safe_stop("music")
     $ safe_play("music", "audio/bgm/bgm_sad.ogg", loop=True)
-
-    pause 0.6
-    narrator "Online Classes, 2020."
-    pause 0.4
+    call screen chapter_title("", "Prologue : Copy-Paste", "Online Classes, 2020, 'Isang beses lang naman.'")
 
     scene bg_bedroom_night with dissolve
-    pause 1.0
-
-    if player_gender == "male":
-        mc_m "(Alas-tres na ng umaga. Parehong error, kanina pa naka-highlight.)"
-        mc_m "(Red squiggly lines. Ayaw talagang sumuko.)"
-        mc_m "(Nakakainis.)"
-    else:
-        mc_f "(Alas-tres na ng umaga. Parehong error, kanina pa naka-highlight.)"
-        mc_f "(Red squiggly lines. Ayaw talagang sumuko.)"
-        mc_f "(Nakakainis.)"
-    pause 1.0
-
+    pause 0.8
+    mc "(Alas-tres na ng umaga. Parehong error, kanina pa naka-highlight. Ayaw talagang sumuko.)"
     play sound "audio/sfx/sfx_phone.ogg"
-    if player_gender == "male":
-        mc_m "(May assignment tab akong nakabukas simula pa kanina. Ayokong buksan.)"
-        mc_m "(Pero alas-tres na. May klase pa bukas.)"
-        mc_m "(Binuksan ko rin. Ayoko ma late submission.)"
-    else:
-        mc_f "(May assignment tab akong nakabukas simula pa kanina. Ayokong buksan.)"
-        mc_f "(Pero alas-tres na. May klase pa bukas.)"
-        mc_f "(Binuksan ko rin. Ayoko ma late submission.)"
-    pause 0.6
+    mc "(May assignment tab akong nakabukas simula pa kanina. Ayokong buksan.)"
+    mc "(Binuksan ko rin. Ayoko ma-late submission.)"
 
     scene bg_zoom with fade
-    pause 0.5
+    pause 0.4
     ai_voice "I can help with that."
-    pause 1.0
+    show cg_ai_chat with zoomin
+    pause 0.8
     ai_voice "Complete solution generated. All answers provided."
-    pause 1.2
+    hide cg_ai_chat with dissolve
     ai_voice "Submit this solution."
-    hide bg_zoom with dissolve
+    ai_voice "Walang makakaalam. Promise. (Maliban sa'yo na nagbabasa nito. Hi.)"
+    mc "(...Sino ba 'yung kausap mo?)"
 
+    ## HUD reveal + the first real drop of the Critical Thinking bar
+    $ pro_ct_base  = critical_thinking
+    $ pro_mot_base = motivation
+    $ show_hud = True
     $ tutorial_highlight = "ct"
+    $ ct_change(-15)
     $ renpy.notify("Critical Thinking -15 {color=#58a6ff}TUTORIAL{/color}")
     pause 0.4
-
     sys_voice "{color=#58a6ff}TUTORIAL{/color} Kung makikita mo sa taas. 'Yung Critical Thinking bar mo.\nYan ay bumababa tuwing binibigay mo sa AI ang pag-iisip. Tumataas kapag ikaw talaga ang gumawa."
-    $ show_hud = True
-
-    pause 2.0
+    pause 1.2
     $ tutorial_highlight = None
 
-    if player_gender == "male":
-        mc_m "(Sampung segundo. Kumpleto na.)"
-        mc_m "(Tama lahat. Mas ayos pa sa kahit anong gagawin sa isang linggo.)"
-        mc_m "(Kinopya ko. I-paste. Submit.)"
-        mc_m "(Tapos natulog na.)"
-    else:
-        mc_f "(Sampung segundo. Kumpleto na.)"
-        mc_f "(Tama lahat. Mas ayos pa sa kahit anong gagawin sa isang linggo.)"
-        mc_f "(Kinopya ko. I-paste. Submit.)"
-        mc_f "(Tapos natulog na.)"
-    pause 0.8
+    mc "(Sampung segundo. Kumpleto na.)"
+    mc "(Tama lahat. Mas ayos pa sa kahit anong gagawin sa isang linggo.)"
+    mc "(Kinopya ko. I-paste. Submit.)"
     narrator "{cps=15}Unang beses sa mahabang panahon, walang kasamang guilt yung antok.{/cps}"
-    pause 1.5
+    pause 1.0
+    mc "(Isa lang naman ito. Hindi na mauulit.)"
+    pause 1.2
 
-    if player_gender == "male":
-        mc_m "(Isa lang naman ito. Hindi na mauulit.)"
-        mc_m "(May tanong akong hindi ko masagot. Simula pa noon.)"
-    else:
-        mc_f "(Isa lang naman ito. Hindi na mauulit.)"
-        mc_f "(May tanong akong hindi ko masagot. Simula pa noon.)"
-    pause 1.8
-
+    ## ---- THE NEW NORMAL ----
     scene black with dissolve
-    pause 1.0
-
+    pause 0.6
     scene bg_zoom with dissolve
-    pause 1.0
-    narrator "Parang chat na hindi mo na-scroll pero laging bukas."
-    pause 0.8
-
     groupchat "CLASSMATE1: hehe same, di ko rin na-gets 'yung discussion kanina"
-    pause 0.4
-    groupchat "CLASSMATE2: cam off muna ko, ang log dito eh"
-    pause 0.4
+    groupchat "CLASSMATE2: cam off muna ko, ang lag dito eh"
     groupchat "CLASSMATE3: sino may notes? di ko na-catch buong lecture"
-    pause 0.8
+    pause 0.6
 
     menu:
         "(Typing) same guys, di rin gumagana mic ko HAHA":
             groupchat "[player_name]: same guys, di rin gumagana mic ko HAHA"
+            groupchat "CLASSMATE1: HAHAHA solid. buti hindi ako nag-iisa"
         "(Typing) ...":
-            groupchat "[player_name]: ... (nonchlant)"
+            groupchat "[player_name]: ... (nonchalant)"
+            groupchat "CLASSMATE3: huy [player_name], buhay ka pa ba"
 
-    pause 0.8
+    pause 0.6
     hide bg_zoom with dissolve
-
     narrator "Dalawang linggo lang daw. Parang extended na break. Sarap."
-    pause 0.6
-    narrator "Ikaapat na buwan, camera off na palagi."
-    pause 0.6
-    if player_gender == "male":
-        mc_m "(Wala namang magtatanong. Ganito na lahat.)"
-    else:
-        mc_f "(Wala namang magtatanong. Ganito na lahat.)"
-    pause 1.0
-
+    pause 0.5
     narrator "Anim na buwan. Isang taon. Dalawa."
-    pause 0.8
+    $ ct_change(-10)
+    pause 0.6
     narrator "Paper? Nagawa na niya. Program? Tapos na. May module kang hindi maintindihan?\nPaulit-ulit niyang ipapaliwanag, walang pagod, walang reklamo."
-    pause 1.0
-    if player_gender == "male":
-        mc_m "(At ako? Tulog na.)"
-        mc_m "('Pansamantala lang 'to. Survival mode lang naman eh.')"
-    else:
-        mc_f "(At ako? Tulog na.)"
-        mc_f "('Pansamantala lang 'to. Survival mode lang naman eh.')"
-    pause 1.2
+    mc "(At ako? Tulog na.)"
     narrator "{cps=14}Inulit mo 'yun ilang beses hanggang sa naniwala ka na rin.{/cps}"
-    pause 1.8
+    pause 1.2
 
     $ safe_stop("music")
-    pause 1.2
-
-    narrator "Tapos, biglang natapos na rin."
     pause 0.8
     narrator "Bumalik ang klase. Bumalik ang campus. Bumalik na daw ang 'normal.'"
-    pause 1.2
-
-    if player_gender == "male":
-        mc_m "(Pero may tanong na bumabalik tuwing tahimik ang paligid.)"
-        mc_m "(Kung may magtatanong bukas ng kahit ano sa course or sa subjects ko...)"
-        mc_m "Kaya ko ba 'to sagutin, gamit lang ang sarili ko lang?"
-    else:
-        mc_f "(Pero may tanong na bumabalik tuwing tahimik ang paligid.)"
-        mc_f "(Kung may magtatanong bukas ng kahit ano sa course or sa subjects ko...)"
-        mc_f "Kaya ko ba 'to sagutin, gamit lang ang sarili ko lang?"
-    pause 2.2
-
-    narrator "..."
-    pause 2.0
+    pause 0.8
+    mc "(Pero may tanong na bumabalik tuwing tahimik ang paligid.)"
+    mc "(Kung may magtatanong bukas ng kahit ano sa course or sa subjects ko...)"
+    mc "Kaya ko ba 'to sagutin, gamit lang ang sarili ko?"
+    pause 1.5
+    narrator "Kung hindi ka IT, huwag kang mag-alala. Oo, may mga tanong dito tungkol sa network at code, pero setting lang 'yun, hindi ang punto."
+    narrator "Ang totoong tanong: kapag may sagot nang nakahanda, titigil ka pa ba para mag-isip?"
+    narrator "Estudyante ka man, empleyado, o magulang na nagche-check ng takdang-aralin ng anak mo, para sa'yo rin 'to."
+    pause 1.0
 
     $ tutorial_highlight = "mot"
+    $ mot_change(-10)
     $ renpy.notify("Motivation -10 {color=#58a6ff}TUTORIAL{/color}")
     sys_voice "{color=#58a6ff}TUTORIAL{/color} 'Yung puso sa kabila, Motivation mo. Bumababa 'yan sa panic o guilt. Tumataas kapag may confidence ka sa sarili mo."
-    pause 2.0
+    pause 1.2
     $ tutorial_highlight = None
-
-    if player_gender == "male":
-        mc_m "(Hindi ko alam kung gaano karami sa 'natutunan' ko ang tunay na akin.)"
-    else:
-        mc_f "(Hindi ko alam kung gaano karami sa 'natutunan' ko ang tunay na akin.)"
-    pause 1.2
-    narrator "Pero."
+    mc "(Hindi ko alam kung gaano karami sa 'natutunan' ko ang tunay na akin.)"
     pause 0.8
-    narrator "Hindi ka naman talaga nag-iisa dito."
-    pause 0.6
-    narrator "May isang tao."
-    pause 0.6
-    narrator "Hindi niya man maintindihan lahat, pero nandiyan siya. Palagi."
-    pause 1.5
+    narrator "Hindi ka naman talaga nag-iisa dito. Hindi niya man maintindihan lahat, pero nandiyan siya. Palagi."
+    pause 1.0
 
+    ## ---- DAY ONE: CAMPUS GATE ----
     scene bg_campus_gate with dissolve
+    $ day_label = "Day 1, Umaga"
     $ safe_play("music", "audio/bgm/bgm_campus.ogg", loop=True)
-    pause 1.2
-
-    narrator "Fourth year kana. Unang araw. Nakatayo ka sa labas ng gate."
-    pause 0.6
-    if player_gender == "male":
-        mc_m "(Alam ko naman on paper. Pumasok, umupo, matuto.)"
-        mc_m "(Pero ngayon, na nasa harap na harap ako na nang pinto, may parte ng utak ko nagsasabi:)"
-        mc_m "('Kung lalabas 'yung totoo, baka hindi mo kaya 'to.')"
-    else:
-        mc_f "(Alam ko naman on paper. Pumasok, umupo, matuto.)"
-        mc_f "(Pero ngayon, na nasa harap na harap ako na nang pinto, may parte ng utak ko nagsasabi:)"
-        mc_f "('Kung lalabas 'yung totoo, baka hindi mo kaya 'to.')"
-    pause 1.2
+    pause 0.8
+    narrator "Fourth year ka na. Unang araw. Nakatayo ka sa labas ng gate."
+    mc "(Alam ko naman on paper. Pumasok, umupo, matuto. Pero ngayong nasa harap na ako ng pinto, may parte ng utak ko na nagsasabi:)"
+    mc "('Kung lalabas 'yung totoo, baka hindi mo kaya 'to.')"
+    pause 0.8
     narrator "Tapos may tumapik sa balikat mo." with hpunch
-    pause 1.5
+    pause 1.0
 
     menu:
         "Carl. Kamay sa bulsa. Parang dalawang oras lang natulog.":
@@ -284,60 +214,66 @@ label prologue:
         "Carly. Nakangiti na bago ka pa lumingon.":
             $ player_bestfriend = "carly"
     if player_bestfriend == "carl":
-        show carl happy at center with dissolve
+        show carl happy at center, enter_right
         carl "Uy. Nandito ka rin pala."
         if player_gender == "male":
-            mc_m "(Ganoon pa rin siya. Parang walang nagbago kahit lumipas yung dalawang taon.)"
+            mc "(Ganoon pa rin siya. Parang walang nagbago kahit lumipas yung dalawang taon.)"
         else:
-            mc_f "(Napabuntong-hininga ako, nang hindi ko namamalayan.)"
+            mc "(Napabuntong-hininga ako, nang hindi ko namamalayan.)"
         carl "Parang kasing-antok kita ah. Ano, nag-rank ka ba buong gabi? Mythic ka na ba?"
         if player_gender == "male":
-            mc_m "Sana all. Wala akong energy pang mag-ML, boss."
+            mc "Sana all. Wala akong energy pang mag-ML, boss."
         else:
-            mc_f "Sana all. Puyat lang talaga, wala akong energy pang mag-ML."
+            mc "Sana all. Puyat lang talaga, wala akong energy pang mag-ML."
         carl "G na. Ayoko nang mahuli sa first day na 'to."
         narrator "(Lumakad siya nang walang atubili. Sinundan mo, gaya ng dati.)"
         narrator "(Ngayon lang gusto mong ikaw mismo ang pumili kung saan ka patungo.)"
         hide carl with dissolve
     else:
-        show carly happy at center with dissolve
+        show carly happy at center, enter_right
         carly "Uy! Nandito ka na!"
         if player_gender == "male":
-            mc_m "(Bigla na lang gumaan yung pakiramdam ko.)"
+            mc "(Bigla na lang gumaan yung pakiramdam ko.)"
         else:
-            mc_f "(Nakita ko lang siya, parang magkaklase ulit kami?)"
+            mc "(Nakita ko lang siya, parang magkaklase ulit kami?)"
+        show carly normal at center with quickfade
         carly "Parang hindi ka natulog ah. Okay ka lang?"
         if player_gender == "male":
-            mc_m "Okay naman. Medyo."
+            mc "Okay naman. Medyo."
         else:
-            mc_f "Oo. I think so. Nandito naman ako."
+            mc "Oo. I think so. Nandito naman ako."
+        show carly happy at center, hop
         carly "Okay. Sapat na 'yon. Tara na."
         narrator "(Lumakad kayong magkasabay. Unang beses ngayong umaga na hindi ka nag-iisa.)"
         hide carly with dissolve
 
-    pause 1.0
+    ## ---- FRESH START: bars go back to where they were, then the full HUD tour ----
+    pause 0.8
+    $ critical_thinking = pro_ct_base
+    $ motivation = pro_mot_base
+    narrator "Bagong semester. Bumalik sa gitna ang mga bar. Ang nakasanayan, hindi."
     $ tutorial_highlight = "all"
     $ renpy.notify("Day 1 starting")
-    sys_voice "{color=#58a6ff}TUTORIAL{/color} Sa taas, palaging makikita kung anong araw na, ang grado mo sa tatlong subject, ang Critical Thinking bar, at ang Motivation bar mo."
+    sys_voice "{color=#58a6ff}TUTORIAL{/color} Sa taas, palaging makikita kung anong araw na, ang Critical Thinking bar, at ang Motivation bar mo. Pindutin ang 'Tingnan ang Grades' para makita ang grado mo sa tatlong subject."
     pause 0.4
     sys_voice "{color=#58a6ff}TUTORIAL{/color} Walang tama o maling sagot agad-agad dito. Pero may bigat ang bawat desisyon mong pinili, in due time."
-    pause 1.5
+    pause 1.2
     $ tutorial_highlight = None
 
-    if player_gender == "male":
-        mc_m "(First day. Na naman.)"
-        mc_m "(Pero ngayon, may isang bagay na gusto kong sagutan nang tama.)"
-        mc_m "{cps=14}(Hindi para sa grado. Kundi para sa sarili ko.){/cps}"
-    else:
-        mc_f "(First day. Na naman.)"
-        mc_f "(Pero ngayon, may isang bagay na gusto kong sagutan nang tama.)"
-        mc_f "{cps=14}(Hindi para sa grado. Kundi para sa sarili ko.){/cps}"
+    mc "(First day. Na naman.)"
+    mc "(Pero ngayon, may isang bagay na gusto kong sagutan nang tama.)"
+    mc "{cps=14}(Hindi para sa grado. Kundi para sa sarili ko.){/cps}"
     pause 1.6
 
     $ show_hud = False
     jump chapter1
 
+
 label ai_used_result:
+    ## AI is the core mechanic, so it gets its own moment (screens in ui_polish.rpy).
+    ## This label is the ONE place that counts an AI answer.
     $ ai_use_count += 1
-    narrator "Ginamit mo ang AI para sagutin ito."
+    play sound "audio/sfx/sfx_phone.ogg"
+    with vpunch
+    call screen ai_used_overlay
     return

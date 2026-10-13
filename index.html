@@ -1,402 +1,404 @@
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      regs.forEach(reg => reg.unregister());
-    });
-  }
-</script>
-<!-- SCRIPT FOR MOBILE DUMIDIRETSO KASI SA GAME NOTHIGN SUSPICIOUS -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A.I. na lang!, A Visual Novel About the Cost of the Shortcut</title>
-<meta name="description" content="A Filipino-English language visual novel capstone project from Mabalacat City College. Play as a BSIT student across 8 weeks, deciding again and again how much to lean on AI, and living with what that decision compounds into.">
-<link rel="stylesheet" href="css/main.css">
-<link rel="stylesheet" href="css/animations.css">
-<link rel="stylesheet" href="css/responsive.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A.I. na lang! | A visual novel about the cost of the AI shortcut</title>
+<meta name="description" content="A visual novel capstone (Taglish, with an English mode) from Mabalacat City College. It does not fix AI over-reliance. It lets students live through a simulated semester and see what handing the thinking over costs.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&display=swap">
+<script>
+/* Unregisters old service workers so the game build always loads fresh, including on mobile. */
+if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}
+</script>
+<style>
+:root{--p:#FAF7F2;--p2:#F3EEE6;--w:#fff;--i:#2A2522;--m:#675F59;--r:#C41230;--rd:#9C0E26;--l:#E6DFD5;--a:#E0A82E;--g:#1F6B3A;--bd:#D9D1C5;--sh:0 1px 2px rgba(42,37,34,.06),0 12px 32px rgba(42,37,34,.09);--serif:'Fraunces','Source Serif 4',Georgia,'Times New Roman',serif;--sans:'Public Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--p);color:var(--i);font:17px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.08;letter-spacing:-.01em;margin:0 0 .5em}
+h1{font-size:clamp(44px,6.2vw,80px);letter-spacing:-.025em;line-height:1.02}
+h2{font-size:clamp(30px,4vw,44px)}h3{font-size:22px;margin-top:1.3em}
+p{margin:0 0 1em;max-width:68ch}a{color:var(--rd)}ul{padding-left:1.1em;margin:0 0 1em}li{margin-bottom:.4em;max-width:68ch}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.sk{position:absolute;left:-999px}.sk:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:99}
+:focus-visible{outline:3px solid var(--i);outline-offset:3px}
 
+/* header */
+header{position:sticky;top:0;z-index:20;background:rgba(250,247,242,.94);-webkit-backdrop-filter:saturate(1.2) blur(8px);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--l)}
+header .wrap{display:flex;align-items:center;gap:8px 26px;min-height:68px}
+.brand{font:700 24px var(--serif);color:var(--i);text-decoration:none;white-space:nowrap}
+.brand i{display:inline-block;width:12px;height:12px;background:var(--r);border-radius:2px;margin-right:9px;vertical-align:1px}
+nav{display:flex;align-items:center;gap:26px;flex:1;min-width:0;justify-content:center;font-size:15.5px;font-weight:500;white-space:nowrap}
+nav a,nav summary{color:var(--m);text-decoration:none;padding:6px 0;cursor:pointer}
+nav a:hover,nav summary:hover{color:var(--r)}
+.more{position:relative;border:0;padding:0;max-width:none}.more summary{list-style:none;font-weight:500}.more summary::-webkit-details-marker{display:none}
+.more summary::after{content:'';display:inline-block;margin-left:7px;border:4px solid transparent;border-top-color:currentColor;vertical-align:-2px}
+.more>div{position:absolute;right:0;top:100%;background:var(--w);border:1px solid var(--l);border-radius:10px;box-shadow:var(--sh);padding:8px;min-width:170px;display:flex;flex-direction:column}
+.more>div a{padding:8px 12px;border-radius:6px}.more>div a:hover{background:var(--p2)}
+.x{display:none}
+.gh{display:flex;color:var(--i)}.gh:hover{color:var(--r)}.gh svg{width:26px;height:26px;fill:currentColor}
+
+/* buttons */
+.btn{font:700 16px/1.2 var(--sans);background:var(--r);color:#fff;border:1.5px solid var(--r);border-radius:5px;padding:13px 24px;cursor:pointer;text-decoration:none;display:inline-block;transition:background .15s,border-color .15s,color .15s}
+.btn:hover{background:var(--rd);border-color:var(--rd)}
+.btn.o{background:var(--w);color:var(--i);border-color:var(--bd)}.btn.o:hover{background:var(--i);color:#fff;border-color:var(--i)}
+header .btn{flex:none;padding:10px 20px;font-size:15px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0}
+
+/* sections */
+section{padding:88px 0;border-top:1px solid var(--l)}.alt{background:var(--p2)}
+.ref{font-size:14px;color:var(--m);margin:0 0 14px;max-width:none;display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline}
+.ref b{font:700 13px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--r)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.lede{font-size:20px;line-height:1.6;color:var(--m)}
+.note{font-size:15px;color:var(--m)}
+
+/* figures */
+figure{margin:0}
+figure img{width:100%;height:auto;display:block;cursor:zoom-in;aspect-ratio:16/9;object-fit:cover;background:#ddd;border:1px solid var(--l);border-radius:10px;box-shadow:var(--sh)}
+figcaption{font-size:14.5px;color:var(--m);padding-top:10px;max-width:60ch}figcaption b{color:var(--r);font-weight:700}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(360px,100%),1fr));gap:30px 24px}
+.bg4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.bg4 figure img{aspect-ratio:4/3}
+
+/* hero */
+.hero{border:0;padding:56px 0 0;background:radial-gradient(700px 360px at 92% 4%,rgba(196,18,48,.07),transparent 62%),var(--p)}
+.hero .g2{grid-template-columns:1fr 1.05fr;gap:56px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:9px;background:var(--w);border:1px solid var(--l);border-radius:999px;padding:7px 16px;font:700 14.5px var(--sans);color:var(--rd);margin-bottom:26px}
+.badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--r)}
+.hero h1{margin-bottom:.4em}.hl{color:var(--r)}
+.hero .lede{max-width:30em}
+.mini{display:grid;gap:9px;max-width:420px;margin:28px 0 0;font:600 14.5px var(--sans)}
+.mini div{display:grid;grid-template-columns:128px 1fr;align-items:center;gap:12px}
+.mini b{display:block;height:9px;background:var(--l);border-radius:5px;overflow:hidden}.mini b::after{content:"";display:block;height:100%;border-radius:5px}
+.mini .up::after{background:var(--g);width:65%;animation:up 1.6s .9s ease forwards}.mini .dn::after{background:var(--r);width:50%;animation:dn 1.6s .9s ease forwards}
+@keyframes up{to{width:92%}}@keyframes dn{to{width:12%}}
+.mini em{font-style:normal;font-weight:400;font-size:15px;color:var(--m)}
+.shot{position:relative;padding:8px 0 4px}
+.shot img{transform:rotate(1.3deg);border-color:var(--bd)}
+.shot figcaption{position:relative;background:var(--w);border-radius:8px;box-shadow:var(--sh);padding:14px 18px;margin:-30px 4% 0 8%;transform:rotate(-1.3deg);max-width:none;font-size:15px;line-height:1.5}
+.tg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.tg .btn{font-size:13px;padding:4px 13px;border-radius:999px;background:var(--w);color:var(--i);border-color:var(--bd)}
+.tg .btn:hover{background:var(--p2)}.tg .btn[aria-pressed=true]{background:var(--i);color:#fff;border-color:var(--i)}
+.facts{display:grid;grid-template-columns:repeat(6,auto);justify-content:space-between;gap:10px 24px;margin:64px 0 0;padding:26px 0;list-style:none;border-top:1px solid var(--l);font-size:15px;color:var(--m)}
+.facts li{margin:0}.facts b{color:var(--i);font-weight:800}
+.hero .g2>*{animation:rise .7s ease both}.hero .g2>figure{animation-delay:.15s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* cards */
+.is,.isnt{background:var(--w);padding:26px 28px;border-radius:12px;border:1px solid var(--l);border-top:4px solid var(--g);box-shadow:var(--sh)}.isnt{border-top-color:var(--r)}.is h3,.isnt h3{margin-top:0}
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.fg>div{background:var(--w);border:1px solid var(--l);border-radius:12px;padding:24px 26px}
+.fg h3{margin:0 0 .4em;font-size:21px}.fg p{margin:0}
+.warn{background:var(--w);border:1px solid var(--l);border-left:5px solid var(--a);border-radius:8px;padding:16px 20px;margin:24px 0}.warn p:last-child{margin:0}
+blockquote{margin:0 0 1em;padding:4px 0 4px 20px;border-left:4px solid var(--r);font:500 22px/1.4 var(--serif);max-width:34em}
+blockquote .note{font:400 15px/1.5 var(--sans)}
+
+/* interactive demo card */
+.hud{background:var(--w);border:1px solid var(--l);border-radius:14px;box-shadow:var(--sh);padding:24px}
+.day{display:inline-flex;align-items:center;font:700 17px var(--sans)}.day i{display:inline-block;width:11px;height:11px;background:var(--a);border-radius:2px;margin-right:9px}
+.seg{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin:14px 0 10px}.seg b{height:16px;background:var(--l);border-radius:3px}.seg b.on{background:var(--r)}
+.rd{display:flex;flex-wrap:wrap;gap:6px 24px;font-weight:600;font-size:15px}
+.hud .cta{margin:14px 0 8px;gap:10px}
+.hud .btn{font-size:14.5px;padding:9px 16px;background:var(--w);color:var(--i);border-color:var(--bd)}.hud .btn:hover{background:var(--i);color:#fff;border-color:var(--i)}
+.hud .btn[aria-pressed=true]{background:var(--i);color:#fff;border-color:var(--i)}
+
+/* tables */
+.t{width:100%;border-collapse:separate;border-spacing:0;font-size:16px;background:var(--w);border:1px solid var(--l);border-radius:12px;overflow:hidden}
+.t th,.t td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--l);vertical-align:top;font-weight:400}
+.t tbody th{font-weight:600}
+.t thead th{font:700 12.5px var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--m);background:var(--p2);white-space:nowrap}
+.t tbody tr:last-child>*{border-bottom:0}
+.t td+td,.t th+td{font-variant-numeric:tabular-nums}
+.w{overflow-x:auto}.w .t{min-width:600px}
+.bar{display:block;height:6px;background:var(--l);position:relative;margin-top:6px;min-width:90px;border-radius:3px}.bar s{display:block;height:100%;background:var(--r);border-radius:3px}.bar:after{content:'';position:absolute;left:84%;top:-4px;bottom:-4px;width:2px;background:var(--i)}#ev td:nth-child(2) s{background:var(--i)}
+
+/* faq */
+details{border-bottom:1px solid var(--l);padding:16px 0;max-width:780px}summary{font-weight:600;cursor:pointer}details p{margin:10px 0 0}
+
+/* closing band + footer */
+.cb{background:var(--i);color:#fff;text-align:center;padding:84px 0;border-top:0}.cb h2{margin-bottom:.3em;color:#fff}.cb p{margin:0 auto 24px;color:#d8d1c8}
+.cb .btn{background:var(--w);color:var(--r);border-color:var(--w)}.cb .btn:hover{background:var(--p2);border-color:var(--p2)}
+footer{background:var(--p);padding:36px 0;border-top:1px solid var(--l);font-size:14.5px;color:var(--m)}footer p{max-width:none;margin:0}
+
+/* dialogs */
+dialog{width:min(1100px,96vw);height:min(720px,90vh);padding:0;border:0;background:#000;border-radius:10px}dialog::backdrop{background:#000c}
+.pb{display:flex;justify-content:space-between;align-items:center;background:var(--w);padding:6px 14px;font-size:15px;height:44px}.pb button{font-size:15px;cursor:pointer}
+dialog iframe{width:100%;height:calc(100% - 44px);border:0;display:block}
+#lb{width:min(1280px,96vw);height:auto;max-height:94vh;background:#fff;padding:12px;overflow:auto}#lb img{width:100%;height:auto;display:block;aspect-ratio:auto;cursor:auto;border:0;border-radius:0;box-shadow:none}#lb .btn{float:right;margin-bottom:8px;padding:4px 12px}
+
+/* responsive */
+@media(max-width:980px){header .wrap{flex-wrap:wrap}.brand{margin-right:auto}nav{order:3;flex-basis:100%;justify-content:flex-start;overflow-x:auto;gap:22px;padding-bottom:6px}.more{display:none}.x{display:inline}}
+@media(max-width:860px){.fg{grid-template-columns:1fr 1fr}.g2,.hero .g2{grid-template-columns:1fr;gap:36px}section{padding:60px 0}.hero{padding:36px 0 0}.bg4{grid-template-columns:1fr 1fr}.facts{grid-template-columns:repeat(3,auto);margin-top:44px}.shot img{transform:rotate(.8deg)}.shot figcaption{transform:rotate(-.8deg)}}
+@media(max-width:560px){.wrap{padding:0 20px}.fg{grid-template-columns:1fr}.facts{grid-template-columns:1fr 1fr}.shot figcaption{margin:-24px 2% 0 4%}.t th,.t td{padding:12px 14px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.mini .up::after{width:92%;animation:none}.mini .dn::after{width:12%;animation:none}.hero .g2>*{animation:none}}
+</style>
 </head>
 <body>
-
-<header class="site-header">
-  <div class="wrap">
-    <a href="#top" class="brand"><span class="brand-mark"></span>A.I. na lang!</a>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#premise">The Premise</a></li>
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#cast">The Cast</a></li>
-        <li><a href="#endings">Endings</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#feedback">Feedback</a></li>
-      </ul>
-    </nav>
-    <div class="header-right">
-      <a href="https://github.com/clarink03-cmd/-A.I.-na-lang-an-interactive-Visual-Novel" class="nav-icon-link" aria-label="View source on GitHub" target="_blank" rel="noopener">
-        <img src="assets/icons/github.svg" alt="" width="19" height="19">
-      </a>
-      <button class="nav-cta" data-open-play>Play in Browser</button>
-    </div>
-  </div>
-</header>
-
+<a class="sk" href="#about">Skip to content</a>
+<header><div class="wrap">
+<a class="brand" href="#top"><i></i>A.I. na lang!</a>
+<nav aria-label="Sections">
+<a href="#about">The Premise</a><a href="#gameplay">How It Works</a><a href="#story">The Cast</a><a href="#endings">Endings</a><a href="#evaluation">Evaluation</a><a href="#faq">FAQ</a>
+<details class="more"><summary>More</summary><div><a href="#strengths">Strengths</a><a href="#problem">The Problem</a><a href="#features">Features</a><a href="#limits">Limits</a><a href="#build">The Build</a><a href="https://forms.gle/zBszCVGWWDG3P3Hd6" target="_blank" rel="noopener">Feedback</a></div></details>
+<a class="x" href="#strengths">Strengths</a><a class="x" href="#problem">The Problem</a><a class="x" href="#features">Features</a><a class="x" href="#limits">Limits</a><a class="x" href="#build">The Build</a><a class="x" href="https://forms.gle/zBszCVGWWDG3P3Hd6" target="_blank" rel="noopener">Feedback</a>
+</nav>
+<a class="gh" href="https://github.com/clarink03-cmd/-A.I.-na-lang-an-interactive-Visual-Novel" target="_blank" rel="noopener" aria-label="Source code on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+<button class="btn" data-play>Play in Browser</button>
+</div></header>
 <main id="top">
 
-  <!-- ============ MY HERO AAAAAAAAAA (A typical hero section is designed to capture attention and usually contains the following core components FROM GOOGOOL) ============ -->
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <div class="hero-eyebrow"><span class="dot"></span>BSIT Capstone Project, Mabalacat City College, 2026</div>
-        <h1>Every shortcut<br>works. That's<br>the <em>problem.</em></h1>
-        <p class="hero-lede">A Filipino-English language visual novel about eight weeks in the life of a college student, and the AI that's always one tab away, ready to answer for you.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" data-open-play>▶ Play in Browser</button>
-          <a href="#premise" class="btn btn-secondary">Read the Premise</a>
-        </div>
-        <div class="hero-meta">
-          <span><strong>8</strong> weeks, one semester</span>
-          <span><strong>6</strong> possible endings</span>
-          <span><strong>Free</strong>, plays in any browser</span>
-        </div>
-      </div>
-      <div class="hero-art">
-        <div class="hero-frame">
-          <img src="assets/images/main_menu.webp" alt="Mabalacat City College campus, the setting for A.I. na lang!" loading="eager">
-        </div>
-        <div class="hero-frame-caption"><b>Fig. 0.</b> The campus this story is set on, Mabalacat City College, ICS Building.</div>
-      </div>
-    </div>
-  </section>
+<section class="hero"><div class="wrap">
+<div class="g2">
+<div>
+<span class="badge">BSIT Capstone Project, Mabalacat City College, 2026</span>
+<h1>Every shortcut works. <span class="hl">That's the problem.</span></h1>
+<p class="lede">A visual novel in Taglish, with an English mode, about one semester at Mabalacat City College and the AI tab that is always open. It does not fix AI over-reliance. It makes the cost visible, so students can notice it.</p>
+<div class="mini" aria-hidden="true"><div><span>Grade</span><b class="up"></b></div><div><span>Critical Thinking</span><b class="dn"></b></div><em>Use the AI: grade goes up, thinking goes down.</em></div>
+<div class="cta"><button class="btn" data-play>&#9654; Play in Browser</button><a class="btn o" href="#about">What it does and does not do</a></div>
+</div>
+<figure class="shot"><img id="hi" src="assets/images/game_day1_gate_tl.webp" alt="Game screenshot in Tagalog mode: Carl waves at the college gate on Day 1, with the grades button reading Tingnan ang Grades" width="1280" height="720"><figcaption><span class="tg" role="group" aria-label="Game language"><button class="btn" data-lang="tl" aria-pressed="true">Tagalog</button><button class="btn" data-lang="en" aria-pressed="false">English</button></span><span id="hc"><b>Figure 1.</b> Day 1 at the college gate, Tagalog mode. Your best friend, Carl here, is chosen in the prologue. The bar at the top is the head-up display.</span></figcaption></figure>
+</div>
+<ul class="facts"><li>Prologue and <b>8</b> chapters</li><li><b>10</b> characters</li><li><b>6</b> endings</li><li><b>Tagalog</b> and English</li><li><b>3</b> colorblind modes</li><li><b>Free</b> in your browser</li></ul>
+</div></section>
 
-  <div class="hero-band">
-    <div class="wrap">
-      <div class="hero-band-item"><b>Built with</b>&nbsp;Ren'Py, deployed via RenPyWeb / WebAssembly</div>
-      <div class="hero-band-item"><b>Coursework-accurate</b>&nbsp;minigames, networking, Python, cybersecurity law</div>
-      <div class="hero-band-item"><b>Language</b>&nbsp;Taglish dialogue throughout</div>
-    </div>
-  </div>
+<section class="alt" id="about"><div class="wrap">
+<p class="ref"><b>The Premise</b><span>Thesis, Sections 1.1 and 1.3, and Section 5.2</span></p>
+<h2>An awareness tool, not a fix</h2>
+<p>Over-reliance on AI is a habit shaped by deadlines, grades, and tools that never close. A visual novel cannot undo that. This one does something narrower: it lets a student live through a simulated semester and see, choice by choice, what handing the thinking over costs.</p>
+<div class="g2" style="margin-top:32px">
+<div class="is"><h3>What it does</h3><ul>
+<li>Puts you in campus pressure points: deadlines, quizzes, group work, and citations.</li>
+<li>Shows the trade-off at once. The grade goes up, Critical Thinking goes down.</li>
+<li>Keeps a running AI-use count to the end, then explains which of six endings you reached and why.</li>
+<li>Teaches three Philippine laws (data privacy, cybercrime, copyright) through classmates and professors.</li></ul></div>
+<div class="isnt"><h3>What it does not do</h3><ul>
+<li>Solve, prevent, or reduce AI over-reliance. The study did not test that.</li>
+<li>Measure your real critical thinking or motivation. The meters are simulation variables.</li>
+<li>Detect, report, or discipline anyone. It is not a compliance tool and does not replace institutional AI policy.</li>
+<li>Say AI is bad. The penalty applies to one pattern: AI replacing your own work.</li></ul></div>
+</div></div></section>
 
-  <!-- ============ STOWY HALLUCINATED BY YOURS TRULY -CLARIN ============ -->
-  <section class="section" id="premise">
-    <div class="wrap premise-grid">
-      <div>
-        <p class="section-kicker">The Premise</p>
-        <h2>You play Alex. Or Alexa.<br>Either way, you decide.</h2>
-        <p class="wide">A third-year BSIT student, across eight weeks of the semester, choosing, again and again, how much to lean on AI versus how much to actually think a problem through. Networking configs, Python bugs, subnetting, cybersecurity law. Every week, a shortcut is sitting right there, and it always works. Your grade goes up either way.</p>
-        <p class="wide">What changes is what you're left with.</p>
-        <blockquote class="pull-quote">"Lean on AI enough times and you pass the semester with a Critical Thinking score you can't get back by finals week, no matter how many correct answers you rack up afterward."</blockquote>
-      </div>
-      <figure class="premise-figure">
-        <img src="assets/images/screenshot0002.jpg" alt="In-game screenshot: Alex, alone at 3am the night before a Networking midterm" loading="lazy">
-        <figcaption class="figure-caption"><b>Fig. 1.</b> Week 4, the night before the Networking midterm. Notes open on the laptop. Phone dead, charging.</figcaption>
-      </figure>
-    </div>
-  </section>
+<section id="strengths"><div class="wrap">
+<p class="ref"><b>Strengths</b><span>Thesis, Sections 3.5, 4.1, 4.3, and 4.4</span></p>
+<h2>What this project does well</h2>
+<p>Six strengths of the game and the study. Each one is something you can check in the build or the thesis.</p>
+<div class="fg" style="margin-top:32px">
+<div><h3>Free, in your browser</h3><p>No install and no account. It runs on a phone, a tablet, or a PC, and saves stay in your browser with nothing sent to a server. Beta respondents played on Android, iOS, and desktop.</p></div>
+<div><h3>Built from real coursework</h3><p>Quizzes in Networking, Programming, and Cybersecurity follow the material students actually meet in class, and three Philippine laws (RA 10173, RA 10175, RA 8293) are taught inside the story.</p></div>
+<div><h3>Local and in your language</h3><p>Set at Mabalacat City College, written in Taglish with a full English mode, with classmates and professors who sound like the people you know.</p></div>
+<div><h3>Rated Excellent on every category</h3><p>Alpha overall 4.47 from three IT professionals, Beta overall 4.77 from 53 invited MCC students, on ISO/IEC 25010:2023-based instruments. These are perceived-quality ratings. <a href="#evaluation">Read how to interpret them.</a></p></div>
+<div><h3>Open to every player</h3><p>Three colorblind modes with numbers on the meters, three text sizes, plain-language hints for non-IT players, shuffled answer order, and six save slots.</p></div>
+<div><h3>Designed by the team, with AI as a helper</h3><p>The characters, interactions, and dialogue were designed and written by the researchers. AI helped with troubleshooting, Python logic, and repetitive code such as screens and menus, and it did not replace the team's own ideas. The code is public and the limits are published here. <a href="#build">How AI was used.</a> <a href="#limits">The limits.</a></p></div>
+</div>
+<p class="note" style="margin-top:24px">Strengths describe the software and the study. They are not a claim that the game changes how students use AI.</p>
+</div></section>
 
-  <!-- ============ GAEM GUIDE ============ -->
-  <section class="section alt" id="how-it-works">
-    <div class="wrap">
-      <div class="section-head" style="max-width:640px;">
-        <p class="section-kicker">How It Works</p>
-        <h2>Everything you do is tracked. All the way to finals.</h2>
-      </div>
+<section id="problem"><div class="wrap">
+<p class="ref"><b>The Problem</b><span>Thesis, Chapter 2 (Sections 2.1 to 2.5, 2.10, and 2.11)</span></p>
+<h2>Why a game about this</h2>
+<p class="lede">The concern is documented close to home. What is missing is a way for students to feel the consequences themselves.</p>
+<div class="w"><table class="t"><thead><tr><th>Source</th><th>What it reports</th><th>Read it with care</th></tr></thead><tbody>
+<tr><th scope="row">Fernando et al. (2026)</th><td>651 students at accredited colleges in Pampanga reported moderate to high AI dependency, strongest for research and writing.</td><td>Self-reported, snowball sample. It shows perception, not measured skill loss.</td></tr>
+<tr><th scope="row">Gumiran and Ambida (2025)</th><td>Interviews and focus groups with 23 participants at a Philippine state university described academic dishonesty, over-reliance on automated output, and weaker independent analysis.</td><td>A qualitative single-case study.</td></tr>
+<tr><th scope="row">Kosmyna et al. (2025)</th><td>An MIT Media Lab preprint. Essay writers who used an AI chatbot showed weaker neural connectivity than those using a search engine or no tools. It coined "cognitive debt".</td><td>Small sample, and a commentary urges a more conservative reading. The game's meter is an analogue, not a measurement.</td></tr>
+<tr><th scope="row">DepEd policy</th><td>Project AGAP.AI (January 9, 2026) and DepEd Order No. 003, s. 2026 set AI guidance for basic education.</td><td>They do not cover colleges like MCC. The researchers found no single Philippine statute on AI use in education.</td></tr></tbody></table></div>
+<div class="g2" style="margin-top:40px"><div>
+<h3 style="margin-top:0">The gap this project fills</h3>
+<p>None of the reviewed studies tests a game-based intervention on AI misuse among Filipino college students. This project builds one, in the language students actually use, and makes it free to play in a browser. It has not yet tested whether it works.</p></div>
+<div><h3 style="margin-top:0">Sustainable Development Goals</h3>
+<p>SDG 4 (Quality Education), through responsible technology use and critical thinking. SDG 9 (Industry, Innovation, and Infrastructure, target 9.b), through local development and open browser-based deployment. This describes direction only, not SDG achievement.</p></div></div>
+</div></section>
 
-      <div class="figure-block" style="margin-bottom:56px;">
-        <div class="hud-mock" id="scrollCtMeter">
-          <div class="hud-day"><span class="sw"></span>Day 12, Umaga</div>
-          <div class="hud-meter">
-            <div class="hud-meter-label">CRITICAL THINKING</div>
-            <div class="hud-meter-track">
-              <div class="hud-meter-seg on"></div><div class="hud-meter-seg on"></div><div class="hud-meter-seg on"></div>
-              <div class="hud-meter-seg on"></div><div class="hud-meter-seg on"></div><div class="hud-meter-seg"></div>
-              <div class="hud-meter-seg"></div><div class="hud-meter-seg"></div><div class="hud-meter-seg"></div><div class="hud-meter-seg"></div>
-            </div>
-          </div>
-          <div class="hud-meter">
-            <div class="hud-meter-label" style="color:var(--maroon-light)">♥ MOTIVATION</div>
-            <div class="hud-mot-track"><div class="hud-mot-fill"></div></div>
-          </div>
-          <div class="hud-grades">Tingnan ang Grades</div>
-        </div>
-        <dl class="hud-legend">
-          <div>
-            <dt>Day / time indicator</dt>
-            <dd>Amber for daytime, navy for night, maroon for exam and submission days.</dd>
-          </div>
-          <div>
-            <dt>Critical Thinking</dt>
-            <dd>0–100, ten segments. Drops when you lean on AI, rises when you put the effort in yourself.</dd>
-          </div>
-          <div>
-            <dt>Motivation</dt>
-            <dd>0–100. Drops with failure or shame, rises with wins, however small.</dd>
-          </div>
-          <div>
-            <dt>Grades</dt>
-            <dd>Your standing in all three subjects, open to check at any time.</dd>
-          </div>
-        </dl>
-      </div>
-      <p class="table-caption" style="margin-top:-40px;margin-bottom:56px;"><b>Fig. 2.</b> The HUD, this quietly scrolls with the page, the same way it tracks you through the game.</p>
+<section class="alt" id="gameplay"><div class="wrap">
+<p class="ref"><b>How It Works</b><span>Thesis, Sections 4.1 and 4.2, and Appendix I (User Manual)</span></p>
+<h2>You choose. The meters keep score.</h2>
+<div class="g2"><div>
+<p>Each quiz offers a way to think it through and a way to skip thinking. Ask the AI and your subject grade rises while Critical Thinking drops by 10. The game adds one to an AI-use count it remembers until the ending. Answer it yourself and you can get it wrong (minus 5 to both), but a correct answer raises both. A Hint button explains the idea without giving away the answer.</p>
+<p>Grades start at 65. Below 60 in any subject is an INC (incomplete). Try the trade-off yourself using the values from the Week 3 Python quiz. The mode buttons recolor the meter with the game's own palettes.</p></div>
+<div class="hud" aria-label="Interactive demonstration of the game's meters">
+<span class="day"><i></i>Week 3, Umaga</span>
+<div class="seg" id="seg" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+<div class="rd" aria-live="polite"><span>Critical Thinking <span id="ct">50</span>/100</span><span>Grade <span id="gr">65</span></span><span>AI uses <span id="ai">0</span></span></div>
+<div class="cta"><button class="btn" data-m="own">Answer it right</button><button class="btn" data-m="bad">Answer it wrong</button><button class="btn" data-m="ai">Ask the AI</button><button class="btn" data-m="reset">Reset</button></div>
+<div class="cta" role="group" aria-label="Colorblind mode"><span class="note" style="align-self:center">Colorblind mode</span><button class="btn" data-cb="off" aria-pressed="true">Off</button><button class="btn" data-cb="rg" aria-pressed="false">Red-Green</button><button class="btn" data-cb="by" aria-pressed="false">Blue-Yellow</button></div>
+<p class="note" id="msg" style="margin:0">Demonstration only. These numbers are the game's rules, not a measure of you.</p></div></div>
 
-      <div class="mechanics-grid">
-        <div>
-          <h3>Every graded moment is a fork.</h3>
-          <p class="wide">Some weeks play out as timed multiple-choice minigames, VLAN configs, Python debugging, subnetting, RA 10175 scenarios, pulled from real coursework, not invented trivia. At each one, you get a choice.</p>
-        </div>
-        <div class="choice-compare">
-          <div class="choice-row">
-            <div class="choice-tag">DO IT YOURSELF</div>
-            <p>Slower. Riskier, you can get it wrong. But it's the only path that <strong>grows</strong> Critical Thinking instead of spending it.</p>
-          </div>
-          <div class="choice-row ai">
-            <div class="choice-tag">ASK AI</div>
-            <p>Instant. Boosts the subject grade, drops Critical Thinking, and adds to a running AI-use count the game remembers <strong>until the very end.</strong></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="g2" style="margin-top:48px">
+<figure><img src="assets/images/game_tutorial_hud.webp" alt="Game screenshot of the tutorial explaining that the Critical Thinking bar drops when you hand your thinking to AI" width="1280" height="719" loading="lazy"><figcaption><b>Figure 2.</b> The tutorial introduces the Critical Thinking bar before any choice counts.</figcaption></figure>
+<figure><img src="assets/images/game_ai_prompt.webp" alt="Game screenshot: a line spoken by the AI reading I can help with that" width="1280" height="721" loading="lazy"><figcaption><b>Figure 3.</b> The AI never refuses. That is the point of the scenario.</figcaption></figure></div>
 
-  <!-- ============ CASTS / SUBJECTS ============ -->
-  <section class="section" id="cast">
-    <div class="wrap">
-      <div class="section-head" style="max-width:640px;">
-        <p class="section-kicker">The Cast</p>
-        <h2>Three subjects. Three professors. One you.</h2>
-        <p>Fall under 60 in any subject by finals, and it's marked <strong>INC</strong>, incomplete.</p>
-      </div>
+<h3>A quiz, step by step</h3>
+<p class="note">Click any figure to enlarge it.</p>
+<div class="gal">
+<figure><img src="assets/images/game_quiz_python.webp" alt="Python Debug Challenge question about the error produced by adding text to a number, with an Ask the AI option" width="1280" height="720" loading="lazy"><figcaption><b>Figure 4.</b> A Python debugging question. Ask the AI is always on screen.</figcaption></figure>
+<figure><img src="assets/images/game_quiz_hint.webp" alt="Hint panel explaining that Python cannot join text to a number without converting it" width="1280" height="718" loading="lazy"><figcaption><b>Figure 5.</b> The hint explains the idea, not the answer, for players without an IT background.</figcaption></figure>
+<figure><img src="assets/images/game_quiz_ai_answer.webp" alt="Result card titled The AI's answer showing Critical Thinking minus 10 and Grade plus 5" width="1280" height="717" loading="lazy"><figcaption><b>Figure 6.</b> Using the AI: grade plus 5, Critical Thinking minus 10.</figcaption></figure>
+<figure><img src="assets/images/game_ai_answered_summary.webp" alt="Screen reading The AI answered, fast, correct, nothing thought through, with an AI answers count of 15" width="1280" height="718" loading="lazy"><figcaption><b>Figure 7.</b> The running AI-use count is shown back to the player.</figcaption></figure>
+<figure><img src="assets/images/game_quiz_correct.webp" alt="Result card reading Correct with Critical Thinking plus 8 and Grade plus 5" width="1280" height="720" loading="lazy"><figcaption><b>Figure 8.</b> Answering it yourself and getting it right raises both values.</figcaption></figure>
+<figure><img src="assets/images/game_quiz_wrong.webp" alt="Result card reading Not quite, try again with Critical Thinking minus 5 and Grade minus 5" width="1280" height="720" loading="lazy"><figcaption><b>Figure 9.</b> Getting it wrong costs both values, then the question repeats with an explanation.</figcaption></figure>
+<figure><img src="assets/images/game_grade_results.webp" alt="Grade results screen with Networking A, Programming C, Cybersecurity D, Critical Thinking 0 out of 100, and 14 AI answers" width="1280" height="720" loading="lazy"><figcaption><b>Figure 10.</b> Grade results after a submission week. Passing grades can hide a Critical Thinking score of 0.</figcaption></figure>
+</div></div></section>
 
-      <table class="subject-table">
-        <thead>
-          <tr><th>Professor</th><th>Subject</th><th>What's on the line</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="subj-name">Mr. Earns</td>
-            <td>Networking</td>
-            <td>Routing protocols, VLAN configuration, subnetting under a clock.</td>
-          </tr>
-          <tr>
-            <td class="subj-name">Mr. Kai</td>
-            <td>Programming</td>
-            <td>Python functions and debugging, code you have to be able to explain, not just submit.</td>
-          </tr>
-          <tr>
-            <td class="subj-name">Ms. Iva</td>
-            <td>Cybersecurity</td>
-            <td>RA 10173 / RA 10175, and citations that have to trace back to something real.</td>
-          </tr>
-        </tbody>
-      </table>
+<section id="story"><div class="wrap">
+<p class="ref"><b>The Cast</b><span>Thesis, Section 1.3 (Narrative and Content Scope, Character Scope)</span></p>
+<h2>One semester, three subjects, ten characters</h2>
+<div class="g2"><div>
+<p>The story runs through a prologue and eight weekly chapters set in Mabalacat City College, written in Taglish with an English mode. You play Alex or Alexa. Your best friend, Carl or Carly, is chosen in the prologue, and that friend can be a steady companion or a source of peer pressure depending on your choices. Kent, Gabby, and Rey are classmates who act as a moral compass or a peer influence. Each of the ten characters has three expression states.</p>
+<table class="t"><thead><tr><th>Professor</th><th>Subject</th><th>Questions draw on</th></tr></thead><tbody>
+<tr><td>Mr. Earns</td><td>Networking</td><td>VLANs and subnetting</td></tr>
+<tr><td>Mr. Kai</td><td>Programming</td><td>Python debugging</td></tr>
+<tr><td>Ms. Iva</td><td>Cybersecurity</td><td>Data privacy, cybercrime, and citations</td></tr></tbody></table></div>
+<figure><img src="assets/images/game_chapter_card.webp" alt="Chapter title card reading Chapter 1, Day One na, Week 1" width="1280" height="720" loading="lazy"><figcaption><b>Figure 11.</b> Each chapter opens with a title card.</figcaption></figure></div>
+<div class="g2" style="margin-top:40px">
+<figure><img src="assets/images/game_ms_iva.webp" alt="Ms. Iva, the Cybersecurity professor, standing in a classroom with a hand on her chin" width="1280" height="720" loading="lazy"><figcaption><b>Figure 12.</b> Ms. Iva, the Cybersecurity professor.</figcaption></figure>
+<figure><img src="assets/images/game_week1_classmates.webp" alt="Three students in a classroom on Week 1, with Carly speaking" width="1280" height="720" loading="lazy"><figcaption><b>Figure 13.</b> Week 1 in class. Carly sits down next to you.</figcaption></figure></div>
+<h3>Where it happens</h3>
+<p class="note">Backgrounds are photographs. Character sprites were modeled in SculptGL from the team's sketches.</p>
+<div class="bg4">
+<figure><img src="assets/images/bg_campus_gate.webp" alt="The Mabalacat City College gate and guardhouse" loading="lazy"><figcaption><b>Figure 14.</b> Campus gate.</figcaption></figure>
+<figure><img src="assets/images/bg_campus.webp" alt="Mabalacat City College building and paved campus path" loading="lazy"><figcaption><b>Figure 15.</b> Campus grounds.</figcaption></figure>
+<figure><img src="assets/images/bg_bedroom.webp" alt="A cluttered bedroom with a wardrobe, drawers, and an electric fan" loading="lazy"><figcaption><b>Figure 16.</b> Bedroom, daytime.</figcaption></figure>
+<figure><img src="assets/images/bg_bedroom_night.webp" alt="The same bedroom at night, dark and blurred" loading="lazy"><figcaption><b>Figure 17.</b> Bedroom at night.</figcaption></figure></div>
+</div></section>
 
-      <div class="cast-strip">
-        <div class="cast-chip"><b>Carl</b> or <b>Carly</b>, your best friend since day one</div>
-        <div class="cast-chip"><b>Kent</b>, the one who's already three chapters ahead</div>
-        <div class="cast-chip"><b>Gabby</b>, loud, warm, keeps the group together</div>
-        <div class="cast-chip"><b>Rey</b>, says the least. Means the most when he does.</div>
-      </div>
-    </div>
-  </section>
+<section class="alt" id="features"><div class="wrap">
+<p class="ref"><b>Features</b><span>Current build</span></p>
+<h2>Built so anyone in the class can play it</h2>
+<div class="fg">
+<div><h3>Tagalog or English</h3><p>Switch in Preferences under Wika / Language. The figure at the top shows both.</p></div>
+<div><h3>Three colorblind modes</h3><p>Off, Red-Green, and Blue-Yellow, with palettes based on Okabe-Ito. The meter also shows numbers, so color is never the only cue. Try it in the demo.</p></div>
+<div><h3>Hints for non-IT players</h3><p>36 plain-language hints explain the idea behind a question, not the answer. Abbreviations such as VLAN are written out in full.</p></div>
+<div><h3>Fair quizzes</h3><p>Answer order shuffles each playthrough, a change made after Alpha feedback.</p></div>
+<div><h3>Your pace</h3><p>Three text sizes, music and sound sliders, six save slots, and Chapter Select with a starting-form choice: doing well, average, or not too well.</p></div>
+<div><h3>Free, in the browser</h3><p>No install and no account. Saves stay in your browser and nothing is sent to a server.</p></div></div>
+<h3 style="margin-top:56px">Three Philippine laws, taught inside the story</h3>
+<p>Each law gets a scene and a quiz. They are fictional scenarios, not legal advice.</p>
+<div class="w"><table class="t"><thead><tr><th>Law</th><th>What the story does with it</th></tr></thead><tbody>
+<tr><th scope="row">RA 10173, Data Privacy Act</th><td>Scene and quiz in the Cybersecurity storyline.</td></tr>
+<tr><th scope="row">RA 10175, Cybercrime Prevention Act</th><td>Scene and quiz in the Cybersecurity storyline.</td></tr>
+<tr><th scope="row">RA 8293, Intellectual Property Code</th><td>Gabby wants to repost Kent's hand-annotated notes. Kent explains Section 172 (a work is protected the moment it is created), Section 185 (fair use), and Section 193 (the author's right to be credited), then asks five questions, including who answers for work an AI produced. The quiz changes Critical Thinking only, not grades.</td></tr></tbody></table></div>
+<blockquote style="margin-top:28px">"Libre makita, hindi ibig sabihing libre gamitin."<br><span class="note">Kent. Free to see does not mean free to use.</span></blockquote>
+</div></section>
 
-  <!-- ============ SCREENS (REAL LIFE PHOTS!) ============ -->
-  <section class="section alt">
-    <div class="wrap">
-      <div class="section-head" style="max-width:640px;">
-        <p class="section-kicker">From the Build</p>
-        <h2>What it actually looks like</h2>
-      </div>
-      <div class="figure-row">
-        <figure class="figure-item">
-          <img src="assets/images/screenshot0003.jpg" alt="Networking midterm minigame, subnetting question, Critical Thinking at 8/100" loading="lazy">
-          <figcaption class="figure-caption"><b>Fig. 3.</b> A subnetting question, phone locked away for the exam.</figcaption>
-        </figure>
-        <figure class="figure-item">
-          <img src="assets/images/screenshot0004.jpg" alt="VLAN configuration minigame with the Ask AI option visible" loading="lazy">
-          <figcaption class="figure-caption"><b>Fig. 4.</b> The "Ask AI" option is always right there, that's the point.</figcaption>
-        </figure>
-        <figure class="figure-item">
-          <img src="assets/images/bg_canteen.webp" alt="The canteen, a recurring setting for the game's group scenes" loading="lazy">
-          <figcaption class="figure-caption"><b>Fig. 5.</b> The canteen, where the group actually talks to each other.</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
+<section id="endings"><div class="wrap">
+<p class="ref"><b>Endings</b><span>Thesis, Appendix I, Table 4 (Ending Conditions)</span></p>
+<h2>Six endings, decided by your final numbers</h2>
+<table class="t"><thead><tr><th>Ending</th><th>What decides it</th></tr></thead><tbody>
+<tr><td>The Real Deal</td><td>All grades 85 or above, no AI use, and Critical Thinking 75 or above.</td></tr>
+<tr><td>Solid Enough</td><td>All subjects passing, and none of the other conditions.</td></tr>
+<tr><td>At What Cost?</td><td>All subjects passing, more than three AI uses, and Critical Thinking below 55.</td></tr>
+<tr><td>Not Yet, But Getting There</td><td>At least one INC, with Critical Thinking and Motivation both 45 or above.</td></tr>
+<tr><td>See You Next Year</td><td>At least one INC, with Critical Thinking or Motivation below 45.</td></tr>
+<tr><td>Academic Integrity Issue</td><td>You gave a false answer to Ms. Iva in Chapter 6. This overrides the rest.</td></tr></tbody></table>
+<p class="note" style="margin-top:12px">Grades: A is 90 and above, B 80 to 89, C 70 to 79, D 60 to 69, INC below 60. After the two weakest endings, you can return to an earlier chapter and try again.</p>
+</div></section>
 
-  <!-- ============ ENDINGS ============ -->
-  <section class="section" id="endings">
-    <div class="wrap">
-      <div class="section-head" style="max-width:640px;">
-        <p class="section-kicker">Endings</p>
-        <h2>Your final Critical Thinking, Motivation, and AI-use count decide where you land.</h2>
-      </div>
-      <table class="endings-table">
-        <thead><tr><th>Ending</th><th>Roughly what it takes</th></tr></thead>
-        <tbody>
-          <tr class="caught">
-            <td class="ending-name">Caught</td>
-            <td class="ending-cond">Ms. Iva catches a hallucinated citation, an instant, separate ending, regardless of anything else.</td>
-          </tr>
-          <tr>
-            <td class="ending-name">Special Good</td>
-            <td class="ending-cond">All three grades ≥85, zero AI uses, Critical Thinking ≥75, did it entirely on your own, and did it well.</td>
-          </tr>
-          <tr>
-            <td class="ending-name">Good (Guilt)</td>
-            <td class="ending-cond">You passed everything, but leaned on AI more than 3 times and Critical Thinking fell below 55.</td>
-          </tr>
-          <tr>
-            <td class="ending-name">Good (Solid)</td>
-            <td class="ending-cond">You passed everything without tripping the guilt or special-good conditions.</td>
-          </tr>
-          <tr>
-            <td class="ending-name">Redemption</td>
-            <td class="ending-cond">At least one INC, but Critical Thinking and Motivation both held at ≥45, down, but not out.</td>
-          </tr>
-          <tr>
-            <td class="ending-name">Bad</td>
-            <td class="ending-cond">An INC, and Critical Thinking or Motivation fell below 45.</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="table-caption"><b>Table 1.</b> Your final stats are shown to you at the end regardless of which ending you land on.</p>
-    </div>
-  </section>
+<section id="evaluation"><div class="wrap">
+<p class="ref"><b>Evaluation</b><span>Thesis, Sections 3.6 and 4.3 (Tables 8 to 13)</span></p>
+<h2>How it was evaluated, and how to read the numbers</h2>
+<div class="g2"><div>
+<p>Both instruments follow ISO/IEC 25010:2023 software quality characteristics, plus a Content and Educational Effectiveness category. Maintainability was assessed in Alpha only.</p>
+<p><strong>Alpha:</strong> 3 IT professionals, 59 items, overall mean 4.47 (Excellent). Evaluator means ranged from 4.09 to 4.67.</p>
+<p><strong>Beta:</strong> 53 invited MCC students, 43 items, overall mean 4.77 (Excellent).</p>
+<div class="warn"><p><strong>Read the Beta number with care.</strong> 41 of the 53 respondents gave one rating to every item. The 12 who varied their answers gave a mean of 4.23. That is still Excellent, but only 0.03 above the 4.20 cutoff, and it is the more conservative figure.</p></div>
+<p>These scores show how evaluators and students perceived the software and its content. They are not evidence that playing the game improves critical thinking or changes AI use.</p></div>
+<div><table class="t" id="ev"><thead><tr><th>Category</th><th>Alpha (n = 3)</th><th>Beta (n = 53)</th></tr></thead><tbody>
+<tr><th scope="row">Functional Suitability</th><td>4.56</td><td>4.74</td></tr>
+<tr><th scope="row">Performance Efficiency</th><td>4.47</td><td>4.83</td></tr>
+<tr><th scope="row">Compatibility</th><td>4.56</td><td>4.80</td></tr>
+<tr><th scope="row">Interaction Capability</th><td>4.29</td><td>4.74</td></tr>
+<tr><th scope="row">Reliability</th><td>4.75</td><td>4.80</td></tr>
+<tr><th scope="row">Security</th><td>4.72</td><td>4.89</td></tr>
+<tr><th scope="row">Flexibility</th><td>4.25</td><td>4.84</td></tr>
+<tr><th scope="row">Safety</th><td>4.50</td><td>4.80</td></tr>
+<tr><th scope="row">Content and Educational Effectiveness</th><td>4.38</td><td>4.73</td></tr></tbody></table>
+<p class="note" style="margin-top:12px"><b>Table 1.</b> Category means on a 1 to 5 scale. The black tick marks 4.20, where Excellent begins. The two groups differ in size, recruitment, and raters, and no statistical test was run, so do not read the gap as improvement.</p></div></div>
+</div></section>
 
-<!-- ============ SETTINGS GALLERY WIP ============ -->
-<section class="section alt">
-  <div class="wrap">
-    <div class="section-head" style="max-width:640px;">
-      <p class="section-kicker">Where It Happens</p>
-      <h2>Eight weeks, one campus</h2>
-    </div>
-    <div class="settings-strip">
-      <figure><img src="assets/images/bg_campus_gate.webp" alt="Campus gate"><figcaption>Campus Gate</figcaption></figure>
-      <figure><img src="assets/images/bg_classroom.webp" alt="Classroom"><figcaption>Classroom</figcaption></figure>
-      <figure><img src="assets/images/bg_lab.webp" alt="Computer lab"><figcaption>Computer Lab</figcaption></figure>
-      <figure><img src="assets/images/bg_hallway.webp" alt="Hallway"><figcaption>Hallway</figcaption></figure>
-      <figure><img src="assets/images/bg_bedroom_night.webp" alt="Bedroom at night"><figcaption>3 AM</figcaption></figure>
-      <figure><img src="assets/images/bg_zoom.webp" alt="Laptop screen glow"><figcaption>The Tab That's Always Open</figcaption></figure>
-    </div>
-  </div>
-</section>
+<section class="alt" id="limits"><div class="wrap">
+<p class="ref"><b>Limits</b><span>Thesis, Sections 1.3, 3.7, 4.3.3, and 5.3</span></p>
+<h2>Limits and next steps</h2>
+<p>What the project does not claim, and what comes next.</p>
+<div class="w"><table class="t"><thead><tr><th>Limit</th><th>What it means</th><th>Next step</th></tr></thead><tbody>
+<tr><th scope="row">Effect on thinking not measured</th><td>No pre and post test and no comparison group. The evaluation is descriptive, not causal.</td><td>Test with a comparison group or pre and post measures.</td></tr>
+<tr><th scope="row">Small, non-probability samples</th><td>3 Alpha evaluators and 53 invited Beta respondents, 41 of whom rated every item the same.</td><td>Add attention checks and mixed-wording items, and record each session's setting and play time.</td></tr>
+<tr><th scope="row">One campus, one kind of AI</th><td>Mabalacat City College only, and text-based AI tools only.</td><td>Other campuses can fork and localize the open repository.</td></tr>
+<tr><th scope="row">Newest features not yet evaluated</th><td>The colorblind modes and English mode were added after Alpha and Beta.</td><td>Evaluate them with players, including colorblind users.</td></tr>
+<tr><th scope="row">Mobile and extras</th><td>Desktop is the primary layout. Mobile layout differences are not claimed to be resolved. No haptic feedback or trailer yet.</td><td>Mobile layout fixes.</td></tr>
+<tr><th scope="row">Sound-effect licensing</th><td>Sources were not recorded, so licensing cannot be documented.</td><td>Replace with documented, licensed assets and review under RA 8293.</td></tr></tbody></table></div>
+</div></section>
 
-  <!-- ============ CANDOR / THE IRONY ============ -->
-  <section class="section">
-    <div class="wrap">
-      <div class="candor-block">
-        <p class="section-kicker">The Humorous Irony of this project.</p>
-        <h2>A student used AI to help build a game about AI dependence. Isn't that the exact contradiction?</h2>
-        <p class="wide">No, and the distinction is the same one the game is trying to teach. The in-game penalty for using AI doesn't fire because AI was used. It fires when AI use replaces understanding, when the grade boost is collected without the debugging, the subnetting math, or the citation-checking ever actually happening in the player's own head.</p>
-        <p class="wide">Every fix across this project's build log started with "here's the root cause" before a single line changed. That's the difference between using a tool to move faster and using a tool to skip the part where you'd have learned something.</p>
-        <blockquote class="pull-quote">AI is not supposed to be a crutch, or cheat code, or something that replaces critical thinking. But every change must be embraced, in order not to be crushed under it. -Developers, 2026</blockquote>
-      </div>
-    </div>
-  </section>
+<section id="build"><div class="wrap">
+<p class="ref"><b>The Build</b><span>Thesis, Sections 3.3 to 3.7 and 4.4</span></p>
+<h2>How it was built, and the ethics around it</h2>
+<div class="g2"><div>
+<h3 style="margin-top:0">Technology</h3>
+<p>Written in Ren'Py 8.5.3 and Python, compiled to WebAssembly, and hosted on GitHub Pages at no recurring cost. The game has no server, accounts, or database. Saves stay in your browser.</p>
+<h3>AI was used to build this game</h3>
+<p>The story, characters, interactions, dialogue, choices, and scoring logic were designed and written by the researchers, who also wrote a design specification. Several AI tools helped the researchers with troubleshooting, Python logic, and repetitive code such as screens and menus. The lead developer debugged, audited, and revised that code. Every AI-assisted change was reviewed and tested by a person. The full account is in the thesis, Section 3.7. AI helped the researchers and did not replace their ideas.</p>
+<p>No generative AI service runs inside the game. The game's lesson is not "never use AI". It is the difference between a tool that speeds you up and one that replaces the learning.</p>
+<p>The work followed seven iterations and one post-evaluation revision, not fixed Scrum sprints. The log is in the thesis, with commits as evidence.</p></div>
+<div>
+<h3 style="margin-top:0">Law and data privacy</h3>
+<p>RA 10173 (Data Privacy Act), RA 10175 (Cybercrime Prevention Act), and RA 8293 (Intellectual Property Code) appear in the game as fictional scenarios with quizzes. They are not legal advice. The Beta questionnaire was anonymous by default, contact fields were optional, and results are reported as group data.</p>
+<h3>Team and advisers</h3>
+<table class="t"><tbody>
+<tr><th scope="row">Lead game developer and QA</th><td>Kylle Benedict Clarin</td></tr>
+<tr><th scope="row">Character design and sprites</th><td>Christian David F. Morgan</td></tr>
+<tr><th scope="row">Landing page draft</th><td>Neil Ayangel C. Cecilio</td></tr>
+<tr><th scope="row">Technical adviser</th><td>Engr. Ernie Lee E. Pineda, MIT</td></tr>
+<tr><th scope="row">Capstone instructor</th><td>Engr. Dennis L. Tacadena, DIT</td></tr></tbody></table>
+<p style="margin-top:16px"><a href="https://github.com/clarink03-cmd/-A.I.-na-lang-an-interactive-Visual-Novel" target="_blank" rel="noopener">Source code and commit history on GitHub</a></p></div></div>
+</div></section>
 
-  <!-- ============ NAMEPLATE QUOTE ============ -->
-  <section class="section tight">
-    <div class="wrap nameplate-quote">
-      <p>"Kailan nagiging crutch ang isang tool?"</p>
-      <div class="nameplate-attr"><span class="hairline"></span>Ms. Iva<span class="hairline"></span></div>
-    </div>
-  </section>
+<section class="alt" id="faq"><div class="wrap">
+<p class="ref"><b>FAQ</b><span>Thesis, Appendix I (User Manual)</span></p>
+<h2>Before you play</h2>
+<details><summary>Do I need to know Filipino?</summary><p>Dialogue is Taglish, the Tagalog and English mix most students speak. Prefer English? Switch it in Preferences under Wika / Language.</p></details>
+<details><summary>Do I need an IT background?</summary><p>No. The quizzes cover Networking, Programming, and Cybersecurity, and the Hint button explains the idea behind each question.</p></details>
+<details><summary>Is there a colorblind mode?</summary><p>Yes. In Preferences, choose Off, Red-Green, or Blue-Yellow. The meter also shows numbers, so color is never the only signal.</p></details>
+<details><summary>Does choosing Ask the AI lock me out of an ending?</summary><p>No choice stops the story. Your AI-use count and Critical Thinking are two of the values that decide the ending. Zero AI use is one condition for The Real Deal.</p></details>
+<details><summary>Where does my progress go?</summary><p>Six save slots, stored in your browser on that device. Nothing is sent to a server. Saves are lost if you clear browser data or play in a private window.</p></details>
+<details><summary>Can I play on my phone?</summary><p>Yes, the same build runs in mobile browsers. Rotate to landscape. The desktop layout is the primary one, and the HUD can overlap on narrow screens.</p></details>
+<details><summary>Does the game prove students think better after playing?</summary><p>No. The evaluation rated software and content quality and collected self-perceptions. Testing the effect on critical thinking and AI use, with a comparison group or pre and post measures, is listed as future work.</p></details>
+<details><summary>Is the game free?</summary><p>Yes. It runs in the browser with no download. The first load needs a connection because some assets stream in the background.</p></details>
+</div></section>
 
-  <!-- ============ FAQ ============ -->
-  <section class="section alt" id="faq">
-    <div class="wrap" style="max-width:760px;">
-      <div class="section-head">
-        <p class="section-kicker">FAQ</p>
-        <h2>Before you play</h2>
-      </div>
-
-      <div class="faq-item open">
-        <button class="faq-q">Do I need to know Filipino to play?<span class="plus"></span></button>
-        <div class="faq-a"><p>Mostly Taglish, a natural mix of Tagalog and English, the way most Filipino college students actually talk. If you understand casual Filipino conversation, you'll follow it fine.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Do the minigames require real IT knowledge?<span class="plus"></span></button>
-        <div class="faq-a"><p>No prior knowledge needed to play through the story, but every question is pulled from real coursework (networking, Python, cybersecurity law), not invented trivia, so it holds up if you do know the subject.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Does choosing "Ask AI" ever lock me out of an ending?<span class="plus"></span></button>
-        <div class="faq-a"><p>Not directly, every choice keeps the story moving. But your AI-use count is remembered for the entire eight weeks, and it's one of the values that decides which of the six endings you land on.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Is this free? Do I need to install anything?<span class="plus"></span></button>
-        <div class="faq-a"><p>Free, and it runs in your browser, no download. Built in Ren'Py and exported to WebAssembly.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">How long does a playthrough take?<span class="plus"></span></button>
-        <div class="faq-a"><p>Roughly 60–90 minutes for one ending, start to finish. Six endings means it's worth a second look.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ BETA TEST FEEDBACK ============ -->
-  <section class="section alt" id="feedback">
-    <div class="wrap" style="max-width:760px;">
-      <div class="section-head">
-        <p class="section-kicker">Beta Test Feedback</p>
-        <h2>Played it? This questionnaire is for you, sample or not.</h2>
-      </div>
-      <p class="wide">This is the Beta Test Questionnaire for BSIT student end-users, and it's open to two groups:</p>
-      <ul class="wide" style="padding-left:20px;margin:0 0 16px;">
-        <li><strong>The official 60-student purposive sample</strong>, formally invited as part of this capstone's research methodology.</li>
-        <li><strong>Everyone else</strong> who found and played the game out of their own interest, sample or not.</li>
-      </ul>
-      <p class="wide">The very first question on the form simply asks which group you're in, and routes you accordingly, so there's nothing to figure out beforehand. Every response, either way, feeds directly into the study's evaluation.</p>
-      <div class="hero-actions" style="justify-content:center;">
-        <a href="https://forms.gle/zBszCVGWWDG3P3Hd6" class="btn btn-primary" target="_blank" rel="noopener">Take the Beta Test Questionnaire</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CTA ============ -->
-  <section class="cta-band">
-    <div class="wrap">
-      <h2>Eight weeks. One semester.<br>Do you know how much you actually lean on it?</h2>
-      <p class="wide" style="margin-left:auto;margin-right:auto;">Free, plays in any browser, no download required.</p>
-      <div class="hero-actions">
-        <button class="btn btn-primary" data-open-play>▶ Play in Browser</button>
-      </div>
-    </div>
-  </section>
-
+<section class="cb"><div class="wrap">
+<h2>Do you know how much you lean on it?</h2>
+<p>Eight weeks. One semester. A few minutes to find out how the game sees it.</p>
+<button class="btn" data-play>Play in Browser</button>
+<p class="note" style="color:#ddd;margin:28px auto 0">Played it? <a style="color:#fff" href="https://forms.gle/zBszCVGWWDG3P3Hd6" target="_blank" rel="noopener">Share feedback</a>. The formal Beta evaluation (September 15 to 28, 2026) is reported in Chapter 4 of the thesis.</p>
+</div></section>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand">A.I. na lang!</div>
-        <p style="margin:6px 0 0;max-width:40ch;">A BSIT capstone project, Mabalacat City College, Institute of Computing Studies, 2026.</p>
-      </div>
-      <ul class="footer-links">
-        <li><a href="#premise">Premise</a></li>
-        <li><a href="#endings">Endings</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#feedback">Beta Test Questionnaire</a></li>
-        <!-- GITHUB REPO LINK, replace # once repo is live -->
-        <li><a href="#" target="_blank" rel="noopener">Source on GitHub</a></li>
-      </ul>
-    </div>
-  </div>
-</footer>
+<footer><div class="wrap"><p>'A.I. na lang!' A Web-Based Interactive Visual Novel on AI Misutilization and Its Impact on Critical Thinking. Capstone project, Institute of Computing Studies, Mabalacat City College, Mabalacat City, Pampanga. Laws mentioned in the game are shown as fictional scenarios and are not legal advice.</p></div></footer>
 
-<!-- ============ PLAY MODAL ============ -->
-<div class="play-modal" id="playModal">
-  <div class="play-modal-backdrop" data-close-play></div>
-  <div class="play-modal-body">
-    <button class="play-modal-close" data-close-play aria-label="Close">&times;</button>
-    <iframe id="gameFrame" title="A.I. na lang!, game" allow="autoplay"></iframe>
-    <div class="play-modal-fallback">Modal not loading? <a href="./game/web-build/index.html" target="_blank" rel="noopener">Open the game directly</a>.</div>
-  </div>
-</div>
+<dialog id="lb" aria-label="Enlarged figure"><button class="btn o" id="lx">Close</button><img id="li" alt=""></dialog>
+<dialog id="pm" aria-label="A.I. na lang! game">
+<div class="pb"><span>On a phone, rotate to landscape. <a href="game/web-build/index.html" target="_blank" rel="noopener">Open in a new tab</a></span><button class="btn o" id="px" style="padding:4px 12px">Close</button></div>
+<iframe id="gf" title="A.I. na lang! game" allow="autoplay; fullscreen"></iframe>
+</dialog>
 
-<script src="js/main.js" defer></script>
+<script>
+const $=s=>document.querySelector(s),d=$('#pm'),f=$('#gf');
+document.querySelectorAll('[data-play]').forEach(b=>b.onclick=()=>{if(!f.getAttribute('src'))f.src='game/web-build/index.html';d.showModal()});
+$('#px').onclick=()=>d.close();d.onclick=e=>{if(e.target===d)d.close()};d.addEventListener('close',()=>{});
+const M={own:[8,5,0,'Answered it yourself, correct: Critical Thinking +8, grade +5.'],bad:[-5,-5,0,'Answered it yourself, wrong: Critical Thinking -5, grade -5.'],ai:[-10,5,1,'Asked the AI: Critical Thinking -10, grade +5, AI uses +1.']};
+const P={off:['#b91c1c','#b45309','#854d0e','#166534','#15803d'],rg:['#D55E00','#E69F00','#8C8C8C','#56B4E9','#0072B2'],by:['#B91C1C','#D55E00','#8C8C8C','#009E9E','#006D77']};let CB='off';
+let S={ct:50,gr:65,ai:0};
+function draw(t){$('#ct').textContent=S.ct;$('#gr').textContent=S.gr;$('#ai').textContent=S.ai;
+document.querySelectorAll('#seg b').forEach((b,i)=>{const on=i<Math.floor(S.ct/10);b.className=on?'on':'';b.style.background=on?P[CB][Math.floor(i/2)]:''});if(t)$('#msg').textContent=t}
+document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const k=b.dataset.m;
+if(k==='reset'){S={ct:50,gr:65,ai:0};draw('Reset. Demonstration only.');return}
+const m=M[k];S.ct=Math.max(0,Math.min(100,S.ct+m[0]));S.gr=Math.max(0,Math.min(100,S.gr+m[1]));S.ai+=m[2];draw(m[3])});
+document.querySelectorAll('[data-cb]').forEach(b=>b.onclick=()=>{CB=b.dataset.cb;document.querySelectorAll('[data-cb]').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
+draw();
+document.querySelectorAll('#ev td').forEach(td=>td.insertAdjacentHTML('beforeend','<span class="bar" aria-hidden="true"><s style="width:'+parseFloat(td.textContent)/5*100+'%"></s></span>'));
+const lb=$('#lb'),li=$('#li');document.querySelectorAll('figure img').forEach(i=>{i.tabIndex=0;i.setAttribute('role','button');const o=()=>{li.src=i.src;li.alt=i.alt;lb.showModal()};i.onclick=o;i.onkeydown=e=>{if(e.key==='Enter')o()}});$('#lx').onclick=()=>lb.close();lb.onclick=e=>{if(e.target===lb)lb.close()};
+const HL={tl:['assets/images/game_day1_gate_tl.webp','Game screenshot in Tagalog mode: Carl waves at the college gate on Day 1, with the grades button reading Tingnan ang Grades','Day 1 at the college gate, Tagalog mode. Your best friend, Carl here, is chosen in the prologue. The bar at the top is the head-up display.'],en:['assets/images/game_day1_gate.webp','Game screenshot in English mode: Carly at the college gate on Day 1, with the Critical Thinking and Motivation bars above the scene','The same gate in English mode, with Carly as the best friend. The grades button now reads View Grades.']};
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const h=HL[b.dataset.lang],i=$('#hi');i.src=h[0];i.alt=h[1];$('#hc').innerHTML='<b>Figure 1.</b> '+h[2];document.querySelectorAll('[data-lang]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+const mo=$('.more');if(mo){mo.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mo.open=false}));document.addEventListener('click',e=>{if(!mo.contains(e.target))mo.open=false})}
+</script>
 </body>
 </html>

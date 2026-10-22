@@ -6,9 +6,9 @@ init python:
     gui.init(1920, 1080)
 
 # ── FONT CONFIGURATION ────────────────────────────────────────────────────────
-## Place NotoSans-Regular.ttf in game/gui/fonts/ and update this path.
+## Dialogue font: ANLSans-Regular.ttf (renamed Latin subset). Keep font files small; web builds load them into RAM.
 ## Fallback: Ren'Py default font will be used if file is missing.
-define gui.default_font    = "gui/fonts/IndieFlower-Regular.ttf" # For dialogue
+define gui.default_font    = "gui/fonts/ANLSans-Regular.ttf" # For dialogue (Latin subset of Source Han Sans, ~100 KB, OFL)
 define gui.interface_font  = "gui/fonts/Marmelad-Regular.ttf" # For menus/buttons
 
 # ── TEXT SIZES (desktop base 1920×1080) ──────────────────────────────────────

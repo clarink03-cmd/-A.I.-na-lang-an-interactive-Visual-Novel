@@ -1,6 +1,5 @@
 ## game/sprites.rpy
 ## Sprite staging toolkit for A.I. na lang!  (movement + a sprite checker)
-##
 ## Usage (all are normal Ren'Py `show` statements; nothing here touches dialogue):
 ##   show gabby happy at center, hop          # excited / greeting
 ##   show kent stressed at left, jitter       # nervous
@@ -44,11 +43,6 @@ transform leftish:
 transform rightish:
     xalign 0.75
 
-## ── SPRITE CHECKER ───────────────────────────────────────────────────────────
-## Developer tool. Open the console (Shift+O, needs config.developer) and type:
-##     jump sprite_test
-## It shows every sprite one by one, so a missing/broken file shows up here
-## instead of in the middle of a chapter. Click through each one.
 define sprite_test_list = [
     "mc normal", "mc happy", "mc stressed",
     "alex normal", "alex happy", "alex stressed",

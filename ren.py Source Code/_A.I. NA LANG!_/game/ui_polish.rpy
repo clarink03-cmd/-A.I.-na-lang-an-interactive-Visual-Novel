@@ -15,8 +15,6 @@ init python:
         return renpy.translate_string(s)
 
     def say_fit_size(what, base, width=1480, height=200, line_h=1.3, char_w=0.6):
-        ## Rough fit: estimate the wrapped line count at a font size and shrink
-        ## (never below 26) until the text fits the box height.
         plain = re.sub(r"\{[^}]*\}", "", what)
         size = base
         while size > 26:
@@ -46,10 +44,6 @@ init python:
     _acr_state = {}
 
     def quiz_expand(text, skip=None, short_only=False):
-        ## Writes abbreviations out in full, e.g. "CFAA" -> "Computer Fraud and Abuse
-        ## Act (CFAA)". Returns (new_text, set_of_abbreviations_explained).
-        ## short_only: for answer options, only when the option is short, and never
-        ## for abbreviations the question already explained.
         skip = set(skip or [])
         done = set()
         if short_only and len(text.split()) > 8:

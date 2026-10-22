@@ -20,7 +20,8 @@ label splashscreen:
     hide text
     return
 label extras_setup:
-    $ raw_name = renpy.input("I see, you've been here before na.\nAnong pangalan ang nais mong gagamitin?", default=player_name, length=20)
+    call screen name_entry(_("I see, you've been here before na.\nAnong pangalan ang nais mong gagamitin?"), player_name)
+    $ raw_name = _return
     $ player_name = raw_name.strip() if raw_name.strip() else player_name
 
     menu:
@@ -69,12 +70,6 @@ label extras_setup:
 
     jump expression _extras_target
 
-
-# PROLOGUE
-## Restructured for the defense build: shorter cold open, HUD revealed only
-## when it is explained, the bars really move during the flashback and are
-## reset at the campus gate (so the Alpha/Beta balance is unchanged).
-default mc = mc_m   # set for real after the gender choice; default keeps lint/loads happy
 default pro_ct_base  = 50
 default pro_mot_base = 50
 
@@ -97,10 +92,10 @@ label prologue:
 
     $ mc = mc_m if player_gender == "male" else mc_f
 
-    $ raw_name = renpy.input(_("Ano'ng itatawag sa'yo ng ibang tao?"), default=player_name, length=20)
+    call screen name_entry(_("Ano'ng itatawag sa'yo ng ibang tao?"), player_name)
+    $ raw_name = _return
     $ player_name = raw_name.strip() if raw_name.strip() else player_name
 
-    ## ---- COLD OPEN: 3 AM, 2020 ----
     $ safe_stop("music")
     $ safe_play("music", "audio/bgm/bgm_sad.ogg", loop=True)
     call screen chapter_title("", "Prologue : Copy-Paste", "Online Classes, 2020, 'Isang beses lang naman.'")
@@ -123,7 +118,6 @@ label prologue:
     ai_voice "Walang makakaalam. Promise. (Maliban sa'yo na nagbabasa nito. Hi.)"
     mc "(...Sino ba 'yung kausap mo?)"
 
-    ## HUD reveal + the first real drop of the Critical Thinking bar
     $ pro_ct_base  = critical_thinking
     $ pro_mot_base = motivation
     $ show_hud = True
@@ -143,7 +137,6 @@ label prologue:
     mc "(Isa lang naman ito. Hindi na mauulit.)"
     pause 1.2
 
-    ## ---- THE NEW NORMAL ----
     scene black with dissolve
     pause 0.6
     scene bg_zoom with dissolve
@@ -152,6 +145,7 @@ label prologue:
     groupchat "CLASSMATE3: sino may notes? di ko na-catch buong lecture"
     pause 0.6
 
+    $ menu_q = _("What should I type in chat? Should I try to blend in?")
     menu:
         "(Typing) same guys, di rin gumagana mic ko HAHA":
             groupchat "[player_name]: same guys, di rin gumagana mic ko HAHA"
@@ -196,7 +190,6 @@ label prologue:
     narrator "Hindi ka naman talaga nag-iisa dito. Hindi niya man maintindihan lahat, pero nandiyan siya. Palagi."
     pause 1.0
 
-    ## ---- DAY ONE: CAMPUS GATE ----
     scene bg_campus_gate with dissolve
     $ day_label = "Day 1, Umaga"
     $ safe_play("music", "audio/bgm/bgm_campus.ogg", loop=True)
@@ -251,7 +244,7 @@ label prologue:
     pause 0.8
     $ critical_thinking = pro_ct_base
     $ motivation = pro_mot_base
-    narrator "Bagong semester. Bumalik sa gitna ang mga bar. Ang nakasanayan, hindi."
+    narrator "Bagong semester. New start for my new ways."
     $ tutorial_highlight = "all"
     $ renpy.notify("Day 1 starting")
     sys_voice "{color=#58a6ff}TUTORIAL{/color} Sa taas, palaging makikita kung anong araw na, ang Critical Thinking bar, at ang Motivation bar mo. Pindutin ang 'Tingnan ang Grades' para makita ang grado mo sa tatlong subject."
@@ -270,8 +263,6 @@ label prologue:
 
 
 label ai_used_result:
-    ## AI is the core mechanic, so it gets its own moment (screens in ui_polish.rpy).
-    ## This label is the ONE place that counts an AI answer.
     $ ai_use_count += 1
     play sound "audio/sfx/sfx_phone.ogg"
     with vpunch

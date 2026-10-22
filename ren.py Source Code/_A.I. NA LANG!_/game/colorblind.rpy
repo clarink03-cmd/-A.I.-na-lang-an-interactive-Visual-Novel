@@ -74,7 +74,7 @@ init -1 python:
 
     def cb_ct_seg(i, filled):
         ## i = 0..9 (segment index). Tier = 0..4, same buckets as before.
-        return cb("ct%d" % (i // 2)) if filled else CB_EMPTY_SEG
+        return cb("ct%d" % (i // 2)) if filled else tc(CB_EMPTY_SEG)
 
     def cb_who(who):
         ## Speaker-name recolor for the say screen. Returns `who` untouched

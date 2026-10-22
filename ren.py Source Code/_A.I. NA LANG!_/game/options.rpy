@@ -3,7 +3,7 @@
 
 define config.name = _("A.I. na lang!")
 
-define config.version = "v1.3"
+define config.version = "v1.4"
 
 define config.window_title = "A.I. na lang!, A Visual Novel"
 
@@ -13,6 +13,9 @@ define config.fast_skipping = True
 
 define config.thumbnail_width = 320
 define config.thumbnail_height = 180
+define config.image_cache_size_mb = 128
+define config.predict_statements = 12
+define config.rollback_length = 32
 
 init -1 python:
     config.physical_width = 1920

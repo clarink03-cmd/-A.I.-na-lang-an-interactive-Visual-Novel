@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
 <title>A.I. na lang! | A visual novel about the cost of the AI shortcut</title>
 <meta name="description" content="A visual novel capstone (Taglish, with an English mode) from Mabalacat City College. It does not fix AI over-reliance. It lets students live through a simulated semester and see what handing the thinking over costs.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,19 +14,22 @@
 if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}
 </script>
 <style>
-:root{--p:#FAF7F2;--p2:#F3EEE6;--w:#fff;--i:#2A2522;--m:#675F59;--r:#C41230;--rd:#9C0E26;--l:#E6DFD5;--a:#E0A82E;--g:#1F6B3A;--bd:#D9D1C5;--sh:0 1px 2px rgba(42,37,34,.06),0 12px 32px rgba(42,37,34,.09);--serif:'Fraunces','Source Serif 4',Georgia,'Times New Roman',serif;--sans:'Public Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+:root{--p:#FAF7F2;--p2:#F3EEE6;--w:#fff;--i:#2A2522;--m:#675F59;--r:#C41230;--rd:#9C0E26;--l:#E6DFD5;--a:#E0A82E;--g:#1F6B3A;--bd:#D9D1C5;--sh:0 1px 2px rgba(42,37,34,.06),0 12px 32px rgba(42,37,34,.09);--serif:'Fraunces','Source Serif 4',Georgia,'Times New Roman',serif;--sans:'Public Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;--rb:#C41230;--rbh:#9C0E26;--on:#fff;--hdr:rgba(250,247,242,.94);--cbg:#2A2522;--glow:rgba(196,18,48,.07);color-scheme:light}
+/* ambient dark mode: follows the system unless the visitor picks a theme with the header toggle */
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--p:#161311;--p2:#1D1916;--w:#221E1B;--i:#EDE6DD;--m:#A39A91;--r:#F0556B;--rd:#FF8D9B;--l:#322C28;--a:#E8B84A;--g:#4FB57A;--bd:#443B33;--on:#161311;--hdr:rgba(22,19,17,.92);--cbg:#0F0D0C;--glow:rgba(240,85,107,.13);--sh:0 1px 2px rgba(0,0,0,.45),0 12px 32px rgba(0,0,0,.38);color-scheme:dark}}
+:root[data-theme="dark"]{--p:#161311;--p2:#1D1916;--w:#221E1B;--i:#EDE6DD;--m:#A39A91;--r:#F0556B;--rd:#FF8D9B;--l:#322C28;--a:#E8B84A;--g:#4FB57A;--bd:#443B33;--on:#161311;--hdr:rgba(22,19,17,.92);--cbg:#0F0D0C;--glow:rgba(240,85,107,.13);--sh:0 1px 2px rgba(0,0,0,.45),0 12px 32px rgba(0,0,0,.38);color-scheme:dark}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:96px}
-body{margin:0;background:var(--p);color:var(--i);font:17px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--p);color:var(--i);transition:background-color .35s ease,color .35s ease;font:17px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.08;letter-spacing:-.01em;margin:0 0 .5em}
 h1{font-size:clamp(44px,6.2vw,80px);letter-spacing:-.025em;line-height:1.02}
 h2{font-size:clamp(30px,4vw,44px)}h3{font-size:22px;margin-top:1.3em}
 p{margin:0 0 1em;max-width:68ch}a{color:var(--rd)}ul{padding-left:1.1em;margin:0 0 1em}li{margin-bottom:.4em;max-width:68ch}
 .wrap{max-width:1160px;margin:0 auto;padding:0 28px}
-.sk{position:absolute;left:-999px}.sk:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:99}
+.sk{position:absolute;left:-999px}.sk:focus{left:8px;top:8px;background:var(--w);padding:8px;z-index:99}
 :focus-visible{outline:3px solid var(--i);outline-offset:3px}
 
 /* header */
-header{position:sticky;top:0;z-index:20;background:rgba(250,247,242,.94);-webkit-backdrop-filter:saturate(1.2) blur(8px);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--l)}
+header{position:sticky;top:0;z-index:20;background:var(--hdr);-webkit-backdrop-filter:saturate(1.2) blur(8px);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--l)}
 header .wrap{display:flex;align-items:center;gap:8px 26px;min-height:68px}
 .brand{font:700 24px var(--serif);color:var(--i);text-decoration:none;white-space:nowrap}
 .brand i{display:inline-block;width:12px;height:12px;background:var(--r);border-radius:2px;margin-right:9px;vertical-align:1px}
@@ -36,12 +41,13 @@ nav a:hover,nav summary:hover{color:var(--r)}
 .more>div{position:absolute;right:0;top:100%;background:var(--w);border:1px solid var(--l);border-radius:10px;box-shadow:var(--sh);padding:8px;min-width:170px;display:flex;flex-direction:column}
 .more>div a{padding:8px 12px;border-radius:6px}.more>div a:hover{background:var(--p2)}
 .x{display:none}
+.tt{flex:none;width:40px;height:40px;display:grid;place-items:center;padding:0;background:transparent;color:var(--i);border:1px solid var(--bd);border-radius:50%;cursor:pointer;transition:color .15s,border-color .15s}.tt:hover{color:var(--r);border-color:var(--r)}.tt svg{width:19px;height:19px;fill:currentColor}.tt .sun{display:none}.tt[aria-pressed=true] .sun{display:block}.tt[aria-pressed=true] .moon{display:none}
 .gh{display:flex;color:var(--i)}.gh:hover{color:var(--r)}.gh svg{width:26px;height:26px;fill:currentColor}
 
 /* buttons */
-.btn{font:700 16px/1.2 var(--sans);background:var(--r);color:#fff;border:1.5px solid var(--r);border-radius:5px;padding:13px 24px;cursor:pointer;text-decoration:none;display:inline-block;transition:background .15s,border-color .15s,color .15s}
-.btn:hover{background:var(--rd);border-color:var(--rd)}
-.btn.o{background:var(--w);color:var(--i);border-color:var(--bd)}.btn.o:hover{background:var(--i);color:#fff;border-color:var(--i)}
+.btn{font:700 16px/1.2 var(--sans);background:var(--rb);color:#fff;border:1.5px solid var(--rb);border-radius:5px;padding:13px 24px;cursor:pointer;text-decoration:none;display:inline-block;transition:background .15s,border-color .15s,color .15s}
+.btn:hover{background:var(--rbh);border-color:var(--rbh)}
+.btn.o{background:var(--w);color:var(--i);border-color:var(--bd)}.btn.o:hover{background:var(--i);color:var(--on);border-color:var(--i)}
 header .btn{flex:none;padding:10px 20px;font-size:15px}
 .cta{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0}
 
@@ -55,13 +61,13 @@ section{padding:88px 0;border-top:1px solid var(--l)}.alt{background:var(--p2)}
 
 /* figures */
 figure{margin:0}
-figure img{width:100%;height:auto;display:block;cursor:zoom-in;aspect-ratio:16/9;object-fit:cover;background:#ddd;border:1px solid var(--l);border-radius:10px;box-shadow:var(--sh)}
+figure img{width:100%;height:auto;display:block;cursor:zoom-in;aspect-ratio:16/9;object-fit:cover;background:var(--l);border:1px solid var(--l);border-radius:10px;box-shadow:var(--sh)}
 figcaption{font-size:14.5px;color:var(--m);padding-top:10px;max-width:60ch}figcaption b{color:var(--r);font-weight:700}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(360px,100%),1fr));gap:30px 24px}
 .bg4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.bg4 figure img{aspect-ratio:4/3}
 
 /* hero */
-.hero{border:0;padding:56px 0 0;background:radial-gradient(700px 360px at 92% 4%,rgba(196,18,48,.07),transparent 62%),var(--p)}
+.hero{border:0;padding:56px 0 0;background:radial-gradient(700px 360px at 92% 4%,var(--glow),transparent 62%),var(--p)}
 .hero .g2{grid-template-columns:1fr 1.05fr;gap:56px;align-items:center}
 .badge{display:inline-flex;align-items:center;gap:9px;background:var(--w);border:1px solid var(--l);border-radius:999px;padding:7px 16px;font:700 14.5px var(--sans);color:var(--rd);margin-bottom:26px}
 .badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--r)}
@@ -78,7 +84,7 @@ figcaption{font-size:14.5px;color:var(--m);padding-top:10px;max-width:60ch}figca
 .shot figcaption{position:relative;background:var(--w);border-radius:8px;box-shadow:var(--sh);padding:14px 18px;margin:-30px 4% 0 8%;transform:rotate(-1.3deg);max-width:none;font-size:15px;line-height:1.5}
 .tg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
 .tg .btn{font-size:13px;padding:4px 13px;border-radius:999px;background:var(--w);color:var(--i);border-color:var(--bd)}
-.tg .btn:hover{background:var(--p2)}.tg .btn[aria-pressed=true]{background:var(--i);color:#fff;border-color:var(--i)}
+.tg .btn:hover{background:var(--p2)}.tg .btn[aria-pressed=true]{background:var(--i);color:var(--on);border-color:var(--i)}
 .facts{display:grid;grid-template-columns:repeat(6,auto);justify-content:space-between;gap:10px 24px;margin:64px 0 0;padding:26px 0;list-style:none;border-top:1px solid var(--l);font-size:15px;color:var(--m)}
 .facts li{margin:0}.facts b{color:var(--i);font-weight:800}
 .hero .g2>*{animation:rise .7s ease both}.hero .g2>figure{animation-delay:.15s}
@@ -99,8 +105,8 @@ blockquote .note{font:400 15px/1.5 var(--sans)}
 .seg{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin:14px 0 10px}.seg b{height:16px;background:var(--l);border-radius:3px}.seg b.on{background:var(--r)}
 .rd{display:flex;flex-wrap:wrap;gap:6px 24px;font-weight:600;font-size:15px}
 .hud .cta{margin:14px 0 8px;gap:10px}
-.hud .btn{font-size:14.5px;padding:9px 16px;background:var(--w);color:var(--i);border-color:var(--bd)}.hud .btn:hover{background:var(--i);color:#fff;border-color:var(--i)}
-.hud .btn[aria-pressed=true]{background:var(--i);color:#fff;border-color:var(--i)}
+.hud .btn{font-size:14.5px;padding:9px 16px;background:var(--w);color:var(--i);border-color:var(--bd)}.hud .btn:hover{background:var(--i);color:var(--on);border-color:var(--i)}
+.hud .btn[aria-pressed=true]{background:var(--i);color:var(--on);border-color:var(--i)}
 
 /* tables */
 .t{width:100%;border-collapse:separate;border-spacing:0;font-size:16px;background:var(--w);border:1px solid var(--l);border-radius:12px;overflow:hidden}
@@ -116,21 +122,21 @@ blockquote .note{font:400 15px/1.5 var(--sans)}
 details{border-bottom:1px solid var(--l);padding:16px 0;max-width:780px}summary{font-weight:600;cursor:pointer}details p{margin:10px 0 0}
 
 /* closing band + footer */
-.cb{background:var(--i);color:#fff;text-align:center;padding:84px 0;border-top:0}.cb h2{margin-bottom:.3em;color:#fff}.cb p{margin:0 auto 24px;color:#d8d1c8}
-.cb .btn{background:var(--w);color:var(--r);border-color:var(--w)}.cb .btn:hover{background:var(--p2);border-color:var(--p2)}
+.cb{background:var(--cbg);color:#fff;text-align:center;padding:84px 0;border-top:0}.cb h2{margin-bottom:.3em;color:#fff}.cb p{margin:0 auto 24px;color:#d8d1c8}
+.cb .btn{background:#fff;color:#C41230;border-color:#fff}.cb .btn:hover{background:#F3EEE6;border-color:#F3EEE6}
 footer{background:var(--p);padding:36px 0;border-top:1px solid var(--l);font-size:14.5px;color:var(--m)}footer p{max-width:none;margin:0}
 
 /* dialogs */
 dialog{width:min(1100px,96vw);height:min(720px,90vh);padding:0;border:0;background:#000;border-radius:10px}dialog::backdrop{background:#000c}
 .pb{display:flex;justify-content:space-between;align-items:center;background:var(--w);padding:6px 14px;font-size:15px;height:44px}.pb button{font-size:15px;cursor:pointer}
 dialog iframe{width:100%;height:calc(100% - 44px);border:0;display:block}
-#lb{width:min(1280px,96vw);height:auto;max-height:94vh;background:#fff;padding:12px;overflow:auto}#lb img{width:100%;height:auto;display:block;aspect-ratio:auto;cursor:auto;border:0;border-radius:0;box-shadow:none}#lb .btn{float:right;margin-bottom:8px;padding:4px 12px}
+#lb{width:min(1280px,96vw);height:auto;max-height:94vh;background:var(--w);padding:12px;overflow:auto}#lb img{width:100%;height:auto;display:block;aspect-ratio:auto;cursor:auto;border:0;border-radius:0;box-shadow:none}#lb .btn{float:right;margin-bottom:8px;padding:4px 12px}
 
 /* responsive */
 @media(max-width:980px){header .wrap{flex-wrap:wrap}.brand{margin-right:auto}nav{order:3;flex-basis:100%;justify-content:flex-start;overflow-x:auto;gap:22px;padding-bottom:6px}.more{display:none}.x{display:inline}}
 @media(max-width:860px){.fg{grid-template-columns:1fr 1fr}.g2,.hero .g2{grid-template-columns:1fr;gap:36px}section{padding:60px 0}.hero{padding:36px 0 0}.bg4{grid-template-columns:1fr 1fr}.facts{grid-template-columns:repeat(3,auto);margin-top:44px}.shot img{transform:rotate(.8deg)}.shot figcaption{transform:rotate(-.8deg)}}
 @media(max-width:560px){.wrap{padding:0 20px}.fg{grid-template-columns:1fr}.facts{grid-template-columns:1fr 1fr}.shot figcaption{margin:-24px 2% 0 4%}.t th,.t td{padding:12px 14px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.mini .up::after{width:92%;animation:none}.mini .dn::after{width:12%;animation:none}.hero .g2>*{animation:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.mini .up::after{width:92%;animation:none}.mini .dn::after{width:12%;animation:none}.hero .g2>*{animation:none}body{transition:none}}
 </style>
 </head>
 <body>
@@ -139,10 +145,11 @@ dialog iframe{width:100%;height:calc(100% - 44px);border:0;display:block}
 <a class="brand" href="#top"><i></i>A.I. na lang!</a>
 <nav aria-label="Sections">
 <a href="#about">The Premise</a><a href="#gameplay">How It Works</a><a href="#story">The Cast</a><a href="#endings">Endings</a><a href="#evaluation">Evaluation</a><a href="#faq">FAQ</a>
-<details class="more"><summary>More</summary><div><a href="#strengths">Strengths</a><a href="#problem">The Problem</a><a href="#features">Features</a><a href="#limits">Limits</a><a href="#build">The Build</a><a href="https://forms.gle/zBszCVGWWDG3P3Hd6" target="_blank" rel="noopener">Feedback</a></div></details>
-<a class="x" href="#strengths">Strengths</a><a class="x" href="#problem">The Problem</a><a class="x" href="#features">Features</a><a class="x" href="#limits">Limits</a><a class="x" href="#build">The Build</a><a class="x" href="https://forms.gle/zBszCVGWWDG3P3Hd6" target="_blank" rel="noopener">Feedback</a>
+<details class="more"><summary>More</summary><div><a href="#strengths">Strengths</a><a href="#problem">The Problem</a><a href="#features">Features</a><a href="#limits">Limits</a><a href="#build">The Build</a><a href="https://forms.gle/Vz8ao6U6Ma7KZPko9" target="_blank" rel="noopener">Post Final Defense Major Revision Retest</a></div></details>
+<a class="x" href="#strengths">Strengths</a><a class="x" href="#problem">The Problem</a><a class="x" href="#features">Features</a><a class="x" href="#limits">Limits</a><a class="x" href="#build">The Build</a><a class="x" href="https://forms.gle/Vz8ao6U6Ma7KZPko9" target="_blank" rel="noopener">Post Final Defense Major Revision Retest</a>
 </nav>
 <a class="gh" href="https://github.com/clarink03-cmd/-A.I.-na-lang-an-interactive-Visual-Novel" target="_blank" rel="noopener" aria-label="Source code on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+<button class="tt" id="tt" type="button" aria-pressed="false" aria-label="Dark mode" title="Toggle dark mode"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
 <button class="btn" data-play>Play in Browser</button>
 </div></header>
 <main id="top">
@@ -368,7 +375,7 @@ dialog iframe{width:100%;height:calc(100% - 44px);border:0;display:block}
 <h2>Do you know how much you lean on it?</h2>
 <p>Eight weeks. One semester. A few minutes to find out how the game sees it.</p>
 <button class="btn" data-play>Play in Browser</button>
-<p class="note" style="color:#ddd;margin:28px auto 0">Played it? <a style="color:#fff" href="https://forms.gle/zBszCVGWWDG3P3Hd6" target="_blank" rel="noopener">Share feedback</a>. The formal Beta evaluation (September 15 to 28, 2026) is reported in Chapter 4 of the thesis.</p>
+<p class="note" style="color:#ddd;margin:28px auto 0">Played it? Take the <a style="color:#fff" href="https://forms.gle/Vz8ao6U6Ma7KZPko9" target="_blank" rel="noopener">Post Final Defense Major Revision Retest</a>. The formal Beta evaluation (September 15 to 28, 2026) is reported in Chapter 4 of the thesis.</p>
 </div></section>
 </main>
 
@@ -399,6 +406,11 @@ const lb=$('#lb'),li=$('#li');document.querySelectorAll('figure img').forEach(i=
 const HL={tl:['assets/images/game_day1_gate_tl.webp','Game screenshot in Tagalog mode: Carl waves at the college gate on Day 1, with the grades button reading Tingnan ang Grades','Day 1 at the college gate, Tagalog mode. Your best friend, Carl here, is chosen in the prologue. The bar at the top is the head-up display.'],en:['assets/images/game_day1_gate.webp','Game screenshot in English mode: Carly at the college gate on Day 1, with the Critical Thinking and Motivation bars above the scene','The same gate in English mode, with Carly as the best friend. The grades button now reads View Grades.']};
 document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const h=HL[b.dataset.lang],i=$('#hi');i.src=h[0];i.alt=h[1];$('#hc').innerHTML='<b>Figure 1.</b> '+h[2];document.querySelectorAll('[data-lang]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
 const mo=$('.more');if(mo){mo.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mo.open=false}));document.addEventListener('click',e=>{if(!mo.contains(e.target))mo.open=false})}
+const tt=$('#tt'),mq=matchMedia('(prefers-color-scheme: dark)');
+const isDark=()=>{const t=document.documentElement.dataset.theme;return t?t==='dark':mq.matches};
+const sync=()=>tt.setAttribute('aria-pressed',isDark());sync();
+tt.onclick=()=>{const t=isDark()?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('theme',t)}catch(e){}sync()};
+mq.addEventListener('change',sync);
 </script>
 </body>
 </html>

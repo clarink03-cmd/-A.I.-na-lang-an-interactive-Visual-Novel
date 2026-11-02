@@ -137,6 +137,49 @@ dialog iframe{width:100%;height:calc(100% - 44px);border:0;display:block}
 @media(max-width:860px){.fg{grid-template-columns:1fr 1fr}.g2,.hero .g2{grid-template-columns:1fr;gap:36px}section{padding:60px 0}.hero{padding:36px 0 0}.bg4{grid-template-columns:1fr 1fr}.facts{grid-template-columns:repeat(3,auto);margin-top:44px}.shot img{transform:rotate(.8deg)}.shot figcaption{transform:rotate(-.8deg)}}
 @media(max-width:560px){.wrap{padding:0 20px}.fg{grid-template-columns:1fr}.facts{grid-template-columns:1fr 1fr}.shot figcaption{margin:-24px 2% 0 4%}.t th,.t td{padding:12px 14px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.mini .up::after{width:92%;animation:none}.mini .dn::after{width:12%;animation:none}.hero .g2>*{animation:none}body{transition:none}}
+
+/* visual polish */
+::selection{background:var(--r);color:var(--on)}
+.btn{transition:background .15s,border-color .15s,color .15s,transform .1s,box-shadow .15s}
+.btn:active{transform:translateY(1px)}
+header{transition:box-shadow .2s}
+.facts{gap:0;padding:0;border:1px solid var(--l);border-radius:12px;background:var(--w);overflow:hidden;grid-template-columns:repeat(6,1fr);box-shadow:var(--sh)}
+.facts li{padding:18px 16px;text-align:center;border-left:1px solid var(--l);line-height:1.35}
+.facts li:first-child{border-left:0}
+.facts b{font:700 22px var(--serif);color:var(--r)}
+.shot img{transition:transform .4s ease}.shot:hover img{transform:rotate(.4deg)}
+.is,.isnt{background:linear-gradient(180deg,var(--w),var(--w))}
+.fg>div{border-top:3px solid var(--bd);transition:border-color .2s}.fg>div:hover{border-top-color:var(--r)}
+.t tbody tr:hover>*{background:var(--p2)}
+.t tbody tr>*{transition:background .15s}
+.warn{background:color-mix(in srgb,var(--a) 11%,var(--w))}
+blockquote{background:var(--w);padding:22px 26px;border-radius:0 12px 12px 0;box-shadow:var(--sh)}
+.hud{border-top:4px solid var(--r)}
+.seg b{transition:background .3s ease}
+details{transition:background .2s}
+details[open]{background:var(--w);padding-left:18px;padding-right:18px;border-radius:10px;border-bottom-color:transparent;margin:4px 0}
+summary{list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font:600 24px/1 var(--sans);color:var(--r);flex:none;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+.more summary::after{content:'';font:inherit;transform:none;color:inherit;margin-left:7px}
+.more[open] summary::after{transform:none}
+.more summary{display:block}
+.cb{background:radial-gradient(600px 260px at 50% 0%,rgba(196,18,48,.28),transparent 70%),var(--cbg)}
+
+/* evaluation scorecards */
+.score{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:0 0 44px}
+.score>div{background:var(--w);border:1px solid var(--l);border-radius:14px;padding:22px 24px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:2px}
+.score b{font:700 clamp(44px,5vw,60px)/1 var(--serif);color:var(--g);letter-spacing:-.02em}
+.score span{font-weight:700;font-size:15.5px;margin-top:8px}
+.score em{font-style:normal;font-size:14px;color:var(--m)}
+.score .cons{border-top:4px solid var(--a)}.score .cons b{color:var(--a)}
+.score>div:not(.cons){border-top:4px solid var(--g)}
+#ev .bar{height:8px;border-radius:4px}#ev .bar s{border-radius:4px}
+#ev td:nth-child(3) s{background:var(--g)}
+@media(max-width:860px){.facts{grid-template-columns:repeat(3,1fr)}.facts li:nth-child(4){border-left:0}.facts li:nth-child(n+4){border-top:1px solid var(--l)}.score{grid-template-columns:1fr}}
+@media(max-width:560px){.facts{grid-template-columns:1fr 1fr}.facts li{border-left:0;border-top:1px solid var(--l)}.facts li:nth-child(odd){border-right:1px solid var(--l)}.facts li:nth-child(-n+2){border-top:0}}
+@media(prefers-reduced-motion:reduce){.shot img,.btn,details,summary::after{transition:none}}
 </style>
 </head>
 <body>
@@ -300,9 +343,13 @@ dialog iframe{width:100%;height:calc(100% - 44px);border:0;display:block}
 <p class="note" style="margin-top:12px">Grades: A is 90 and above, B 80 to 89, C 70 to 79, D 60 to 69, INC below 60. After the two weakest endings, you can return to an earlier chapter and try again.</p>
 </div></section>
 
-<section id="evaluation"><div class="wrap">
+<section id="evaluation" aria-label="Evaluation results"><div class="wrap">
 <p class="ref"><b>Evaluation</b><span>Thesis, Sections 3.6 and 4.3 (Tables 8 to 13)</span></p>
-<h2>How it was evaluated, and how to read the numbers</h2>
+<div class="score" role="list">
+<div role="listitem"><b>4.47</b><span>Alpha overall</span><em>3 IT professionals</em></div>
+<div role="listitem"><b>4.77</b><span>Beta overall</span><em>53 MCC students</em></div>
+<div role="listitem" class="cons"><b>4.23</b><span>Beta, varied raters only</span><em>12 of 53, the conservative figure</em></div>
+</div>
 <div class="g2"><div>
 <p>Both instruments follow ISO/IEC 25010:2023 software quality characteristics, plus a Content and Educational Effectiveness category. Maintainability was assessed in Alpha only.</p>
 <p><strong>Alpha:</strong> 3 IT professionals, 59 items, overall mean 4.47 (Excellent). Evaluator means ranged from 4.09 to 4.67.</p>

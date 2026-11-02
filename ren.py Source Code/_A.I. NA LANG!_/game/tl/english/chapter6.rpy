@@ -49,15 +49,15 @@ translate english chapter6_a90bf52c:
     ms_iva "(quietly) I just want to ask you. \nDid you write that citation yourself, or did you copy AI output without verifying it?"
 
 # game/chapter6.rpy:32
-translate english chapter6_7c8ec565:
+translate english chapter6_8c82fc60:
 
-    # mc_m "Totoo po, Ma'am. Hindi ko po bina-verify ang citation. Kinopya ko po ang sagot ng AI. Pasensya na po."
+    # mc_m "Totoo po, Ma'am. Hindi ko po vinerify ang citation. Kinopya ko po ang sagot ng AI. Pasensya na po."
     mc_m "You're right, Ma'am. I didn't verify the citation. I copied the AI's answer. I'm sorry."
 
 # game/chapter6.rpy:34
-translate english chapter6_d9de3f4a:
+translate english chapter6_85759f03:
 
-    # mc_f "Hindi ko po bina-verify. Kinopya ko po ang output ng AI nang hindi nag-check. Mali ko po, Ma'am."
+    # mc_f "Hindi ko po vinerify. Kinopya ko po ang output ng AI nang hindi nag-check. Mali ko po, Ma'am."
     mc_f "I didn't verify it. I copied the AI's output without checking. That was my mistake, Ma'am."
 
 # game/chapter6.rpy:36

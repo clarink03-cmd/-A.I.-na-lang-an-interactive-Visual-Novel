@@ -6,7 +6,7 @@ screen choice(items):
     zorder 150
 
     python:
-        _is_small = renpy.variant("small")
+        _is_small = is_phone()
         _btn_w = 1300 if _is_small else 1100
         _txt_sz = int((40 if _is_small else 30) * persistent.text_scale)
         _q_sz = int((40 if _is_small else 32) * persistent.text_scale)
@@ -205,10 +205,10 @@ screen hud():
     zorder 5
     if show_hud:
         python:
-            _ph = renpy.variant(["touch", "small", "mobile"])
+            _ph = is_phone()
             _bar_h = 124 if _ph else 100
             _pad = 24 if _ph else 36
-            _lab = 24 if _ph else 20          # stat label size
+            _lab = 27 if _ph else 20          # stat label size
             _val = 38 if _ph else 30          # stat number size
             _seg_w = 38 if _ph else 40
             _seg_h = 26 if _ph else 20
@@ -350,7 +350,7 @@ screen hud_info(stat):
     zorder 40
 
     python:
-        _ph = renpy.variant(["touch", "small", "mobile"])
+        _ph = is_phone()
         if stat == "ct":
             _title = "Critical Thinking"
             _value = critical_thinking
@@ -403,7 +403,7 @@ screen stat_cue(stat, amount):
     zorder 30
 
     python:
-        _ph = renpy.variant(["touch", "small", "mobile"])
+        _ph = is_phone()
         _gain = amount > 0
         _name = "Critical Thinking" if stat == "ct" else "Motivation"
         _col = "#56D364" if _gain else "#E5677A"
@@ -436,7 +436,7 @@ screen stat_cue(stat, amount):
 ## One quick-menu button (sizes follow phone / desktop).
 screen qm_button(label, act, w, sens=True):
     python:
-        _qs = renpy.variant(["touch", "small", "mobile"])
+        _qs = is_phone()
         _qh = 72 if _qs else 48
         _qt = 32 if _qs else 22
 
@@ -459,7 +459,7 @@ screen qm_button(label, act, w, sens=True):
 ## The small speed chip next to Skip / Auto: tap to cycle 1x, 2x, 4x ...
 screen qm_chip(label, act):
     python:
-        _qs = renpy.variant(["touch", "small", "mobile"])
+        _qs = is_phone()
         _qh = 72 if _qs else 48
         _qt = 28 if _qs else 20
 
@@ -480,7 +480,7 @@ screen quick_menu():
     zorder 100
 
     python:
-        _qs = renpy.variant(["touch", "small", "mobile"])
+        _qs = is_phone()
         _qbar = 88 if _qs else 64
         _qw = 150 if _qs else 100
         _qw_h = 190 if _qs else 120
@@ -621,7 +621,7 @@ screen notify(message):
 
     python:
         ## below the HUD bar (and its tutorial tags); bigger text/box on phones
-        _ns = renpy.variant(["touch", "small", "mobile"])
+        _ns = is_phone()
         _nw = 700 if _ns else 460
         _nh = 84 if _ns else 64
         _nt = 32 if _ns else 24
@@ -671,7 +671,7 @@ screen main_menu():
             xfill True
             yfill True
             background Solid("#c4123000")
-    if renpy.variant("small"):
+    if is_phone():
         fixed:
             xfill True
             yfill True
@@ -962,17 +962,17 @@ screen minigame(title, question, options, correct_idx, subject, ct_reward=8, gra
     on "hide" action SetVariable("minigame_active", False)
 
     python:
-        _is_small = renpy.variant("small")
+        _is_small = is_phone()
         ## phones: wide two-column card (question left, answers + AI shortcut right) so even
         ## the long multi-line IOS-command questions fit in 1080 px without scrolling
         _card_w = 1700 if _is_small else 1200
         _left_w = 760
         _right_w = 940
         _btn_h  = 84  if _is_small else 78
-        _txt_sz = 30  if _is_small else 26
-        _q_sz   = 32  if _is_small else 28
-        _f_s    = 24  if _is_small else 18
-        _f_m    = 26  if _is_small else 20
+        _txt_sz = 34  if _is_small else 26
+        _q_sz   = 36  if _is_small else 28
+        _f_s    = 27  if _is_small else 18
+        _f_m    = 29  if _is_small else 20
         _gap    = 12
         _ai_h   = 120 if _is_small else 60
         _q_t, _explained = quiz_expand(tr(question))
@@ -1398,7 +1398,7 @@ screen say(who, what):
                                     background Solid(tc("#2B2624"))
                                     padding (18, 6)
                                     text ("Grade " + ("%+d" % quiz_last_grade)) size 24 color "#FFFFFF" bold True
-                        text tr("I-click para magpatuloy") size 22 color tx("#6B6259") xalign 0.5
+                        text tr("I-click para magpatuloy") size (30 if is_phone() else 22) color tx("#6B6259") xalign 0.5
                         null height 24
 
     else:
@@ -1406,8 +1406,13 @@ screen say(who, what):
             ## the name plate is tsz(40); the dialogue gets the height that is left in the
             ## 206 px content area of the box (same budget as before at normal text size)
             _who_sz = tsz(40)
-            _say_h = (206 - 4 - int(_who_sz * 1.45) - 4) if who else 200
-            _say_sz = say_fit_size(what, tsz(40), height=max(90, _say_h))
+            ## box height and bottom padding follow the quick-menu bar (88 on phones, 64 on desktop)
+            ## so the last line of text can never run under the buttons
+            _box_h = 340 if is_phone() else 300
+            _bpad = 96 if is_phone() else 72
+            _avail = _box_h - 24 - _bpad
+            _say_h = (_avail - 4 - int(_who_sz * 1.6) - 4) if who else (_avail - 4)
+            _say_sz = say_fit_size(what, tsz(40), height=max(90, _say_h), line_h=1.6)
 
         window:
             id "window"
@@ -1419,9 +1424,9 @@ screen say(who, what):
             frame:
                 xfill True
                 yalign 1.0
-                ysize 300
+                ysize _box_h
                 background Frame(theme_textbox(), Borders(0, 0, 0, 0))
-                padding (30, 24, 30, 70)
+                padding (30, 24, 30, _bpad)
 
                 vbox:
                     xfill True
@@ -1493,21 +1498,6 @@ screen help():
                 use help_keyboard_rows
             elif device == "mouse":
                 use help_mouse_rows
-style help_row_label:
-    xsize 260
-    right_padding 20
-
-style help_row_label_text:
-    size 26
-    color "#E5677A"
-    bold True
-    xalign 0.0
-    text_align 0.0
-
-style help_row_text:
-    size 24
-    color "#6B6259"
-
 screen help_keyboard_rows():
     vbox:
         xalign 0.5
@@ -1635,8 +1625,8 @@ define mcc_menu_tabs = [
 screen mcc_menu_hub(active_tab):
 
     python:
-        _sb_w   = 300 if renpy.variant("small") else 300
-        _sb_txt = 25  if renpy.variant("small") else 24
+        _sb_w   = 300 if is_phone() else 300
+        _sb_txt = 25  if is_phone() else 24
 
     frame:
         xfill True
@@ -1713,7 +1703,7 @@ screen mcc_sidebar_tab(tab_id, label, active_tab, txt_size):
         action (NullAction() if _is_active else ShowMenu(tab_id))
         selected _is_active
         xfill True
-        yminimum (64 if renpy.variant("small") else 56)
+        yminimum (64 if is_phone() else 56)
         background (Solid("#C41230") if _is_active else Solid(tc("#F3EFEA")))
         hover_background Solid("#C41230")
         padding (18, 12)
@@ -1842,7 +1832,7 @@ screen mcc_content_preferences():
 
                             null height 24
 
-                            if not renpy.variant("web") and not renpy.variant("small"):
+                            if not renpy.variant("web") and not is_phone():
                                 use pref_dropdown("display", _("Display"), (_("Fullscreen") if _preferences.fullscreen else _("Window"))):
                                     use pref_chip(_("Fullscreen"), _preferences.fullscreen, Preference("display", "fullscreen"))
                                     use pref_chip(_("Window"), not _preferences.fullscreen, Preference("display", "window"))
@@ -1887,7 +1877,7 @@ default pref_open = None
 screen pref_dropdown(key, label, value):
     python:
         _po = (pref_open == key)
-        _pm = renpy.variant(["touch", "small", "mobile"])
+        _pm = is_phone()
         _prh = 96 if _pm else 80
         _pls = 32 if _pm else 28
 
@@ -1936,7 +1926,7 @@ screen pref_dropdown(key, label, value):
 ## One choice inside an expanded row. Picking it applies it and collapses the row.
 screen pref_chip(label, is_selected, act):
     python:
-        _pm = renpy.variant(["touch", "small", "mobile"])
+        _pm = is_phone()
 
     button:
         action [act, SetVariable("pref_open", None)]
@@ -1955,7 +1945,7 @@ screen pref_chip(label, is_selected, act):
 ## A labelled step bar: tap a segment to pick that speed. Segments are explicit equal widths.
 screen pref_steps(label, labels, idx, setter):
     python:
-        _pm = renpy.variant(["touch", "small", "mobile"])
+        _pm = is_phone()
         _n = len(labels)
         _sw = (800 - 8 * (_n - 1)) // _n
         _ls = 32 if _pm else 28
@@ -2007,7 +1997,7 @@ screen pref_steps(label, labels, idx, setter):
 ## A one-row slider setting.
 screen pref_slider(label, pref, fill):
     python:
-        _pm = renpy.variant(["touch", "small", "mobile"])
+        _pm = is_phone()
 
     frame:
         xfill True
@@ -2029,46 +2019,6 @@ screen pref_slider(label, pref, fill):
                     ysize (44 if _pm else 36)
                     left_bar Solid(fill)
                     right_bar Solid(tc("#E3DBD2"))
-
-## Reusable bordered card wrapper for a single settings row.
-screen settings_card(label):
-    frame:
-        xfill True
-        background Solid(tc("#E3DBD2"))
-        padding (1, 1)
-
-        frame:
-            xfill True
-            background Solid(tc("#FFFFFF"))
-            padding (24, 18)
-
-            vbox:
-                xfill True
-                spacing 14
-                text label size 24 color tx("#C41230") bold True
-                transclude
-
-## Plain-text option with a small left tick when selected, ErinsLight-style.
-screen pref_tick_option(label, is_selected, act):
-    button:
-        action act
-        background None
-        hover_background None
-        padding (10, 4)
-
-        hbox:
-            spacing 8
-            yalign 0.5
-            frame:
-                xsize 3
-                ysize 28
-                background (Solid("#C41230") if is_selected else None)
-            text label:
-                size 26
-                color (tx("#C41230") if is_selected else tx("#6B6259"))
-                hover_color tx("#C41230")
-                bold is_selected
-                yalign 0.5
 
 ## Scrollbar for the Settings tab (matches the red/cream theme).
 style prefs_vscrollbar is vscrollbar:
@@ -2096,7 +2046,7 @@ screen name_entry(prompt, default_name=""):
     python:
         ## phones: the on-screen keyboard covers the lower half of the screen, so the whole
         ## card sits at the top and the field + button share one row.
-        _nc = renpy.variant(["touch", "small", "mobile"])
+        _nc = is_phone()
 
     frame:
         xfill True

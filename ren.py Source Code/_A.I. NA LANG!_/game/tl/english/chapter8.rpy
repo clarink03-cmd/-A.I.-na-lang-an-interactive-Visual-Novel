@@ -403,9 +403,9 @@ translate english chapter8_essay_6fc8d25d:
     carly "How was Ms. Iva's exam? Did you keep your promise?"
 
 # game/chapter8.rpy:249
-translate english chapter8_essay_42fd5c6c:
+translate english chapter8_essay_dc7d1c2f:
 
-    # mc_m "Oo. Sarili ko. Bini-verify ko pa ang bawat citation."
+    # mc_m "Oo. Sarili ko. Vinerify ko pa ang bawat citation."
     mc_m "Yeah. On my own. I even verified every citation."
 
 # game/chapter8.rpy:251

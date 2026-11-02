@@ -244,7 +244,7 @@ label prologue:
     pause 0.8
     $ critical_thinking = pro_ct_base
     $ motivation = pro_mot_base
-    narrator "Bagong semester. New start for my new ways."
+    narrator "Bagong semester. Bumalik sa gitna ang mga bar. Ang nakasanayan, hindi."
     $ tutorial_highlight = "all"
     $ renpy.notify("Day 1 starting")
     sys_voice "{color=#58a6ff}TUTORIAL{/color} Sa taas, palaging makikita kung anong araw na, ang Critical Thinking bar, at ang Motivation bar mo. Pindutin ang 'Tingnan ang Grades' para makita ang grado mo sa tatlong subject."

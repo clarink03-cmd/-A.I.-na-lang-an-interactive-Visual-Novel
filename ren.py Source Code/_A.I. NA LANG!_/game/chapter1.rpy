@@ -208,7 +208,7 @@ label chapter1:
     mr_kai "Class, naka-post na 'yung unang programming activity niyo. \nBasic Python, input-output, conditionals, loops. Due in three days. Independently po, please."
     mr_kai "Gusto kong makita 'yung sarili niyong logic, hindi 'yung generated na sagot. Magiging malinaw kung alin ang alin."
     show mr_kai thinking at left with quickfade
-    mr_kai "(mas mahinang tono) At kung sakaling ma-stuck kayo . may consultation hours ako. Gamitin niyo. 'Yun ang tamang shortcut."
+    mr_kai "(mas mahinang tono) At kung sakaling ma-stuck kayo, may consultation hours ako. Gamitin niyo. 'Yun ang tamang shortcut."
     hide mr_kai with dissolve
 
     show gabby normal at right with dissolve

@@ -541,9 +541,9 @@ translate english chapter1_5cd1e608:
     mr_kai "I want to see your own logic, not a generated answer. It'll be obvious which is which."
 
 # game/chapter1.rpy:204
-translate english chapter1_c4238914:
+translate english chapter1_e1aa5c79:
 
-    # mr_kai "(mas mahinang tono) At kung sakaling ma-stuck kayo . may consultation hours ako. Gamitin niyo. 'Yun ang tamang shortcut."
+    # mr_kai "(mas mahinang tono) At kung sakaling ma-stuck kayo, may consultation hours ako. Gamitin niyo. 'Yun ang tamang shortcut."
     mr_kai "(softer tone) And if you get stuck, I have consultation hours. Use them. That's the right kind of shortcut."
 
 # game/chapter1.rpy:208

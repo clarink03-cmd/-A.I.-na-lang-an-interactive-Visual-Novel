@@ -66,7 +66,7 @@ define gui.dialogue_window_xalign = 0.5
 define gui.pref_text_size         = 45
 
 init python:
-    if renpy.variant("small"):
+    if is_phone():
         gui.text_size               = 44
         gui.name_text_size          = 48
         gui.interface_text_size     = 40
@@ -82,60 +82,3 @@ init python:
     if renpy.variant("web"):
         config.enter_transition = dissolve
         config.exit_transition  = dissolve
-
-
-## FILE SLOTS (shared by save and load)
-screen file_slots(title):
-
-    frame:
-        xfill True
-        yfill True
-        background Solid("#0d1117")
-
-        vbox:
-            xalign 0.5
-            yalign 0.1
-            spacing 10
-            text title xalign 0.5 size 44 color "#58a6ff" bold True
-
-        vpgrid:
-            cols 2
-            xalign 0.5
-            yalign 0.5
-            xspacing 20
-            yspacing 20
-
-            for i in range(1, 9):
-                # Inside screen file_slots(title):
-                button:
-                    xsize 700
-                    ysize 120
-                    # Standard dark box, but turns solid blue on hover
-                    background Solid("#21262d")
-                    hover_background Solid("#1f6feb")
-                    action FileAction(i)
-
-                    hbox:
-                        xalign 0.0
-                        yalign 0.5
-                        xoffset 30
-                        spacing 20
-
-                        vbox:
-                            yalign 0.5
-                            # Text stays white on hover for readability
-                            text "Save Slot [i]" size 28 color "#8b949e" hover_color "#ffffff"
-                            text "[FileTime(i, empty=_('Walang save'))]" size 24 color "#000000" hover_color "#ffffff"
-
-        textbutton "Bumalik":
-            action Return()
-            xalign 0.5
-            yalign 0.95
-            xsize 300
-            ysize 70
-            background Solid("#1f6feb")
-            hover_background Solid("#388bfd")
-            text_color "#fff"
-            text_size 30
-            text_xalign 0.5
-            text_yalign 0.5

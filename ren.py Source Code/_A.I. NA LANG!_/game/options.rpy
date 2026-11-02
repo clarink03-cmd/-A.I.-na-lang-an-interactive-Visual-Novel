@@ -3,7 +3,25 @@
 
 define config.name = _("A.I. na lang!")
 
-define config.version = "v1.4"
+init -2 python:
+    def is_phone():
+        # One yes/no for "small touch screen", cached on the function so it is never written into save files.
+        # renpy.variant("small") alone is unreliable in a browser (no real DPI),
+        # so on web we also ask the browser for the screen size in CSS pixels.
+        if hasattr(is_phone, "v"):
+            return is_phone.v
+        v = bool(renpy.variant(["touch", "small", "mobile"]))
+        if not v and renpy.variant("web"):
+            try:
+                import emscripten
+                v = bool(emscripten.run_script_int(
+                    "(Math.min(screen.width, screen.height) <= 820 && navigator.maxTouchPoints > 0) ? 1 : 0"))
+            except Exception:
+                v = False
+        is_phone.v = v
+        return v
+
+define config.version = "FINAL"
 
 define config.window_title = "A.I. na lang!, A Visual Novel"
 
@@ -16,10 +34,7 @@ define config.thumbnail_height = 180
 define config.image_cache_size_mb = 128
 define config.predict_statements = 12
 define config.rollback_length = 32
-
 init -1 python:
-    config.physical_width = 1920
-    config.physical_height = 1080
     config.screen_width = 1920
     config.screen_height = 1080
 

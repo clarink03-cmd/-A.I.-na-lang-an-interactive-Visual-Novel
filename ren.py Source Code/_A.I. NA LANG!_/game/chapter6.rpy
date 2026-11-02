@@ -29,9 +29,9 @@ label chapter6:
             $ ct_change(15)
             $ mot_change(5)
             if player_gender == "male":
-                mc_m "Totoo po, Ma'am. Hindi ko po bina-verify ang citation. Kinopya ko po ang sagot ng AI. Pasensya na po."
+                mc_m "Totoo po, Ma'am. Hindi ko po vinerify ang citation. Kinopya ko po ang sagot ng AI. Pasensya na po."
             else:
-                mc_f "Hindi ko po bina-verify. Kinopya ko po ang output ng AI nang hindi nag-check. Mali ko po, Ma'am."
+                mc_f "Hindi ko po vinerify. Kinopya ko po ang output ng AI nang hindi nag-check. Mali ko po, Ma'am."
             show ms_iva thinking at center with dissolve
             ms_iva "..."
             ms_iva "Salamat sa katapatan. Hindi ko ito basta-basta babalewalain, may epekto ito sa grade mo. \nPero bibigyan kita ng pagkakataon na mag-resubmit ng tamang papel sa loob ng isang linggo."

@@ -257,7 +257,7 @@ label chapter8_essay:
         show carly happy at center with dissolve
         carly "Kumusta ang exam ni Ms. Iva? Tinupad mo ba ang promise mo?"
         if player_gender == "male":
-            mc_m "Oo. Sarili ko. Bini-verify ko pa ang bawat citation."
+            mc_m "Oo. Sarili ko. Vinerify ko pa ang bawat citation."
         else:
             mc_f "Oo. Sarili kong salita. Lahat vinerify ko."
         carly "(ngumiti) Proud ako. Seryoso."

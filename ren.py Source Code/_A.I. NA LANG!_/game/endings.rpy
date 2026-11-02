@@ -132,7 +132,7 @@ label ending_special_good:
     pause 2.0
 
     scene black
-    narrator "SPECIAL GOOD ENDING, 'The Real Deal'"
+    narrator "✦ SPECIAL GOOD ENDING, 'The Real Deal' ✦"
     pause 1.5
     narrator "Networking: [letter_grade(networking_grade)] | Programming: [letter_grade(programming_grade)] | Cybersecurity: [letter_grade(cyber_grade)]"
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
@@ -184,7 +184,7 @@ label ending_good_guilt:
     pause 1.5
 
     scene black
-    narrator "NEUTRAL ENDING, 'At What Cost?'"
+    narrator "✦ GOOD ENDING, 'At What Cost?' ✦"
     pause 1.0
     narrator "Networking: [letter_grade(networking_grade)] | Programming: [letter_grade(programming_grade)] | Cybersecurity: [letter_grade(cyber_grade)]"
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
@@ -233,7 +233,7 @@ label ending_good_solid:
     pause 2.0
 
     scene black
-    narrator "GOOD ENDING, 'Solid Enough'"
+    narrator "✦ GOOD ENDING, 'Solid Enough' ✦"
     pause 1.0
     narrator "Networking: [letter_grade(networking_grade)] | Programming: [letter_grade(programming_grade)] | Cybersecurity: [letter_grade(cyber_grade)]"
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
@@ -304,7 +304,7 @@ label ending_redemption:
     pause 2.0
 
     scene black
-    narrator "REDEMPTION ENDING, 'Not Yet, But Getting There'"
+    narrator "✦ REDEMPTION ENDING, 'Not Yet, But Getting There' ✦"
     pause 1.0
     narrator "Critical Thinking: [critical_thinking] / 100 | Motivation: [motivation] / 100"
     narrator "(Nagsimula sa INC. Natapos nang wala. Ganoon ang redemption.)"
@@ -354,7 +354,7 @@ label ending_bad:
     pause 1.5
 
     scene black
-    narrator "BAD ENDING, 'See You Next Year'"
+    narrator "✦ BAD ENDING, 'See You Next Year' ✦"
     pause 1.0
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
 
@@ -403,9 +403,9 @@ label ending_caught:
     pause 2.0
 
     scene black
-    narrator "CAUGHT ENDING, 'Academic Integrity Issue'"
+    narrator "✦ CAUGHT ENDING, 'Academic Integrity Issue' ✦"
     pause 1.0
-    narrator "Critical Thinking: [critical_thinking] / 100"
+    narrator "got_caught: True | Critical Thinking: [critical_thinking] / 100"
 
     menu:
         "Try again (Go back to Chapter 5, make different choices to avoid INCs)":

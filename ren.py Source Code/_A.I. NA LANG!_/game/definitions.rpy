@@ -87,6 +87,9 @@ default tutorial_highlight = None
 ## Set it with  $ menu_q = _("...")  right before a menu; it clears itself on the next dialogue line.
 default menu_q = None
 
+## "mc" is set to mc_m or mc_f in the prologue; a default keeps Lint from flagging every mc line.
+default mc = mc_m
+
 init python:
     def clear_menu_q(event, **kwargs):
         if event == "begin" and store.menu_q is not None:
@@ -181,7 +184,6 @@ image bg_hallway   = "images/backgrounds/bg_hallway.webp"
 image bg_bedroom   = "images/backgrounds/bg_bedroom.webp"
 image bg_lab       = "images/backgrounds/bg_lab.webp"
 image bg_campus    = "images/backgrounds/bg_campus.webp"
-image bg_campus_night = "images/backgrounds/bg_zoom.webp"
 
 init python:
     renpy.image("mc normal", ConditionSwitch(

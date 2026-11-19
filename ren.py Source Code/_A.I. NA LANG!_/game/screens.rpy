@@ -59,6 +59,16 @@ screen choice(items):
                     text_xalign 0.0
                     text_yalign 0.5
 
+    ## Escape hatch: when the bottom bar is hidden (setup questions) the player
+    ## had no visible way out. Show Back + Menu in the top-left instead.
+    if not show_hud and not minigame_active:
+        hbox:
+            xpos 24
+            ypos 24
+            spacing 10
+            use qm_button(_("Back"), Rollback(), (150 if is_phone() else 100))
+            use qm_button(_("Menu"), ShowMenu("preferences"), (150 if is_phone() else 100))
+
 style default:
     font gui.default_font
 
@@ -440,21 +450,28 @@ screen qm_button(label, act, w, sens=True):
         _qh = 72 if _qs else 48
         _qt = 32 if _qs else 22
 
-    textbutton label:
-        action act
-        sensitive sens
+    ## 2 px crimson outline (outer frame) + button face (inner textbutton)
+    frame:
         xsize w
         ysize _qh
-        background Solid(tc("#F3EFEA"))
-        hover_background Solid("#C41230")
-        selected_background Solid("#C41230")
-        text_color tx("#6B6259")
-        text_hover_color "#FFFFFF"
-        text_selected_color "#FFFFFF"
-        text_insensitive_color tx("#9C948C")
-        text_size _qt
-        text_xalign 0.5
-        text_yalign 0.5
+        padding (2, 2)
+        background Solid("#C41230")
+
+        textbutton label:
+            action act
+            sensitive sens
+            xsize (w - 4)
+            ysize (_qh - 4)
+            background Solid(tc("#F3EFEA"))
+            hover_background Solid("#C41230")
+            selected_background Solid("#C41230")
+            text_color tx("#6B6259")
+            text_hover_color "#FFFFFF"
+            text_selected_color "#FFFFFF"
+            text_insensitive_color tx("#9C948C")
+            text_size _qt
+            text_xalign 0.5
+            text_yalign 0.5
 
 ## The small speed chip next to Skip / Auto: tap to cycle 1x, 2x, 4x ...
 screen qm_chip(label, act):
@@ -462,19 +479,46 @@ screen qm_chip(label, act):
         _qs = is_phone()
         _qh = 72 if _qs else 48
         _qt = 28 if _qs else 20
+        _cw = 96 if _qs else 64
 
-    textbutton label:
-        action act
-        xsize (96 if _qs else 64)
+    frame:
+        xsize _cw
         ysize _qh
-        background Solid(tc("#E3DBD2"))
-        hover_background Solid("#8C0E23")
-        text_color tx("#C41230")
-        text_hover_color "#FFFFFF"
-        text_size _qt
-        text_bold True
-        text_xalign 0.5
-        text_yalign 0.5
+        padding (2, 2)
+        background Solid("#C41230")
+
+        textbutton label:
+            action act
+            xsize (_cw - 4)
+            ysize (_qh - 4)
+            background Solid(tc("#E3DBD2"))
+            hover_background Solid("#8C0E23")
+            text_color tx("#C41230")
+            text_hover_color "#FFFFFF"
+            text_size _qt
+            text_bold True
+            text_xalign 0.5
+            text_yalign 0.5
+
+## Generic outlined button (sidebar footer buttons etc.)
+screen mcc_btn(label, act, w, h, txt_size=24):
+    frame:
+        xsize w
+        ysize h
+        padding (2, 2)
+        background Solid("#C41230")
+
+        textbutton label:
+            action act
+            xsize (w - 4)
+            ysize (h - 4)
+            background Solid(tc("#F3EFEA"))
+            hover_background Solid("#C41230")
+            text_color tx("#3D3730")
+            text_hover_color "#FFFFFF"
+            text_size txt_size
+            text_xalign 0.5
+            text_yalign 0.5
 
 screen quick_menu():
     zorder 100
@@ -485,7 +529,7 @@ screen quick_menu():
         _qw = 150 if _qs else 100
         _qw_h = 190 if _qs else 120
         _qw_b = 420 if _qs else 300
-        _qsp = 6 if _qs else 4
+        _qsp = 10 if _qs else 6
 
     if show_hud:
         frame:
@@ -508,12 +552,12 @@ screen quick_menu():
                     use qm_button(_("History"), ShowMenu("history"), _qw_h)
 
                     hbox:
-                        spacing 2
+                        spacing 4
                         use qm_button(_("Skip"), [Preference("skip", "all"), Skip()], _qw, (not minigame_active))
                         use qm_chip(SKIP_LABELS[persistent.skip_speed], Function(cycle_skip_speed))
 
                     hbox:
-                        spacing 2
+                        spacing 4
                         use qm_button(_("Auto"), Preference("auto-forward", "toggle"), _qw)
                         use qm_chip(AUTO_LABELS[persistent.auto_speed], Function(cycle_auto_speed))
 
@@ -1498,12 +1542,26 @@ screen help():
                 use help_keyboard_rows
             elif device == "mouse":
                 use help_mouse_rows
+screen help_row(keycap, desc):
+    python:
+        _hs = 32 if is_phone() else 26
+    frame:
+        xsize 1200
+        background Solid(tc("#F3EFEA"))
+        padding (24, 16)
+        hbox:
+            spacing 28
+            frame:
+                xsize 260
+                background Solid("#C41230")
+                padding (12, 10)
+                text keycap size _hs color "#FFFFFF" bold True xalign 0.5
+            text desc size _hs color tx("#6B6259") xsize 840 yalign 0.5
+
 screen help_keyboard_rows():
     vbox:
         xalign 0.5
-        xsize 900
-        spacing 24
-
+        spacing 14
         for _key, _desc in [
             (_("Enter"),      _("Nagpapatuloy ng dayalogo at ina-activate ang interface.")),
             (_("Space"),      _("Nagpapatuloy ng dayalogo nang hindi pumipili ng choices.")),
@@ -1512,25 +1570,17 @@ screen help_keyboard_rows():
             (_("Ctrl"),       _("Nagski-skip ng dayalogo habang pinipindot.")),
             (_("Page Up"),    _("Bumabalik sa nakaraang dayalogo.")),
         ]:
-            vbox:
-                spacing 4
-                text _key size 26 color "#E5677A" bold True xsize 900 text_align 0.5
-                text _desc size 22 color tx("#6B6259") xsize 900 text_align 0.5
+            use help_row(_key, _desc)
 
 screen help_mouse_rows():
     vbox:
         xalign 0.5
-        xsize 900
-        spacing 24
-
+        spacing 14
         for _key, _desc in [
             (_("Left Click"),  _("Nagpapatuloy ng dayalogo at ina-activate ang interface.")),
             (_("Mouse Wheel"), _("Bumabalik o pumapasulong sa dayalogo.")),
         ]:
-            vbox:
-                spacing 4
-                text _key size 26 color "#E5677A" bold True xsize 900 text_align 0.5
-                text _desc size 22 color tx("#6B6259") xsize 900 text_align 0.5
+            use help_row(_key, _desc)
 
 
 ################################################################################
@@ -1552,27 +1602,31 @@ screen base_menu(title, scroll=None, yinitial=0.0):
 
             frame:
                 xfill True
-                ysize 90
+                ysize (120 if is_phone() else 100)
                 background Solid("#C41230")
-                padding (30, 0)
-                hbox:
-                    xfill True
-                    yalign 0.5
-                    spacing 20
-                    text title size 36 color tx("#1F1B19") bold True yalign 0.5
-                    null width True
-                    textbutton _("Bumalik"):
-                        action Return()
+                padding (40, 0)
+                fixed:
+                    xsize 1840
+                    ysize (120 if is_phone() else 100)
+                    text title size (52 if is_phone() else 44) color "#FFFFFF" bold True xalign 0.0 yalign 0.5
+                    frame:
+                        xalign 1.0
                         yalign 0.5
-                        xsize 200
-                        ysize 64
-                        background Solid(tc("#F3EFEA"))
-                        hover_background Solid("#C41230")
-                        text_color tx("#2B2624")
-                        text_hover_color "#fff"
-                        text_size 28
-                        text_xalign 0.5
-                        text_yalign 0.5
+                        xsize (280 if is_phone() else 220)
+                        ysize (92 if is_phone() else 72)
+                        padding (2, 2)
+                        background Solid("#FFFFFF")
+                        textbutton _("Bumalik"):
+                            action Return()
+                            xsize (276 if is_phone() else 216)
+                            ysize (88 if is_phone() else 68)
+                            background Solid("#C41230")
+                            hover_background Solid("#FFFFFF")
+                            text_color "#FFFFFF"
+                            text_hover_color "#C41230"
+                            text_size (40 if is_phone() else 32)
+                            text_xalign 0.5
+                            text_yalign 0.5
 
             if scroll == "viewport":
                 viewport:
@@ -1625,8 +1679,15 @@ define mcc_menu_tabs = [
 screen mcc_menu_hub(active_tab):
 
     python:
-        _sb_w   = 300 if is_phone() else 300
-        _sb_txt = 25  if is_phone() else 24
+        _sb_w     = 440 if is_phone() else 340
+        _sb_inner = _sb_w - 16
+        _sb_txt   = 36  if is_phone() else 30
+        _tab_h    = 110 if is_phone() else 76
+        _btn_h    = 100 if is_phone() else 68
+        _hh       = 120 if is_phone() else 100
+        _mid      = 1064 - _hh - (2 * _btn_h + 16) - 16
+
+    key "game_menu" action Return()
 
     frame:
         xfill True
@@ -1643,42 +1704,50 @@ screen mcc_menu_hub(active_tab):
                 xsize _sb_w
                 yfill True
                 background Solid(tc("#FFFFFF"))
-                padding (8, 24, 8, 16)
+                padding (0, 0, 0, 16)
 
-                vbox:
-                    xfill True
-                    yfill True
-                    spacing 10
+                fixed:
+                    xsize _sb_w
+                    ysize 1064
 
-                    for _tab_id, _tab_label in mcc_menu_tabs:
-                        use mcc_sidebar_tab(_tab_id, _tab_label, active_tab, _sb_txt)
+                    ## Top band: same height as the content header, a darker crimson,
+                    ## so the two read as one strip across the whole screen.
+                    frame:
+                        xsize _sb_w
+                        ysize _hh
+                        background Solid("#8C0E23")
+                        padding (28, 0)
+                        text "[config.name!t]" size (44 if is_phone() else 36) color "#FFFFFF" bold True yalign 0.5
 
-                    null height True
+                    ## Tabs: centered in the space between the band and the footer buttons.
+                    fixed:
+                        ypos _hh
+                        xsize _sb_w
+                        ysize _mid
+                        vbox:
+                            xalign 0.5
+                            yalign 0.5
+                            spacing 16
+                            for _tab_id, _tab_label in mcc_menu_tabs:
+                                ## Saving makes no sense from the main menu (no game is running)
+                                if not (main_menu and _tab_id == "save"):
+                                    use mcc_sidebar_tab(_tab_id, _tab_label, active_tab, _sb_txt, _sb_inner, _tab_h)
 
-                    textbutton _("Bumalik sa Main Menu"):
-                        action MainMenu()
-                        xfill True
-                        ysize 60
-                        background Solid(tc("#F3EFEA"))
-                        hover_background Solid("#b91c1c")
-                        text_color tx("#6B6259")
-                        text_hover_color "#fff"
-                        text_size _sb_txt
-                        text_xalign 0.5
-                        text_yalign 0.5
+                    vbox:
+                        xalign 0.5
+                        yalign 1.0
+                        spacing 16
+                        ## Already on the main menu? Then this button would do nothing, so hide it.
+                        if not main_menu:
+                            use mcc_btn(_("Bumalik sa Main Menu"), MainMenu(), _sb_inner, _btn_h, _sb_txt - 4)
+                        use mcc_btn((_("Bumalik") if main_menu else _("Ipagpatuloy")), Return(), _sb_inner, _btn_h, _sb_txt)
 
-                    textbutton _("← Bumalik"):
-
-                        action Return()
-                        xfill True
-                        ysize 60
-                        background Solid(tc("#F3EFEA"))
-                        hover_background Solid("#C41230")
-                        text_color tx("#6B6259")
-                        text_hover_color "#fff"
-                        text_size _sb_txt
-                        text_xalign 0.5
-                        text_yalign 0.5
+                    ## Thin crimson divider on the sidebar's right edge.
+                    frame:
+                        xsize 4
+                        ysize 1064
+                        xalign 1.0
+                        background Solid("#C41230")
 
             ## ── RIGHT: content panel swaps per tab ──
             frame:
@@ -1695,24 +1764,30 @@ screen mcc_menu_hub(active_tab):
                 elif active_tab == "history":
                     use mcc_content_history()
 
-screen mcc_sidebar_tab(tab_id, label, active_tab, txt_size):
+screen mcc_sidebar_tab(tab_id, label, active_tab, txt_size, w, h):
     python:
         _is_active = (tab_id == active_tab)
 
-    textbutton label:
-        action (NullAction() if _is_active else ShowMenu(tab_id))
-        selected _is_active
-        xfill True
-        yminimum (64 if is_phone() else 56)
-        background (Solid("#C41230") if _is_active else Solid(tc("#F3EFEA")))
-        hover_background Solid("#C41230")
-        padding (18, 12)
-        text_color ("#FFFFFF" if _is_active else tx("#3D3730"))
-        text_hover_color "#FFFFFF"
-        text_size txt_size
-        text_xalign 0.0
-        text_yalign 0.5
-        text_bold _is_active
+    frame:
+        xsize w
+        ysize h
+        padding (2, 2)
+        background Solid("#C41230")
+
+        textbutton label:
+            action (NullAction() if _is_active else ShowMenu(tab_id))
+            selected _is_active
+            xsize (w - 4)
+            ysize (h - 4)
+            background (Solid("#C41230") if _is_active else Solid(tc("#F3EFEA")))
+            hover_background Solid("#C41230")
+            padding (24, 0)
+            text_color ("#FFFFFF" if _is_active else tx("#3D3730"))
+            text_hover_color "#FFFFFF"
+            text_size txt_size
+            text_xalign 0.0
+            text_yalign 0.5
+            text_bold _is_active
 
 
 ## SAVE / LOAD content panels + thin screen wrappers
@@ -1740,10 +1815,10 @@ screen mcc_file_slots(title):
 
         frame:
             xfill True
-            ysize 90
+            ysize (120 if is_phone() else 100)
             background Solid("#C41230")
             padding (30, 0)
-            text title size 36 color "#ffffff" bold True yalign 0.5
+            text title size (52 if is_phone() else 44) color "#FFFFFF" bold True yalign 0.5
 
         frame:
             xfill True
@@ -1775,7 +1850,7 @@ screen mcc_file_slots(title):
                                 yalign 0.5
 
                         text FileTime(slot, format=_("%b %d, %H:%M"), empty=_("Walang laman")):
-                            size 20
+                            size (26 if is_phone() else 20)
                             color tx("#6B6259")
                             xalign 0.5
 
@@ -1783,12 +1858,12 @@ screen mcc_file_slots(title):
                             action FileDelete(slot)
                             sensitive FileLoadable(slot)
                             xfill True
-                            ysize 44
+                            ysize (60 if is_phone() else 44)
                             background Solid("#8e1a1a")
                             hover_background Solid("#b91c1c")
                             insensitive_background Solid(tc("#F3EFEA55"))
                             text_color "#fff"
-                            text_size 20
+                            text_size (28 if is_phone() else 20)
                             text_xalign 0.5
                             text_yalign 0.5
 
@@ -1802,10 +1877,10 @@ screen mcc_content_preferences():
 
         frame:
             xfill True
-            ysize 90
+            ysize (120 if is_phone() else 100)
             background Solid("#C41230")
             padding (30, 0)
-            text _("Mga Settings") size 36 color "#ffffff" bold True yalign 0.5
+            text _("Mga Settings") size (52 if is_phone() else 44) color "#FFFFFF" bold True yalign 0.5
 
         frame:
             xfill True
@@ -1832,36 +1907,28 @@ screen mcc_content_preferences():
 
                             null height 24
 
-                            if not renpy.variant("web") and not is_phone():
-                                use pref_dropdown("display", _("Display"), (_("Fullscreen") if _preferences.fullscreen else _("Window"))):
-                                    use pref_chip(_("Fullscreen"), _preferences.fullscreen, Preference("display", "fullscreen"))
-                                    use pref_chip(_("Window"), not _preferences.fullscreen, Preference("display", "window"))
+                            use pref_section(_("TUNOG / AUDIO"))
+                            use pref_slider(_("Musika / Music"), "music volume", "#C41230")
+                            use pref_slider(_("Tunog / Sound"), "sound volume", "#C41230")
 
-                            use pref_dropdown("lang", _("Wika / Language"), (_("Tagalog") if _preferences.language is None else _("English"))):
-                                use pref_chip(_("Tagalog"), _preferences.language is None, Language(None))
-                                use pref_chip(_("English"), _preferences.language == "english", Language("english"))
-
-                            use pref_dropdown("theme", _("Tema / Theme"), (_("Ambient") if persistent.theme == "dark" else _("Light"))):
-                                use pref_chip(_("Ambient"), persistent.theme == "dark", SetField(persistent, "theme", "dark"))
-                                use pref_chip(_("Light"), persistent.theme == "light", SetField(persistent, "theme", "light"))
-
-                            use pref_dropdown("size", _("Laki ng Teksto / Text Size"), (_("Maliit") if persistent.text_scale == 0.85 else (_("Malaki") if persistent.text_scale == 1.2 else _("Normal")))):
-                                use pref_chip(_("Maliit"), persistent.text_scale == 0.85, SetField(persistent, "text_scale", 0.85))
-                                use pref_chip(_("Normal"), persistent.text_scale == 1.0, SetField(persistent, "text_scale", 1.0))
-                                use pref_chip(_("Malaki"), persistent.text_scale == 1.2, SetField(persistent, "text_scale", 1.2))
-
-                            use pref_dropdown("cb", _("Colorblind Mode"), (_("Red-Green") if persistent.colorblind_mode == "rg" else (_("Blue-Yellow") if persistent.colorblind_mode == "by" else _("Off")))):
-                                use pref_chip(_("Off"), persistent.colorblind_mode == "off", SetField(persistent, "colorblind_mode", "off"))
-                                use pref_chip(_("Red-Green"), persistent.colorblind_mode == "rg", SetField(persistent, "colorblind_mode", "rg"))
-                                use pref_chip(_("Blue-Yellow"), persistent.colorblind_mode == "by", SetField(persistent, "colorblind_mode", "by"))
-                            text _("Red-Green: protanopia / deuteranopia.  Blue-Yellow: tritanopia. Also shows numbers on the HUD bars.") size 20 color tx("#6B6259")
-
+                            null height 14
+                            use pref_section(_("PAGBASA / READING"))
                             use pref_slider(_("Bilis ng Teksto / Text Speed"), "text speed", "#C41230")
                             use pref_steps(_("Bilis ng Auto-Forward"), AUTO_LABELS, persistent.auto_speed, set_auto_speed)
                             use pref_steps(_("Bilis ng Skip / Skip Speed"), SKIP_LABELS, persistent.skip_speed, set_skip_speed)
-                            use pref_slider(_("Musika / Music"), "music volume", "#56d364")
-                            use pref_slider(_("Tunog / Sound"), "sound volume", "#e3b341")
 
+                            null height 14
+                            use pref_section(_("ACCESSIBILITY"))
+                            use pref_segment(_("Laki ng Teksto / Text Size"), [(_("Maliit"), persistent.text_scale == 0.85, SetField(persistent, "text_scale", 0.85)), (_("Normal"), persistent.text_scale == 1.0, SetField(persistent, "text_scale", 1.0)), (_("Malaki"), persistent.text_scale == 1.2, SetField(persistent, "text_scale", 1.2))])
+                            use pref_segment(_("Colorblind Mode"), [(_("Off"), persistent.colorblind_mode == "off", SetField(persistent, "colorblind_mode", "off")), (_("Red-Green"), persistent.colorblind_mode == "rg", SetField(persistent, "colorblind_mode", "rg")), (_("Blue-Yellow"), persistent.colorblind_mode == "by", SetField(persistent, "colorblind_mode", "by"))])
+                            text _("Red-Green: protanopia / deuteranopia.  Blue-Yellow: tritanopia. Also shows numbers on the HUD bars.") size 20 color tx("#6B6259")
+
+                            null height 14
+                            use pref_section(_("DISPLAY / WIKA"))
+                            if not renpy.variant("web") and not is_phone():
+                                use pref_segment(_("Display"), [(_("Fullscreen"), _preferences.fullscreen, Preference("display", "fullscreen")), (_("Window"), not _preferences.fullscreen, Preference("display", "window"))])
+                            use pref_segment(_("Wika / Language"), [(_("Tagalog"), _preferences.language is None, Language(None)), (_("English"), _preferences.language == "english", Language("english"))])
+                            use pref_segment(_("Tema / Theme"), [(_("Dark"), persistent.theme == "dark", SetField(persistent, "theme", "dark")), (_("Light"), persistent.theme == "light", SetField(persistent, "theme", "light"))])
                             null height 40
 
                 vbar:
@@ -1995,9 +2062,93 @@ screen pref_steps(label, labels, idx, setter):
                                     xalign 0.5
 
 ## A one-row slider setting.
+## Small crimson tag that starts each group of settings.
+screen pref_section(title):
+    python:
+        _pm = is_phone()
+    hbox:
+        spacing 16
+        frame:
+            xsize 8
+            ysize (44 if _pm else 36)
+            yalign 0.5
+            background Solid("#C41230")
+        text title size (34 if _pm else 28) color tx("#C41230") bold True yalign 0.5
+
+## One choice inside a segmented row. w = None lets the button size itself to its text.
+screen pref_seg_btn(label, sel, act, w, h, sz):
+    frame:
+        xsize w
+        ysize h
+        padding (2, 2)
+        background Solid("#C41230")
+
+        button:
+            action act
+            xsize ((w - 4) if w else None)
+            ysize (h - 4)
+            background (Solid("#C41230") if sel else Solid(tc("#F3EFEA")))
+            hover_background Solid("#8C0E23")
+            padding (22, 0)
+
+            text label:
+                size sz
+                color ("#FFFFFF" if sel else tx("#6B6259"))
+                hover_color "#FFFFFF"
+                bold sel
+                xalign 0.5
+                yalign 0.5
+
+## A setting with a few choices: every choice is visible, one tap to pick.
+## options = [(label, is_selected, action), ...]
+screen pref_segment(label, options):
+    python:
+        _pm = is_phone()
+        _ls = 32 if _pm else 28
+        _n = len(options)
+        _segw = (800 - 8 * (_n - 1)) // _n
+
+    frame:
+        xfill True
+        background Solid(tc("#E3DBD2"))
+        padding (2, 2)
+
+        frame:
+            xfill True
+            background Solid(tc("#FFFFFF"))
+            padding (28, 20)
+
+            if _pm:
+                vbox:
+                    xfill True
+                    spacing 14
+                    text label size _ls color tx("#2B2624")
+                    hbox:
+                        spacing 8
+                        for _ol, _osel, _oact in options:
+                            use pref_seg_btn(_ol, _osel, _oact, _segw, 76, 30)
+            else:
+                fixed:
+                    xfill True
+                    ysize 64
+                    text label size _ls color tx("#2B2624") yalign 0.5
+                    hbox:
+                        xalign 1.0
+                        yalign 0.5
+                        spacing 8
+                        for _ol, _osel, _oact in options:
+                            use pref_seg_btn(_ol, _osel, _oact, None, 56, 24)
+
+## A one-row slider setting. Volume sliders show their percentage.
 screen pref_slider(label, pref, fill):
     python:
         _pm = is_phone()
+        _pct = None
+        if pref in ("music volume", "sound volume"):
+            try:
+                _pct = int(round(_preferences.get_volume(pref.split(" ")[0]) * 100))
+            except Exception:
+                _pct = None
 
     frame:
         xfill True
@@ -2012,7 +2163,12 @@ screen pref_slider(label, pref, fill):
             vbox:
                 xfill True
                 spacing 14
-                text label size (32 if _pm else 28) color tx("#2B2624")
+                fixed:
+                    xfill True
+                    ysize (44 if _pm else 38)
+                    text label size (32 if _pm else 28) color tx("#2B2624") yalign 0.5
+                    if _pct is not None:
+                        text (str(_pct) + "%") size (32 if _pm else 28) color tx("#C41230") bold True xalign 1.0 yalign 0.5 substitute False
                 bar:
                     value Preference(pref)
                     xfill True
@@ -2168,10 +2324,10 @@ screen mcc_content_history():
 
         frame:
             xfill True
-            ysize 90
+            ysize (120 if is_phone() else 100)
             background Solid("#C41230")
-            padding (15, 0)
-            text _("Kasaysayan") size 36 color tx("#1F1B19") bold True yalign 0.5
+            padding (30, 0)
+            text _("Kasaysayan") size (52 if is_phone() else 44) color "#FFFFFF" bold True yalign 0.5
 
         vbox:
             xfill True
@@ -2209,33 +2365,68 @@ screen history():
     use mcc_menu_hub("history")
 
 ## ABOUT / CREDITS SCREEN
+screen credit_card(heading, entries, delay=0.0):
+    python:
+        _p = is_phone()
+        _ch = 540 if _p else 460
+    frame at menu_slide_in(delay):
+        xsize 540
+        ysize _ch
+        padding (2, 2)
+        background Solid("#C41230")
+        frame:
+            xsize 536
+            ysize (_ch - 4)
+            background Solid(tc("#F3EFEA"))
+            padding (0, 0)
+            vbox:
+                frame:
+                    xsize 536
+                    background Solid("#C41230")
+                    padding (28, 14)
+                    text heading size (30 if _p else 26) color "#FFFFFF" bold True
+                null height 24
+                vbox:
+                    xoffset 28
+                    spacing 22
+                    for _role, _who in entries:
+                        vbox:
+                            spacing 2
+                            text _role size (28 if _p else 22) color tx("#C41230") xmaximum 480
+                            text _who size (36 if _p else 30) color tx("#1F1B19") xmaximum 480
+
 screen about():
     tag menu
     use base_menu(_("Credits")):
 
         vbox:
             xalign 0.5
-            spacing 20
-            xmaximum 700
-            yalign 0.3
+            ypos 36
+            spacing (26 if is_phone() else 34)
 
-            text "[config.name!t]" size 42 color tx("#1F1B19") bold True xalign 0.5
-            text "Version [config.version]" size 28 color tx("#6B6259") xalign 0.5
-            null height 20
+            vbox:
+                xalign 0.5
+                spacing 10
+                text "[config.name!t]" size (72 if is_phone() else 84) color tx("#1F1B19") bold True xalign 0.5
+                frame:
+                    xsize 180
+                    ysize 6
+                    xalign 0.5
+                    background Solid("#C41230")
+                frame:
+                    xalign 0.5
+                    background Solid("#C41230")
+                    padding (24, 6)
+                    text "Version [config.version]" size 26 color "#FFFFFF"
 
-            text "Project began in development in June by:" size 30 color "#E5677A" xalign 0.5
-            text "Lead/Main Developer: Clarin, Kylle Benedict" size 27 color tx("#6B6259") xalign 0.5
-            text "3D Sprites Artist: Morgan, Christian David F." size 26 color tx("#6B6259") xalign 0.5
-            text "Landing Page Designer: Cecilio, Neil Ayangel C." size 26 color tx("#6B6259") xalign 0.5
-            null height 12
+            text "Project began in development in June by:" size 30 color tx("#C41230") xalign 0.5
 
-            text "Technical Adviser: Engr. Ernie Lee Pineda, MIT" size 24 color tx("#6B6259") xalign 0.5
-            text "Capstone Instructor: Engr. Dennis L. Tacadena, MIT" size 24 color tx("#6B6259") xalign 0.5
-            null height 12
-
-            text "Mabalacat City College" size 24 color tx("#6B6259") xalign 0.5
-            text "Institute of Computing Studies, 2026" size 24 color tx("#6B6259") xalign 0.5
-            null height 32
+            hbox:
+                xalign 0.5
+                spacing 40
+                use credit_card("DEVELOPMENT", [("Lead/Main Developer and Landing Page Designer", "Clarin, Kylle Benedict"), ("3D Sprites Artist", "Morgan, Christian David F."), ("Poster and Trailer", "Cecilio, Neil Ayangel C.")], 0.1)
+                use credit_card("GUIDANCE", [("Technical Adviser", "Engr. Ernie Lee Pineda, MIT"), ("Capstone Instructor", "Engr. Dennis L. Tacadena, MIT")], 0.25)
+                use credit_card("INSTITUTION", [("School", "Mabalacat City College"), ("Institute", "Institute of Computing Studies, 2026")], 0.4)
 
 
 ## CONFIRM DIALOG
